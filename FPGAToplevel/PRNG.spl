@@ -1,0 +1,8 @@
+[Inputs]
+clk
+reset
+load
+=seed[31:0]=
+[Outputs]
+=rnd_out[31:0]=
+[BiDir]
