@@ -32,7 +32,7 @@ use IEEE.STD_LOGIC_SIGNED.ALL;
 --use UNISIM.VComponents.all;
 
 entity Adder is
-    generic (N : integer)
+    generic (N : integer);
     Port (
 				A : in  STD_LOGIC_VECTOR(N-1 downto 0);
 				B : in  STD_LOGIC_VECTOR (N-1 downto 0);

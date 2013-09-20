@@ -72,15 +72,17 @@ component flip_flop
 end component flip_flop;
 
 
+component comparator 
+    generic(N : NATURAL);
+    Port ( in0 : in std_logic_vector(N-1 downto 0);
+           in1 : in std_logic_vector(N-1 downto 0);
+           output_signal : out std_logic_vector(1 downto 0);
+        
+    );
+
+
 -- Signals 
-signal fitness_best     : std_logic_vector(FITNESS_LENGTH-1 downto 0);
-signal fitness_in       : std_logic_vector(FITNESS_LENGTH-1 downto 0);
-signal chromosome1      : std_logic_vector(N-1 downto 0);
-
-signal best_chromosome_out : std_logic_vector(N-1 downto 0) := (others => '0');
-signal best_chromosome_in  : std_logic_vector(N-1 downto 0);
-signal chromosome_from_pool: std_logic_vector(N-1 downto 0);
-
+signal best_fitness_in : std_logic_vector (N-1 downto 0); 
 signal random_address : std_logic_vector(N-1 downto 0);
 
 
@@ -97,9 +99,9 @@ begin
 
 COMPARISON_UNIT : adder 
 generic map (N => 16);
-port map(A => best_choromosome_out, 
-         B => chromosome_from_pool, 
-         res => best_chromosome_in, 
+port map(A => , 
+         B => , 
+         res => , 
          overflow => ground_signal);
 
 
@@ -149,6 +151,9 @@ port map (clk => clk,
            enable => , 
            data_in =>, 
            data_out =>);
+
+ 
+
 
 
 
