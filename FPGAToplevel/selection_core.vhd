@@ -38,7 +38,7 @@ entity selection_core is
     Port ( clk              : in STD_LOGIC;
            selection_enable : in STD_LOGIC;
            random_number    : in  STD_LOGIC_VECTOR (31 downto 0);
-           chromosome_in    : in STD_LOGIC_VECTOR (N-1 downto 0);
+           data_in          : in STD_LOGIC_VECTOR (N-1 downto 0);
            rated_pool_addr  : out STD_LOGIC_VECTOR (RATED_POOL_ADDR_BUS-1 downto 0);
            best_chromosome  : out STD_LOGIC_VECTOR (N-1 downto 0); 
            crossover_enable : out STD_LOGIC
@@ -50,12 +50,11 @@ architecture Behavioral of selection_core is
 
 
 --The adder will be used to compare fitness values 
-component adder 
+component comparator
     generic(N : NATURAL);
-    Port ( A        : in std_logic_vector (N-1 downto 0); 
-           B        : in std_logic_vector (N-1 downto 0);
-           res      : out std_logic_vector(N-1 downto 0);
-           overflow : out std_logic
+    Port ( in0        : in std_logic_vector (N-1 downto 0); 
+           in1        : in std_logic_vector (N-1 downto 0);
+           signal_out : out std_logic_vector(1 downto 0)
     
     );
 end component adder;
@@ -76,20 +75,23 @@ component comparator
     generic(N : NATURAL);
     Port ( in0 : in std_logic_vector(N-1 downto 0);
            in1 : in std_logic_vector(N-1 downto 0);
-           output_signal : out std_logic_vector(1 downto 0);
-        
+           output_signal : out std_logic_vector(1 downto 0)   
     );
 
 
--- Signals 
-signal best_fitness_in : std_logic_vector (N-1 downto 0); 
+-- Signals
+signal best_fitness_in : std_logic_vector (FITNESS_LENGTH-1 downto 0);
+signal best_fitness_out : std_logic_vector (FITNESS_LENGTH-1 downto 0); 
+signal compare_fitness_signal : std_logic(FITNESS_LENGTH-1 downto 0);
 signal random_address : std_logic_vector(N-1 downto 0);
+signal data : std_logic_vector(N-1 downto 0);
 
 
 --Control signals
-signal request_memory_access : std_logic;
-
-
+signal request_memory_access_signal : std_logic;
+signal propagate_fitness : std_logic;
+signal update_fitness : std_logic;
+signal comparision_signal : std_logic_vector(1 downto 0);
 
 --misc 
 signal ground_signal    : std_logic;
@@ -97,16 +99,12 @@ signal ground_signal    : std_logic;
 begin
 
 
-COMPARISON_UNIT : adder 
+COMPARISON_UNIT : comparator
 generic map (N => 16);
-port map(A => , 
-         B => , 
-         res => , 
-         overflow => ground_signal);
-
-
-
-          
+port map(in0 => compare_fitness_signal, 
+         in1 =>  best_fitness_out, 
+         signal_out => comparison_signal;
+         );
 
 RANDOM_ADDRESS : flip_flop 
 generic map (N => 64); --dunno address size yet
@@ -116,23 +114,16 @@ port map (clk => clk,
           data_in => random_address,
           data_out => rated_pool_address);         
 
-CHROMOSOME : flip_flop 
-generic map (N => 64); 
-port map ( clk => clk, 
-           reset => reset, 
-           enable =>, 
-           data_in =>, 
-           data_out => );
-           
 
-FITNESS : flip_flop
-generic map (N => 16);
+DATA : flip_flop
+generic map (N => 64);
 port map (clk => clk, 
            reset => reset, 
-           enable => ,
-           data_in =>, 
-           data_out => );
+           enable => fitness_propagate,
+           data_in => chromosome_in, 
+           data_out => compare_fitness_signal);
            
+                       
            
 BEST_CHROMOSOME : flip_flop 
 generic map(N => 64);
@@ -148,12 +139,20 @@ BEST_FITNESS : flip_flop
 generic map(N => 16);
 port map (clk => clk, 
            reset => reset, 
-           enable => , 
-           data_in =>, 
-           data_out =>);
+           enable => update_fitness, 
+           data_in => compare_fitness_signal, 
+           data_out => );
 
  
 
+
+
+SLICER : process (random_number) 
+begin 
+    --Modify address to fit memory (Even numbers)
+    random_address <= random_number(10 downto 0); -- Dunno size yet
+    
+end process SLICER;
 
 
 
