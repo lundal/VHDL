@@ -49,15 +49,6 @@ end selection_core;
 architecture Behavioral of selection_core is
 
 
---The adder will be used to compare fitness values 
-component comparator
-    generic(N : NATURAL);
-    Port ( in0        : in std_logic_vector (N-1 downto 0); 
-           in1        : in std_logic_vector (N-1 downto 0);
-           signal_out : out std_logic_vector(1 downto 0)
-    
-    );
-end component adder;
 
 -- Used for registers internally in the core 
 component flip_flop 
@@ -71,6 +62,7 @@ component flip_flop
 end component flip_flop;
 
 
+-- Used to compare fitness values
 component comparator 
     generic(N : NATURAL);
     Port ( in0 : in std_logic_vector(N-1 downto 0);
@@ -87,9 +79,10 @@ signal best_fitness : std_logic_vector (N-1 downto 0);
 --Control signals
 signal request_memory_access_signal : std_logic;
 signal update_fitness : std_logic;
-signal update_fitness : std_logic;
 signal comparision_signal : std_logic_vector(1 downto 0);
 signal update_chromosome : std_logic;
+signal work_on_fitness : std_logic;
+signal work_on_chromosome: std_logic;
 
 --misc 
 signal ground_signal    : std_logic;
@@ -145,10 +138,15 @@ port map (clk => clk,
 
 
 
-SLICER : process (random_number) 
+PREPARE_ADDR : process (random_number) 
 begin 
     --Modify address to fit memory (Even numbers)
     random_address <= random_number(10 downto 0); -- Dunno size yet
+    if random_address(0) = '1' then 
+        --Sett appropiate signals
+    elsif random_address(0) = '0' then 
+        --Sett appropiate signal
+    end if;
     
 end process SLICER;
 
