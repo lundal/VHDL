@@ -77,21 +77,19 @@ component comparator
            in1 : in std_logic_vector(N-1 downto 0);
            output_signal : out std_logic_vector(1 downto 0)   
     );
+end component comparator;
 
-
--- Signals
-signal best_fitness_in : std_logic_vector (FITNESS_LENGTH-1 downto 0);
-signal best_fitness_out : std_logic_vector (FITNESS_LENGTH-1 downto 0); 
-signal compare_fitness_signal : std_logic(FITNESS_LENGTH-1 downto 0);
+--Signals
 signal random_address : std_logic_vector(N-1 downto 0);
 signal data : std_logic_vector(N-1 downto 0);
-
+signal best_fitness : std_logic_vector (N-1 downto 0);
 
 --Control signals
 signal request_memory_access_signal : std_logic;
-signal propagate_fitness : std_logic;
+signal update_fitness : std_logic;
 signal update_fitness : std_logic;
 signal comparision_signal : std_logic_vector(1 downto 0);
+signal update_chromosome : std_logic;
 
 --misc 
 signal ground_signal    : std_logic;
@@ -100,14 +98,14 @@ begin
 
 
 COMPARISON_UNIT : comparator
-generic map (N => 16);
-port map(in0 => compare_fitness_signal, 
-         in1 =>  best_fitness_out, 
-         signal_out => comparison_signal;
+generic map (N => 16)
+port map(in0 => best_fitness, 
+         in1 => data, 
+         signal_out => comparison_signal
          );
 
 RANDOM_ADDRESS : flip_flop 
-generic map (N => 64); --dunno address size yet
+generic map (N => 64) --dunno address size yet
 port map (clk => clk, 
           reset => reset,
           enable => request_memory_access, 
@@ -116,7 +114,7 @@ port map (clk => clk,
 
 
 DATA : flip_flop
-generic map (N => 64);
+generic map (N => 64)
 port map (clk => clk, 
            reset => reset, 
            enable => fitness_propagate,
@@ -126,22 +124,22 @@ port map (clk => clk,
                        
            
 BEST_CHROMOSOME : flip_flop 
-generic map(N => 64);
+generic map(N => 64)
 port map (clk => clk,
           reset => reset,
-          enable => , 
-          data_in =>, 
-          data_out =>);
+          enable => update_chromosome, 
+          data_in => data, 
+          data_out => best_chromosome);
           
           
 
 BEST_FITNESS : flip_flop 
-generic map(N => 16);
+generic map(N => 16)
 port map (clk => clk, 
            reset => reset, 
            enable => update_fitness, 
            data_in => compare_fitness_signal, 
-           data_out => );
+           data_out => best_fitness);
 
  
 
