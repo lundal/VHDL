@@ -52,6 +52,16 @@ architecture Behavioral of ALU is
 		);
 	end component;
 	
+	component ZeroTester is
+		generic (N : integer := 64);
+		port (
+			I		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+			Pos		:	out	STD_LOGIC;
+			Zero	:	out	STD_LOGIC;
+			Neg		:	out	STD_LOGIC
+		);
+	end component;
+	
 	-- Adder signals
 	signal add_a		:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal add_b		:	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -81,6 +91,15 @@ begin
 		OVERFLOW	=> add_overflow
 	);
 	
+	ZERO_TESTER : ZeroTester
+	generic map (N => N)
+	port map(
+		I		=> result,
+		Pos		=> FLAGS.Positive,
+		Zero	=> FLAGS.Zero,
+		Neg		=> FLAGS.Negative
+	);
+	
 	-- TODO: Multiplier!
 	
 	INVERT_Y : process(Y, FUNC)
@@ -91,7 +110,7 @@ begin
 		else
 			y_new <= Y;
 			add_carry_in <= '0';
-		end if;		
+		end if;
 	end process;
 	
 	LOGICS : process(X, Y, FUNC)
@@ -125,11 +144,6 @@ begin
 			when others			=>	FLAGS.Overflow <= '0';
 		end case;
 	end process;
-	
-	-- Set flags
-	FLAGS.Positive	<= '1' when not (result = ZERO64) and result(N-1) = '0' else '0';
-	FLAGS.Zero		<= '1' when result = ZERO64 else '0';
-	FLAGS.Negative	<= '1' when result(N-1) = '1' else '0';
 	
 	R <= result;
 	
