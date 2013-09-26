@@ -23,7 +23,7 @@ use IEEE.STD_LOGIC_SIGNED.ALL;
 
 entity Multiplier is
 	generic (
-		N : natural := 64
+		N : natural := 32
 	);
     port (
 		A			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -36,12 +36,10 @@ end Multiplier;
 architecture Behavioral of Multiplier is
 
 	signal Res		:	STD_LOGIC_VECTOR (2*N-1 downto 0);
-	signal Res_High	:	STD_LOGIC_VECTOR (N-1 downto 0);
-	signal Res_Low	:	STD_LOGIC_VECTOR (N-1 downto 0);
 	
 begin
 
-	Multiply: process(A, B, Res, Res_Low, Res_High) begin
+	Multiply: process(A, B, Res) begin
 		Res <= A * B;
 		
 		-- Check for overflow
