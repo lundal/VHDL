@@ -76,7 +76,17 @@ architecture Behavioral of ALU is
 			Count	:	in	STD_LOGIC_VECTOR(M-1 downto 0)
 		);
 	end component;
-
+	
+	component Multiplier2 is
+		generic (
+			N : natural := 32
+		);
+		port (
+			A			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+			B			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+			Result		:	out	STD_LOGIC_VECTOR(2*N-1 downto 0)
+		);
+	end component;
 	
 	-- Adder signals
 	signal add_a		:	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -90,7 +100,8 @@ architecture Behavioral of ALU is
 	
 	-- Result signals
 	signal r_addsub	:	STD_LOGIC_VECTOR(N-1 downto 0);
-	--signal r_mul	:	STD_LOGIC_VECTOR(N-1 downto 0);
+	signal r_mul	:	STD_LOGIC_VECTOR(N-1 downto 0);
+	--signal r_mul	:	STD_LOGIC_VECTOR(32-1 downto 0);
 	signal r_and	:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_or		:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_xor	:	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -121,11 +132,10 @@ begin
 		Neg		=> FLAGS.Negative
 	);
 	
-	-- Todo: Gereric?
 	SHIFTER : ShifterVariable
 	generic map (
 		N => N,
-		M => 6
+		M => 6 -- Todo: Gereric?
 	)
 	port map (
 		I => X,
@@ -135,7 +145,15 @@ begin
 		Count => Y(6-1 downto 0)
 	);
 	
-	-- TODO: Multiplier!
+	MULTIPLY : Multiplier2
+	generic map (
+		N => 32 -- Todo: Generic?
+	)
+	port map (
+		A			=> X(32-1 downto 0),
+		B			=> Y(32-1 downto 0),
+		Result		=> r_mul
+	);
 	
 	INVERT_Y : process(Y, FUNC)
 	begin
@@ -174,13 +192,12 @@ begin
 		end case;
 	end process;
 	
-	--RESULTIFIER : process(FUNC, r_addsub, r_mul, r_and, r_or, r_xor)
-	RESULTIFIER : process(FUNC, r_addsub, r_and, r_or, r_xor, r_shift)
+	RESULTIFIER : process(FUNC, r_addsub, r_mul, r_and, r_or, r_xor, r_shift)
 	begin
 		case FUNC is
 			when ALU_FUNC_ADD	=>	result <= r_addsub;
 			when ALU_FUNC_SUB	=>	result <= r_addsub;
-			--when ALU_FUNC_MUL	=>	result <= r_mul;
+			when ALU_FUNC_MUL	=>	result <= r_mul;
 			when ALU_FUNC_AND	=>	result <= r_and;
 			when ALU_FUNC_OR	=>	result <= r_or;
 			when ALU_FUNC_XOR	=>	result <= r_xor;
@@ -191,13 +208,11 @@ begin
 		end case;
 	end process;
 	
-	--OVERFLOWIFIER : process(FUNC, add_overflow, mul_overflow)
 	OVERFLOWIFIER : process(FUNC, add_overflow)
 	begin
 		case FUNC is
 			when ALU_FUNC_ADD	=>	FLAGS.Overflow <= add_overflow;
 			when ALU_FUNC_SUB	=>	FLAGS.Overflow <= add_overflow;
-			--when ALU_FUNC_MUL	=>	FLAGS.Overflow <= mul_overflow;
 			when others			=>	FLAGS.Overflow <= '0';
 		end case;
 	end process;
