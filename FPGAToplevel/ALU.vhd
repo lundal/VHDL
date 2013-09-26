@@ -92,14 +92,14 @@ begin
 			y_new <= Y;
 			add_carry_in <= '0';
 		end if;		
-	end process INVERT_Y;
+	end process;
 	
 	LOGICS : process(X, Y, FUNC)
 	begin
 		r_and		<=	X and Y;
 		r_or		<=	X or Y;
 		r_xor		<=	X xor Y;
-	end process LOGICS;
+	end process;
 	
 	--RESULTIFIER : process(FUNC, r_addsub, r_mul, r_and, r_or, r_xor)
 	RESULTIFIER : process(FUNC, r_addsub, r_and, r_or, r_xor)
@@ -113,10 +113,20 @@ begin
 			when ALU_FUNC_XOR	=>	result <= r_xor;
 			when others			=>	result <= ZERO64;
 		end case;
-	end process RESULTIFIER;
+	end process;
 	
-	-- TODO: Overflow!
+	--OVERFLOWIFIER : process(FUNC, add_overflow, mul_overflow)
+	OVERFLOWIFIER : process(FUNC, add_overflow)
+	begin
+		case FUNC is
+			when ALU_FUNC_ADD	=>	FLAGS.Overflow <= add_overflow;
+			when ALU_FUNC_SUB	=>	FLAGS.Overflow <= add_overflow;
+			--when ALU_FUNC_MUL	=>	FLAGS.Overflow <= mul_overflow;
+			when others			=>	FLAGS.Overflow <= '0';
+		end case;
+	end process;
 	
+	-- Set flags
 	FLAGS.Positive	<= '1' when not (result = ZERO64) and result(N-1) = '0' else '0';
 	FLAGS.Zero		<= '1' when result = ZERO64 else '0';
 	FLAGS.Negative	<= '1' when result(N-1) = '1' else '0';
