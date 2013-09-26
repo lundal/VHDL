@@ -111,7 +111,7 @@ begin
 			when ALU_FUNC_AND	=>	result <= r_and;
 			when ALU_FUNC_OR	=>	result <= r_or;
 			when ALU_FUNC_XOR	=>	result <= r_xor;
-			when others			=>	
+			when others			=>	result <= ZERO64;
 		end case;
 	end process RESULTIFIER;
 	
