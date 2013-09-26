@@ -30,31 +30,35 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity selection_core_control is
-    Port ( clk : in  STD_LOGIC;
-           reset  : in  STD_LOGIC;
-           comparator_signal : in  STD_LOGIC_VECTOR (1 downto 0);
-           update_fitness : out  STD_LOGIC;
-           update_chromosome : out  STD_LOGIC;
-           propagate_data : out  STD_LOGIC;
-           request_memory : out STD_LOGIC;
-           increment_addr : out STD_LOGIC);
+    Port ( clk 						: in  STD_LOGIC;
+           reset  					: in  STD_LOGIC;
+           selection_core_enable    : in  STD_LOGIC;
+		   comparator_signal 		: in  STD_LOGIC_VECTOR (1 downto 0);
+           update_fitness 			: out STD_LOGIC;
+           update_chromosome 		: out STD_LOGIC;
+           propagate_data 			: out STD_LOGIC;
+           request_memory 			: out STD_LOGIC;
+           increment_addr 			: out STD_LOGIC;
+           fetch_fitness            : out STD_LOGIC;
+           fetch_chromosome         : out STD_LOGIC
+           );
 end selection_core_control;
 
 architecture Behavioral of selection_core_control is
 
-type state_type is (STATE_STALL, STATE_FETCH_FITNESS, STATE_FETCH_CHROMOSOME, STATE_COMPARE, INIT_STATE);
+type state_type is (STATE_STALL, STATE_FETCH_FITNESS, STATE_FETCH_CHROMOSOME, STATE_COMPARE, STATE_INIT);
 signal CURRENT_STATE, NEXT_STATE : state_type;
 
-signal GREATER_THAN : std_logic_vector(1 downto 0) := "10";
-signal LESS_THAN : std_logic_vector (1 downto 0) := "01";
-signal EQUAL : std_logic_vector (1 downto 0) := "00";
+constant GREATER_THAN : std_logic_vector(1 downto 0) := "10";
+constant LESS_THAN : std_logic_vector (1 downto 0) := "01";
+constant EQUAL : std_logic_vector (1 downto 0) := "00";
 
 begin
 
 RUN : process (clk, reset) 
 begin 
     if reset = '1' then
-        CURRENT_STATE <= INIT_STATE;
+        CURRENT_STATE <= STATE_INIT;
     elsif rising_edge(clk) then 
         if selection_core_enable = '1' then 
             CURRENT_STATE <= NEXT_STATE;
@@ -73,9 +77,9 @@ begin
         update_chromosome <= '0';
         NEXT_STATE <= STATE_COMPARE;
     
-    when STATE_COMPARE=> 
+    when STATE_COMPARE => 
         --Set appropiate signals
-        request_addr <= '0';
+        request_memory <= '0';
         propagate_data <= '0';
         update_chromosome <= '0'; 
         
@@ -114,7 +118,7 @@ begin
         --If we need to stall one cycle 
     
     when STATE_INIT =>
-        NEXT_STATE <= STATE_FETCH;
+        NEXT_STATE <= STATE_FETCH_FITNESS;
     
     end case;
     
