@@ -19,6 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 library WORK;
 use WORK.ALU_CONSTANTS.ALL;
@@ -62,11 +63,30 @@ architecture Behavioral of ALU is
 		);
 	end component;
 	
+	component ShifterVariable is
+		generic (
+			N : natural := 64;
+			M : natural := 6
+		);
+		port (
+			I		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+			O		:	out	STD_LOGIC_VECTOR(N-1 downto 0);
+			Left	:	in	STD_LOGIC;
+			Arith	:	in	STD_LOGIC;
+			Count	:	in	STD_LOGIC_VECTOR(M-1 downto 0)
+		);
+	end component;
+
+	
 	-- Adder signals
 	signal add_a		:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal add_b		:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal add_carry_in	:	STD_LOGIC;
 	signal add_overflow	:	STD_LOGIC;
+	
+	-- Shifter signals
+	signal shift_left	:	STD_LOGIC;
+	signal shift_arith	:	STD_LOGIC;
 	
 	-- Result signals
 	signal r_addsub	:	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -74,6 +94,7 @@ architecture Behavioral of ALU is
 	signal r_and	:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_or		:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_xor	:	STD_LOGIC_VECTOR(N-1 downto 0);
+	signal r_shift	:	STD_LOGIC_VECTOR(N-1 downto 0);
 	
 	-- Other signals
 	signal y_new	:	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -100,6 +121,20 @@ begin
 		Neg		=> FLAGS.Negative
 	);
 	
+	-- Todo: Gereric?
+	SHIFTER : ShifterVariable
+	generic map (
+		N => N,
+		M => 6
+	)
+	port map (
+		I => X,
+		O => r_shift,
+		Left => shift_left,
+		Arith => shift_arith,
+		Count => Y(6-1 downto 0)
+	);
+	
 	-- TODO: Multiplier!
 	
 	INVERT_Y : process(Y, FUNC)
@@ -113,6 +148,7 @@ begin
 		end if;
 	end process;
 	
+	-- Todo: y_new?
 	LOGICS : process(X, Y, FUNC)
 	begin
 		r_and		<=	X and Y;
@@ -120,8 +156,26 @@ begin
 		r_xor		<=	X xor Y;
 	end process;
 	
+	SHIFTIFIER : process(FUNC)
+	begin
+		case FUNC is
+			when ALU_FUNC_SRA	=>
+				shift_left <= '0';
+				shift_arith <= '1';
+			when ALU_FUNC_SLL	=>
+				shift_left <= '1';
+				shift_arith <= '0';
+			when ALU_FUNC_SRL	=>
+				shift_left <= '0';
+				shift_arith <= '0';
+			when others			=>
+				shift_left <= '0';
+				shift_arith <= '0';
+		end case;
+	end process;
+	
 	--RESULTIFIER : process(FUNC, r_addsub, r_mul, r_and, r_or, r_xor)
-	RESULTIFIER : process(FUNC, r_addsub, r_and, r_or, r_xor)
+	RESULTIFIER : process(FUNC, r_addsub, r_and, r_or, r_xor, r_shift)
 	begin
 		case FUNC is
 			when ALU_FUNC_ADD	=>	result <= r_addsub;
@@ -130,6 +184,9 @@ begin
 			when ALU_FUNC_AND	=>	result <= r_and;
 			when ALU_FUNC_OR	=>	result <= r_or;
 			when ALU_FUNC_XOR	=>	result <= r_xor;
+			when ALU_FUNC_SRA	=>	result <= r_shift;
+			when ALU_FUNC_SLL	=>	result <= r_shift;
+			when ALU_FUNC_SRL	=>	result <= r_shift;
 			when others			=>	result <= ZERO64;
 		end case;
 	end process;
