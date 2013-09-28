@@ -72,7 +72,7 @@ begin
     case CURRENT_STATE is 
     when STATE_FETCH_FITNESS =>
         -- Fetch data from memory
-        request_memory <= '1';
+        request_memory <= '0';
         propagate_data <= '1';
         update_chromosome <= '0';
         NEXT_STATE <= STATE_COMPARE;
@@ -95,14 +95,14 @@ begin
              -- The old fitness value is still the best
              -- Dont bother requesting the chromosome
              update_fitness <= '0';
-             NEXT_STATE <= STATE_FETCH_FITNESS;
+             NEXT_STATE <= STATE_STALL;
         
         when EQUAL =>
              -- They are equal. Just update
              update_fitness <= '1';
              --No need to request the chromosome from memmory
              increment_addr <= '0';
-             NEXT_STATE <= STATE_FETCH_FITNESS;
+             NEXT_STATE <= STATE_STALL;
              
         when others => 
             --Dont care!
@@ -115,10 +115,15 @@ begin
     
     
     when STATE_STALL =>
-        --If we need to stall one cycle 
-    
-    when STATE_INIT =>
+        --stall one cycle while waiting for memory
+        request_memory <= '1';
         NEXT_STATE <= STATE_FETCH_FITNESS;
+       
+    when STATE_INIT =>
+        if selection_core_enable = '1' then
+            request_memory <= '1';
+            NEXT_STATE <= STATE_FETCH_FITNESS;
+        end if;
     
     end case;
     

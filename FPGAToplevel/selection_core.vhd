@@ -143,7 +143,7 @@ port map (clk => clk,
            data_out => best_fitness);
 
 
-PREPARE_ADDR_PROCESS : process (random_number) 
+PREPARE_ADDR_PROCESS : process (random_number, random_address) 
 begin 
     --Modify address to fit memory
     random_address <= random_number(RATED_POOL_ADDR_BUS-1 downto 0);
@@ -163,7 +163,5 @@ begin
      end if;
      
 end process RUN_SELECTION_CORE;
-
-
 
 end Behavioral;
