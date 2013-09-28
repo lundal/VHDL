@@ -45,7 +45,7 @@ ARCHITECTURE behavior OF toplevel_genetic_pipeline_tb IS
          reset : IN  std_logic;
          enable : IN  std_logic;
          data_in : IN  std_logic_vector(63 downto 0);
-         rated_pool_addr : OUT  std_logic_vector(16 downto 0)
+         rated_pool_addr : OUT  std_logic_vector(15 downto 0)
         );
     END COMPONENT;
     
@@ -57,7 +57,7 @@ ARCHITECTURE behavior OF toplevel_genetic_pipeline_tb IS
    signal data_in : std_logic_vector(63 downto 0) := (others => '0');
 
  	--Outputs
-   signal rated_pool_addr : std_logic_vector(16 downto 0);
+   signal rated_pool_addr : std_logic_vector(15 downto 0);
 
    -- Clock period definitions
    constant clk_period : time := 10 ns;

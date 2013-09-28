@@ -43,12 +43,11 @@ end toplevel_genetic_pipeline;
 architecture Behavioral of toplevel_genetic_pipeline is
 
 component PRNG 
-    generic(N : NATURAL);
     port (clk       : in std_logic;
           reset     : in std_logic;
           load      : in std_logic;
-          seed      : in std_logic_vector (N-1 downto 0);
-          rnd_out   : out std_logic_vector (N-1 downto 0)
+          seed      : in std_logic_vector (31 downto 0);
+          rnd_out   : out std_logic_vector (31 downto 0)
     );
 end component PRNG;   
     
@@ -79,7 +78,6 @@ signal crossover_enable : std_logic;
 begin
 
 PRNG_UNIT : PRNG 
-    generic map (N => 32)
     port map (clk => clk,
               reset => reset , 
               load => enable, 

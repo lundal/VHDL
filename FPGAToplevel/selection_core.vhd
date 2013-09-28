@@ -45,7 +45,7 @@ component flip_flop
            reset    : in std_logic;
            enable   : in std_logic;
            data_in  : in std_logic_vector(N-1 downto 0);
-           data_out : in std_logic_vector(N-1 downto 0)
+           data_out : out std_logic_vector(N-1 downto 0)
     );
 end component flip_flop;
 
