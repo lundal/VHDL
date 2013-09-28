@@ -26,7 +26,7 @@ begin
     
     begin
         Taps <= TapsArray(Width)(Width - 1 downto 0);
-        if reset = '0' then 
+        if reset = '1' then 
             LFSR_register := (others => '1');
             -- Look-Up Table for Tap points to insert XOR gates as feedback into D-FF 
 			-- outputs.  Taps are designed so that 2^N-1 (N=Width of Register) numbers 

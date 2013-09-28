@@ -26,14 +26,15 @@ component selection_core_control
 	Port ( clk 					  		: in  std_logic;
 			 reset 				  		: in  std_logic;
 			 selection_core_enable 	    : in  std_logic;
-			 comparator_signal  		: in  std_logic_vector(1 downto 0);
+			 crossover_core_enable      : in  std_logic;
+             comparator_signal  		: in  std_logic_vector(1 downto 0);
 			 update_fitness     		: out std_logic;
 			 update_chromosome  		: out std_logic;
 			 propagate_data     		: out std_logic;
 			 request_memory     		: out std_logic;
-			 increment_addr     		: out std_logic;
              fetch_fitness              : out std_logic;
-             fetch_chromosome           : out std_logic
+             fetch_chromosome           : out std_logic;
+             flush_registers            : out std_logic
    );
 end component selection_core_control;
 
@@ -68,14 +69,16 @@ signal best_chromosome_internal	: std_logic_vector(N-1 downto 0);
 
 
 --Control signals
-signal request_memory 		: std_logic;
-signal update_fitness 		: std_logic;
-signal comparison_signal 	: std_logic_vector(1 downto 0);
-signal update_chromosome 	: std_logic;
-signal propagate_data 		: std_logic;
-signal increment_addr 		: std_logic;
-signal fetch_fitness        : std_logic;
-signal fetch_chromosome     : std_logic;
+signal request_memory 		    : std_logic;
+signal update_fitness 		    : std_logic;
+signal comparison_signal 	    : std_logic_vector(1 downto 0);
+signal update_chromosome    	: std_logic;
+signal propagate_data 	    	: std_logic;
+signal increment_addr 		    : std_logic;
+signal fetch_fitness            : std_logic;
+signal fetch_chromosome         : std_logic;
+signal crossover_core_enable    : std_logic;
+signal flush_registers          : std_logic;
 
 --misc 
 signal ground_signal    	: std_logic;
@@ -86,21 +89,22 @@ CONTROL_UNIT : selection_core_control
 port map ( clk =>  clk, 
 			  reset => reset, 
 			  selection_core_enable => selection_core_enable,
-			  comparator_signal => comparison_signal, 
+			  crossover_core_enable => crossover_core_enable ,
+              comparator_signal => comparison_signal, 
 			  update_fitness => update_fitness, 
 			  update_chromosome =>update_chromosome, 
 			  propagate_data => propagate_data, 
 			  request_memory => request_memory, 
-			  increment_addr => increment_addr, 
               fetch_fitness => fetch_fitness,
-              fetch_chromosome => fetch_chromosome
+              fetch_chromosome => fetch_chromosome, 
+              flush_registers => flush_registers
 			  );
 
 
 COMPARISON_UNIT : comparator
 generic map (N => 64)
-port map(in0 => best_fitness, 
-         in1 => data, 
+port map(in0 => data, 
+         in1 => best_fitness, 
          signal_out => comparison_signal
          );
 
@@ -148,15 +152,15 @@ begin
     --Modify address to fit memory
     random_address <= random_number(RATED_POOL_ADDR_BUS-1 downto 0);
     
-	 if random_address(0) = '1' then 
-        --Sett appropiate signals
-    elsif random_address(0) = '0' then 
-        --Sett appropiate signal
+	 if fetch_fitness = '1' then 
+        random_address(0) <= '0'; --even
+     elsif fetch_chromosome = '1' then 
+        random_address(1) <= '1';
     end if;
     
 end process PREPARE_ADDR_PROCESS;
 
-RUN_SELECTION_CORE : process(selection_core_enable) 
+RUN_SELECTION_CORE : process(selection_core_enable, rated_pool_addr_internal) 
 begin 
 	 if selection_core_enable = '1' then 
             rated_pool_addr <= rated_pool_addr_internal; 

@@ -43,7 +43,7 @@ ARCHITECTURE behavior OF toplevel_genetic_pipeline_tb IS
     PORT(
          clk : IN  std_logic;
          reset : IN  std_logic;
-         enable : IN  std_logic;
+         genetic_pipeline_enable : IN  std_logic;
          data_in : IN  std_logic_vector(63 downto 0);
          rated_pool_addr : OUT  std_logic_vector(15 downto 0)
         );
@@ -53,7 +53,7 @@ ARCHITECTURE behavior OF toplevel_genetic_pipeline_tb IS
    --Inputs
    signal clk : std_logic := '0';
    signal reset : std_logic := '0';
-   signal enable : std_logic := '0';
+   signal genetic_pipeline_enable : std_logic := '0';
    signal data_in : std_logic_vector(63 downto 0) := (others => '0');
 
  	--Outputs
@@ -68,7 +68,7 @@ BEGIN
    uut: toplevel_genetic_pipeline PORT MAP (
           clk => clk,
           reset => reset,
-          enable => enable,
+          genetic_pipeline_enable => genetic_pipeline_enable,
           data_in => data_in,
           rated_pool_addr => rated_pool_addr
         );
@@ -89,9 +89,19 @@ BEGIN
       -- hold reset state for 100 ns.
       reset <= '1';
       wait for 100 ns;	
-      enable <= '1';
       reset <= '0';
       wait for clk_period*10;
+      genetic_pipeline_enable <= '1';
+      
+      --Fake memory
+      wait for clk_period*1;
+      data_in <= "0000000000000000000000000000000000000000000000000000000000000001";
+      wait for clk_period*2;
+      data_in <= "0000000000000000000000000000000000000000000000000000000000000010";
+
+
+
+       
 
       -- insert stimulus here 
 

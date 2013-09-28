@@ -35,7 +35,7 @@ entity toplevel_genetic_pipeline is
     );
     Port ( clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
-           enable : in  STD_LOGIC;
+           genetic_pipeline_enable : in  STD_LOGIC;
            data_in : in  STD_LOGIC_VECTOR (N-1 downto 0);
            rated_pool_addr : out  STD_LOGIC_VECTOR (RATED_POOL_ADDR_BUS-1 downto 0));
 end toplevel_genetic_pipeline;
@@ -65,12 +65,12 @@ end component selection_core;
 
 --Signals 
 signal random_number               : std_logic_vector(31 downto 0); 
-signal random_seed                 : std_logic_vector(31 downto 0);
+signal random_seed                 : std_logic_vector(31 downto 0) := (others => '0');
 signal rated_pool_addr_internal    : std_logic_vector(RATED_POOL_ADDR_BUS-1 downto 0);
 signal best_chromosome_internal    : std_logic_vector(N-1 downto 0);
 
 --Control signals
-signal load : std_logic;
+signal load : std_logic := '0';
 signal selection_core_enable : std_logic;
 signal crossover_enable : std_logic;
 
@@ -80,7 +80,7 @@ begin
 PRNG_UNIT : PRNG 
     port map (clk => clk,
               reset => reset , 
-              load => enable, 
+              load => load, 
               seed => random_seed, 
               rnd_out => random_number
               );
@@ -88,7 +88,7 @@ PRNG_UNIT : PRNG
 SELECTION_CORE_UNIT : selection_core 
     port map ( clk => clk, 
                reset => reset, 
-               selection_core_enable => enable, 
+               selection_core_enable => genetic_pipeline_enable, 
                random_number => random_number, 
                data_in => data_in, 
                rated_pool_addr => rated_pool_addr_internal, 
