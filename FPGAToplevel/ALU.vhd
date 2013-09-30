@@ -24,8 +24,6 @@ use IEEE.NUMERIC_STD.ALL;
 library WORK;
 use WORK.ALU_CONSTANTS.ALL;
 
--- NOTE: UNTESTED!
-
 entity ALU is
 	
 	generic(N : integer := 64);
