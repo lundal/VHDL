@@ -136,6 +136,8 @@ BEGIN
 		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
 		TEST <= "00000100";
 		
+		wait for 10 ns;
+		
 		-- Add: LONG.MAX + 1 = LONG.MIN + OVERFLOW
 		X <= (63 => '0', 62 downto 0 => '1');
 		Y <= (63 downto 1 => '0', 0 => '1');
@@ -283,6 +285,156 @@ BEGIN
 		DESIRED_R <= "0000101111110000001101111010101101001011110101111101000100100000";
 		DESIRED_FLAGS <= (Positive=>'1', Zero=>'0', Negative=>'0', Overflow=>'0');
 		TEST <= "00010010";
+		
+		wait for 10 ns;
+		
+		-- OR: 0 or 0 = 0
+		X <= ZERO64;
+		Y <= ZERO64;
+		FUNC <= ALU_FUNC_OR;
+		DESIRED_R <= ZERO64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'1', Negative=>'0', Overflow=>'0');
+		TEST <= "00010011";
+		
+		wait for 10 ns;
+		
+		-- OR: 1 or 0 = 1
+		X <= ONE64;
+		Y <= ZERO64;
+		FUNC <= ALU_FUNC_OR;
+		DESIRED_R <= ONE64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
+		TEST <= "00010100";
+		
+		wait for 10 ns;
+		
+		-- OR: 1 or 0 = 1
+		X <= ZERO64;
+		Y <= ONE64;
+		FUNC <= ALU_FUNC_OR;
+		DESIRED_R <= ONE64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
+		TEST <= "00010101";
+		
+		wait for 10 ns;
+		
+		-- OR: 1 or 1 = 1
+		X <= ONE64;
+		Y <= ONE64;
+		FUNC <= ALU_FUNC_OR;
+		DESIRED_R <= ONE64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
+		TEST <= "00010110";
+		
+		wait for 10 ns;
+		
+		-- OR: X or Y = Z
+		X <= "0000101111110000001101111010101101001011110101111101000100100000";
+		Y <= "0010111111000000110111101010110100101111010111110100010010000011";
+		FUNC <= ALU_FUNC_OR;
+		DESIRED_R <= "0010111111110000111111111010111101101111110111111101010110100011";
+		DESIRED_FLAGS <= (Positive=>'1', Zero=>'0', Negative=>'0', Overflow=>'0');
+		TEST <= "00010111";
+		
+		wait for 10 ns;
+		
+		-- AND: 0 and 0 = 0
+		X <= ZERO64;
+		Y <= ZERO64;
+		FUNC <= ALU_FUNC_AND;
+		DESIRED_R <= ZERO64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'1', Negative=>'0', Overflow=>'0');
+		TEST <= "00011000";
+		
+		wait for 10 ns;
+		
+		-- AND: 1 and 0 = 0
+		X <= ONE64;
+		Y <= ZERO64;
+		FUNC <= ALU_FUNC_AND;
+		DESIRED_R <= ZERO64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'1', Negative=>'0', Overflow=>'0');
+		TEST <= "00011001";
+		
+		wait for 10 ns;
+		
+		-- AND: 1 and 0 = 0
+		X <= ZERO64;
+		Y <= ONE64;
+		FUNC <= ALU_FUNC_AND;
+		DESIRED_R <= ZERO64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'1', Negative=>'0', Overflow=>'0');
+		TEST <= "00011010";
+		
+		wait for 10 ns;
+		
+		-- AND: 1 and 1 = 1
+		X <= ONE64;
+		Y <= ONE64;
+		FUNC <= ALU_FUNC_AND;
+		DESIRED_R <= ONE64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
+		TEST <= "00011011";
+		
+		wait for 10 ns;
+		
+		-- AND: X and Y = Z
+		X <= "0000101111110000001101111010101101001011110101111101000100100000";
+		Y <= "0010111111000000110111101010110100101111010111110100010010000011";
+		FUNC <= ALU_FUNC_AND;
+		DESIRED_R <= "0000101111000000000101101010100100001011010101110100000000000000";
+		DESIRED_FLAGS <= (Positive=>'1', Zero=>'0', Negative=>'0', Overflow=>'0');
+		TEST <= "00011100";
+		
+		wait for 10 ns;
+		
+		-- XOR: 0 xor 0 = 0
+		X <= ZERO64;
+		Y <= ZERO64;
+		FUNC <= ALU_FUNC_XOR;
+		DESIRED_R <= ZERO64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'1', Negative=>'0', Overflow=>'0');
+		TEST <= "00011101";
+		
+		wait for 10 ns;
+		
+		-- XOR: 1 xor 0 = 1
+		X <= ONE64;
+		Y <= ZERO64;
+		FUNC <= ALU_FUNC_XOR;
+		DESIRED_R <= ONE64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
+		TEST <= "00011110";
+		
+		wait for 10 ns;
+		
+		-- XOR: 1 xor 0 = 1
+		X <= ZERO64;
+		Y <= ONE64;
+		FUNC <= ALU_FUNC_XOR;
+		DESIRED_R <= ONE64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'0', Negative=>'1', Overflow=>'0');
+		TEST <= "00011111";
+		
+		wait for 10 ns;
+		
+		-- XOR: 1 xor 1 = 0
+		X <= ONE64;
+		Y <= ONE64;
+		FUNC <= ALU_FUNC_XOR;
+		DESIRED_R <= ZERO64;
+		DESIRED_FLAGS <= (Positive=>'0', Zero=>'1', Negative=>'0', Overflow=>'0');
+		TEST <= "00100000";
+		
+		wait for 10 ns;
+		
+		-- XOR: X xor Y = Z
+		X <= "0000101111110000001101111010101101001011110101111101000100100000";
+		Y <= "0010111111000000110111101010110100101111010111110100010010000011";
+		FUNC <= ALU_FUNC_XOR;
+		DESIRED_R <= "0010010000110000111010010000011001100100100010001001010110100011";
+		DESIRED_FLAGS <= (Positive=>'1', Zero=>'0', Negative=>'0', Overflow=>'0');
+		TEST <= "00100001";
 		
 		wait for 10 ns;
 		
