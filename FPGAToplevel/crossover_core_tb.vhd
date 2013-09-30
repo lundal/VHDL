@@ -11,7 +11,6 @@ ARCHITECTURE behavior OF crossover_core_tb IS
  
     COMPONENT crossover_core
     PORT(
-         clk : IN  std_logic;
          enabled : IN  std_logic;
          random_number : IN  std_logic_vector(63 downto 0);
          parent1 : IN  std_logic_vector(63 downto 0);
@@ -23,7 +22,6 @@ ARCHITECTURE behavior OF crossover_core_tb IS
     
 
    --Inputs
-   signal clk : std_logic := '0';
    signal enabled : std_logic := '0';
    signal random_number : std_logic_vector(63 downto 0) := (others => '0');
    signal parent1 : std_logic_vector(63 downto 0) := (others => '0');
@@ -32,15 +30,11 @@ ARCHITECTURE behavior OF crossover_core_tb IS
  	--Outputs
    signal child1 : std_logic_vector(63 downto 0);
    signal child2 : std_logic_vector(63 downto 0);
-
-   -- Clock period definitions
-   constant clk_period : time := 10 ns;
  
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: crossover_core PORT MAP (
-          clk => clk,
           enabled => enabled,
           random_number => random_number,
           parent1 => parent1,
@@ -48,15 +42,6 @@ BEGIN
           child1 => child1,
           child2 => child2
         );
-
-   -- Clock process definitions
-   clk_process :process
-   begin
-		clk <= '0';
-		wait for clk_period/2;
-		clk <= '1';
-		wait for clk_period/2;
-   end process;
  
 
    -- Stimulus process
@@ -64,8 +49,6 @@ BEGIN
    begin		
       -- hold reset state for 100 ns.
       wait for 100 ns;	
-
-      wait for clk_period*10;
 
       -- insert stimulus here 
 		
@@ -135,7 +118,6 @@ BEGIN
 		-- (Setting random back to 18)
 		random_number <= "0000111100001111000011110000111100001111000011110000111100010010";
 		wait for 40 ns;
-		
 		
 		--Parents with equal bits in crossover-slots should produce same bits in same slots in both children:
 		enabled <= '1';

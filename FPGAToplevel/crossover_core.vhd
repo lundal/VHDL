@@ -5,9 +5,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity crossover_core is
 	generic (N : integer :=64);
     Port (
-				clk : in STD_LOGIC;
 				enabled : in STD_LOGIC;
-				
 				random_number: in STD_LOGIC_VECTOR (N-1 downto 0);
 				parent1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				parent2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
@@ -24,12 +22,8 @@ architecture Behavioral of crossover_core is
 	signal crossover_start : INTEGER := 0; 
 	signal crossover_result1 : STD_LOGIC_VECTOR (N-1 downto 0);
 	signal crossover_result2 : STD_LOGIC_VECTOR (N-1 downto 0);
-
-signal rrr : STD_LOGIC_VECTOR(5 downto 0);
-
 begin
 
-	--CROSSOVER : Process(clk, enabled, random_number, parent1, parent2, crossover_start, crossover_result1, crossover_result2)
 	CROSSOVER : Process(enabled, random_number, reduced_random_number, parent1, parent2, crossover_start)
 	begin
 	
@@ -39,7 +33,6 @@ begin
 			--6 last bits selected from input random_number, used to select where in parents to start crossover
 			reduced_random_number(5 downto 0) <= random_number(5 downto 0);
 			crossover_start <= TO_INTEGER(UNSIGNED(reduced_random_number));
-			
 			
 			--First crossover
 			crossover_result1(N-1 downto crossover_start+1) <= parent1(N-1 downto crossover_start+1);
