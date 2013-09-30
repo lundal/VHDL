@@ -56,38 +56,28 @@ component flip_flop
 end component flip_flop;
 
 
---Signals
-signal instruction_internal_out : std_logic_vector(N-1 downto 0);
-signal incremented_instruction_internal_out : std_logic_vector(N-1 downto 0);
-
-
 begin
 
 --Mappings
 INCREMENTED_REGISTER : flip_flop
+generic map(N => 32)
 port map (clk => clk,
           reset => reset,
           enable => '1', --Not sure if we need an enable signal  
           data_in => incremented_instruction_in, 
-          data_out => incremented_instruction_internal_out 
+          data_out => incremented_instruction_out
 );
 
 
 INSTRUCTION_REGISTER : flip_flop 
+generic map(N => 32)
 port map (clk => clk, 
           reset => reset, 
           enable => '1', --Not sure if we need an enable signal 
           data_in => instruction_in,
-          data_out => instruction_internal_out
+          data_out => instruction_out
 );
 
-
-IF_ID_PROCESS : process(instruction_internal_out, incremented_instruction_internal_out)
-    begin 
-        instruction_out <= instruiction_internal_out;
-        incremented_instruction_internal_out <= incremented_instruction_out;
-        
-end process IF_ID_PROCESS;
 
 
 
