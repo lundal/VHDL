@@ -30,15 +30,66 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity IF_ID is
+    generic(N : integer := 32);
     Port ( clk : in  STD_LOGIC;
            reset  : in  STD_LOGIC;
-           instruction : in  STD_LOGIC_VECTOR (0 downto 0);
-           incremented_instruction : in  STD_LOGIC_VECTOR (0 downto 0));
+           instruction_in : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           incremented_instruction_in : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           instruction_out : out STD_LOGIC_VECTOR(N-1 downto 0);
+           incremented_instruction_out : out STD_LOGIC_VECTOR(N-1 downto 0)
+           
+           );
 end IF_ID;
 
 architecture Behavioral of IF_ID is
 
+
+--Component declerations
+component flip_flop 
+    generic(N : NATURAL);
+    Port ( clk      : in std_logic;
+           reset    : in std_logic;
+           enable   : in std_logic;
+           data_in  : in std_logic_vector(N-1 downto 0);
+           data_out : out std_logic_vector(N-1 downto 0)
+    );
+end component flip_flop;
+
+
+--Signals
+signal instruction_internal_out : std_logic_vector(N-1 downto 0);
+signal incremented_instruction_internal_out : std_logic_vector(N-1 downto 0);
+
+
 begin
+
+--Mappings
+INCREMENTED_REGISTER : flip_flop
+port map (clk => clk,
+          reset => reset,
+          enable => '1', --Not sure if we need an enable signal  
+          data_in => incremented_instruction_in, 
+          data_out => incremented_instruction_internal_out 
+);
+
+
+INSTRUCTION_REGISTER : flip_flop 
+port map (clk => clk, 
+          reset => reset, 
+          enable => '1', --Not sure if we need an enable signal 
+          data_in => instruction_in,
+          data_out => instruction_internal_out
+);
+
+
+IF_ID_PROCESS : process(instruction_internal_out, incremented_instruction_internal_out)
+    begin 
+        instruction_out <= instruiction_internal_out;
+        incremented_instruction_internal_out <= incremented_instruction_out;
+        
+end process IF_ID_PROCESS;
+
+
 
 
 end Behavioral;
