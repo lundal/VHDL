@@ -86,31 +86,31 @@ begin
 				mutation_amount<= TO_INTEGER(UNSIGNED(reduced_random_numberA));
 			
 				--First mutation
-				--Bits 5-0 from random_number used to determine location
-				reduced_random_number1(5 downto 0) <= random_number(5 downto 0);
+				--Bits 7-2 from random_number used to determine location
+				reduced_random_number1(5 downto 0) <= random_number(7 downto 2);
 				mutation_spot1 <= TO_INTEGER(UNSIGNED(reduced_random_number1));
 				mutation_result(mutation_spot1) <= not input(mutation_spot1);
 			
 				--Second mutation if value of mutation_amount > 0	
 				if (mutation_amount > 0) then
-					--Bits 11-6 from random_number used to determine location
-					reduced_random_number2(5 downto 0) <= random_number(11 downto 6);
+					--Bits 13-8 from random_number used to determine location
+					reduced_random_number2(5 downto 0) <= random_number(13 downto 8);
 					mutation_spot2 <= TO_INTEGER(UNSIGNED(reduced_random_number2));
 					mutation_result(mutation_spot2) <= not input(mutation_spot2);
 				end if;
 			
 				--Third mutation if value of mutation_amount > 1	
 				if (mutation_amount > 1) then
-					--Bits 17-12 from random_number used to determine location
-					reduced_random_number3(5 downto 0) <= random_number(17 downto 12);
+					--Bits 19-14 from random_number used to determine location
+					reduced_random_number3(5 downto 0) <= random_number(19 downto 14);
 					mutation_spot3 <= TO_INTEGER(UNSIGNED(reduced_random_number3));
 					mutation_result(mutation_spot3) <= not input(mutation_spot3);
 				end if;
 			
 				--Fourth mutation if value of mutation_amount > 2	
 				if (mutation_amount > 2) then
-					--Bits 23-18 from random_number used to determine location
-					reduced_random_number4(5 downto 0) <= random_number(23 downto 18);
+					--Bits 25-20 from random_number used to determine location
+					reduced_random_number4(5 downto 0) <= random_number(25 downto 20);
 					mutation_spot4 <= TO_INTEGER(UNSIGNED(reduced_random_number4));
 					mutation_result(mutation_spot4) <= not input(mutation_spot4);
 				end if;
