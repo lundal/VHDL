@@ -31,12 +31,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity IF_ID is
     generic(N : integer := 32);
-    Port ( clk : in  STD_LOGIC;
-           reset  : in  STD_LOGIC;
-           instruction_in : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           incremented_instruction_in : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           instruction_out : out STD_LOGIC_VECTOR(N-1 downto 0);
-           incremented_instruction_out : out STD_LOGIC_VECTOR(N-1 downto 0)
+    Port ( clk       : in  STD_LOGIC;
+           reset     : in  STD_LOGIC;
+           data_in1  : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           data_in2  : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           data_out1 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           data_out2 : out STD_LOGIC_VECTOR(N-1 downto 0)
            
            );
 end IF_ID;
@@ -64,8 +64,8 @@ generic map(N => 32)
 port map (clk => clk,
           reset => reset,
           enable => '1', --Not sure if we need an enable signal  
-          data_in => incremented_instruction_in, 
-          data_out => incremented_instruction_out
+          data_in => data_in1, 
+          data_out => data_out1
 );
 
 
@@ -74,12 +74,9 @@ generic map(N => 32)
 port map (clk => clk, 
           reset => reset, 
           enable => '1', --Not sure if we need an enable signal 
-          data_in => instruction_in,
-          data_out => instruction_out
+          data_in => data_in2,
+          data_out => data_out2
 );
-
-
-
 
 
 end Behavioral;

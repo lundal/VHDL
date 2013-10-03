@@ -19,6 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL; 
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -32,6 +33,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity ID_EX is
     Port ( clk                          : in  STD_LOGIC;
            reset                        : in  STD_LOGIC;
+           --SIGNALS in
            reg_dst_in                   : in  STD_LOGIC;
            alu_op_in                    : in  STD_LOGIC_VECTOR(1 downto 0);
            alu_src_in                   : in  STD_LOGIC;
@@ -40,27 +42,29 @@ entity ID_EX is
            mem_write_in                 : in  STD_LOGIC;
            reg_write_in                 : in  STD_LOGIC;
            mem_to_reg_in                : in  STD_LOGIC;
+           --SIGNALS out
            reg_dst_out                  : out STD_LOGIC;
            alu_op_out                   : out STD_LOGIC_VECTOR(1 downto 0);
            alu_src_out                  : out STD_LOGIC;
            branch_out                   : out STD_LOGIC;
            mem_read_out                 : out STD_LOGIC;
            mem_write_out                : out STD_LOGIC;
-           reg_write_in                 : out STD_LOGIC;
+           reg_write_out                : out STD_LOGIC;
            mem_to_reg_out               : out STD_LOGIC;
-           read_data_1_in               : in  STD_LOGIC_VECTOR (31 downto 0);
-           read_data_2_in               : in  STD_LOGIC_VECTOR (31 downto 0);
-           sign_extended_in             : in  STD_LOGIC_VECTOR (31 downto 0);
-           instruction_in               : in  STD_LOGIC_VECTOR (31 downto 0);
-           incremented_instruction_in   : in  STD_LOGIC_VECTOR (31 downto 0);
-           instruction_20_16_in         : in  STD_LOGIC_VECTOR (4 downto 0);
-           instruction_15_11_in         : in  STD_LOGIC_VECTOR (4 downto 0);
-           incremented_instruction_out  : out STD_LOGIC_VECTOR (31 downto 0);
-           read_data_1_out              : out STD_LOGIC_VECTOR (31 downto 0);
-           read_data_2_out              : out STD_LOGIC_VECTOR (31 downto 0);
-           sign_extended_out            : out STD_LOGIC_VECTOR (31 downto 0);
-           instruction_20_16_out        : out STD_LOGIC_VECTOR (4 downto 0);
-           instruction_15_11_out        : out STD_LOGIC_VECTOR (4 downto 0)
+           --DATA in
+           data_in1                     : in  STD_LOGIC_VECTOR (31 downto 0);
+           data_in2                     : in  STD_LOGIC_VECTOR (31 downto 0);
+           data_in3                     : in  STD_LOGIC_VECTOR (31 downto 0);
+           data_in4                     : in  STD_LOGIC_VECTOR (31 downto 0);
+           data_in5                     : in  STD_LOGIC_VECTOR (4 downto 0);
+           data_in6                     : in  STD_LOGIC_VECTOR (4 downto 0);
+           --DATA out
+           data_out1                    : out STD_LOGIC_VECTOR (31 downto 0);
+           data_out2                    : out STD_LOGIC_VECTOR (31 downto 0);
+           data_out3                    : out STD_LOGIC_VECTOR (31 downto 0);
+           data_out4                    : out STD_LOGIC_VECTOR (31 downto 0);
+           data_out5                    : out STD_LOGIC_VECTOR (4 downto 0);
+           data_out6                    : out STD_LOGIC_VECTOR (4 downto 0)
            );
 end ID_EX;
 
@@ -85,61 +89,61 @@ begin
 
 -- Mappings
 --WIRES based on the instruction  
-INCREMENTED_REGISTER : flip_flop
+DATA_1_REGISTER : flip_flop
 generic map(N => 32)
 port map (clk => clk, 
           reset =>reset, 
           enable => '1', -- Not sure yet 
-          data_in => incremented_instruction_in, 
-          data_out => incremented_instruction_out
+          data_in => data_in1, 
+          data_out => data_out1
 );
 
 
-READ_DATA_1_REGISTER : flip_flop 
+DATA_2_REGISTER : flip_flop 
 generic map(N => 32)
 port map (clk => clk, 
           reset => reset, 
           enable => '1', 
-          data_in => read_data_1_in, 
-          data_out => read_data_1_out
+          data_in => data_in2, 
+          data_out => data_out2
 );
 
-READ_DATA_2_REGISTER : flip_flop 
+DATA_3_REGISTER : flip_flop 
 generic map( N => 32)
 port map( clk => clk,
           reset => reset, 
           enable => '1', 
-          data_in => read_data_2_in,
-          data_out => read_data_2_out
+          data_in => data_in3,
+          data_out => data_out3
 );
 
 
-SIGN_EXTEND_REGISTER : flip_flop 
+DATA_4_REGISTER : flip_flop 
 generic map (N => 32)
 port map (clk => clk, 
           reset => reset, 
           enable => '1',
-          data_in => sign_extended_in,
-          data_out => sign_extended_out
+          data_in => data_in4,
+          data_out => data_out4
 );
 
 
-INSTRUCTION_20_16_REGISTER : flip_flop 
+DATA_5_REGISTER : flip_flop 
 generic map(N => 5)
 port map ( clk => clk,
            reset => reset, 
            enable => '1',
-           data_in => instruction_20_16_in,
-           data_out => instruction_20_16_out 
+           data_in => data_in5,
+           data_out => data_out5
 );
 
-INSTRUCTION_15_11_REGISTER : flip_flop 
+DATA_6_REGISTER : flip_flop 
 generic map(N => 5)
 port map (clk => clk, 
           reset => reset, 
           enable => '1',
-          data_in => instruction_15_11_in, 
-          data_out => instruction_15_11_out
+          data_in => data_in6, 
+          data_out => data_out6
 );
 
 -- Control SIGNALS
@@ -151,13 +155,13 @@ CONTROL_SIGNALS : process (clk)
             mem_write_out <= '0';
         elsif rising_edge(clk) then 
             reg_dst_out <= reg_dst_in;
-            alu_op_in <= alu_op_out;
-            alu_src_in <= alu_src_out;
-            branch_in <= branch_out;
+            alu_op_out <= alu_op_in;
+            alu_src_out <= alu_src_in;
+            branch_out <= branch_in;
             mem_read_out <= mem_read_in;
-            mem_write_in <= mem_write_out;
-            reg_write_in <= reg_write_out;
-            mem_to_reg_in <= mem_to_reg_in; 
+            mem_write_out <= mem_write_in;
+            reg_write_out <= reg_write_in;
+            mem_to_reg_out <= mem_to_reg_in; 
         end if;
 end process CONTROL_SIGNALS;
 
