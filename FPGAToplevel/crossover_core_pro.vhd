@@ -3,10 +3,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity crossover_core_pro is
-	generic (N : integer :=64);
+	generic (N : integer :=64; O : integer :=32);
     Port (
 				enabled : in STD_LOGIC;
-				random_number: in STD_LOGIC_VECTOR (N-1 downto 0);
+				random_number: in STD_LOGIC_VECTOR (O-1 downto 0);
 				parent1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				parent2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				child1 : out  STD_LOGIC_VECTOR (N-1 downto 0);
