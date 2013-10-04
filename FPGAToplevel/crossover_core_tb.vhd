@@ -160,10 +160,9 @@ BEGIN
 		random_number <= "0000000000000000000000000000000000000000000000000000000000000101";
 		wait for 40 ns;
 		
-		-- Number 06, jumping additional 5 ns to synchronize change with clk_rising_edge
-		-- This is done in order to make sure there are no bugs related to clk_rising_edge
+		-- Number 06
 		random_number <= "0000000000000000000000000000000000000000000000000000000000000110";
-		wait for 45 ns;
+		wait for 40 ns;
 		
 		-- Number 07
 		random_number <= "0000000000000000000000000000000000000000000000000000000000000111";
