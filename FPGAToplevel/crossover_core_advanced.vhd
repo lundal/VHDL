@@ -34,18 +34,18 @@ begin
 			
 			-- A testbench or a system must not try to access bits outside any range
 			-- If N and O*2 are not equal, then the smallest range must be used for crossover
---			if (N < O*2) then
---				A <= N;
---			else
---				A <= (O*2);
---			end if;
+			if (N < O*2) then
+				A <= N;
+			else
+				A <= (O*2);
+			end if;
 	
 			--Filling increased_random_number with values from random_number_twice
 			increased_random_number((O*2)-1 downto O) <= random_number(O-1 downto 0);
 			increased_random_number(O-1 downto 0) <= random_number(O-1 downto 0);
 			
---			for i in A-1 downto 0 loop
-			for i in N-1 downto 0 loop
+			for i in A-1 downto 0 loop
+--			for i in N-1 downto 0 loop
 				
 				-- For each bit in increased_random_number which is 1, there will be a crossover on bit nr i from parents to children
 --				if (increased_random_number(i)= '1') then 
