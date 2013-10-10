@@ -6,7 +6,7 @@ entity crossover_core_advanced is
 	generic (N : integer :=64; O : integer :=32);
     Port (
 				enabled : in STD_LOGIC;
-				random_number: in STD_LOGIC_VECTOR (N-1 downto 0);
+				random_number: in STD_LOGIC_VECTOR (O-1 downto 0);
 				parent1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				parent2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				child1 : out  STD_LOGIC_VECTOR (N-1 downto 0);
@@ -17,7 +17,7 @@ architecture Behavioral of crossover_core_advanced is
 
 	-- increased_random_number will be used as double-sized duplicate of random_number
 	
-	signal increased_random_number: STD_LOGIC_VECTOR((O*2) downto 0);
+	signal increased_random_number: STD_LOGIC_VECTOR((O*2)-1 downto 0);
 
 	signal A : INTEGER := 1; 
 	
@@ -41,20 +41,23 @@ begin
 --			end if;
 	
 			--Filling increased_random_number with values from random_number_twice
-			increased_random_number((O*2)-1 downto (O*2)) <= random_number(O-1 downto 0);
+			increased_random_number((O*2)-1 downto O) <= random_number(O-1 downto 0);
 			increased_random_number(O-1 downto 0) <= random_number(O-1 downto 0);
 			
 --			for i in A-1 downto 0 loop
 			for i in N-1 downto 0 loop
 				
 				-- For each bit in increased_random_number which is 1, there will be a crossover on bit nr i from parents to children
-				if (increased_random_number(i)= '1') then 
-					crossover_result1(i) <= parent2(i);
-					crossover_result2(i) <= parent1(i);
-				else 
-					crossover_result1(i) <= parent1(i);
-					crossover_result2(i) <= parent2(i);
-				end if;
+--				if (increased_random_number(i)= '1') then 
+--					crossover_result1(i) <= parent2(i);
+--					crossover_result2(i) <= parent1(i);
+--				else 
+--					crossover_result1(i) <= parent1(i);
+--					crossover_result2(i) <= parent2(i);
+--				end if;
+
+				crossover_result1(i) <= ((parent2(i) and increased_random_number(i) ) xor (parent1(i) and not increased_random_number(i)));
+				crossover_result2(i) <= ((parent1(i) and increased_random_number(i) ) xor (parent2(i) and not increased_random_number(i)));
 					
 			end loop;
 			

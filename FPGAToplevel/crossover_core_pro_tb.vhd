@@ -83,7 +83,7 @@ BEGIN
 		
 		-- INFORMATION: When setting crossover values/bits, 
 		-- the first number mentioned is for crossover value based on bits 5-0 in random number,
-		-- while the second number mentioned is for crossover value based on bits 6-0 in random number.
+		-- while the second number mentioned is for crossover value based on bits 11-6 in random number.
 		-- These are also know as reduced_random_number1 and reduced_random_number2
 		-- This test will regularly use the first number as the lowest one for formal reasons, 
 		-- but, as the test will show, it does not matter which one is the highset and lowest
