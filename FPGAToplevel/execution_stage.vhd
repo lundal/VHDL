@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    17:13:36 10/03/2013 
+-- Create Date:    16:43:05 10/12/2013 
 -- Design Name: 
--- Module Name:    execution - Behavioral 
+-- Module Name:    execution_stage - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,13 +29,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity execution is
-    Port ( read_data_1 : in  STD_LOGIC_VECTOR (31 downto 0);
-           read_data_2 : in  STD_LOGIC_VECTOR (31 downto 0);
-           sign_extend : in  STD_LOGIC_VECTOR (31 downto 0));
-end execution;
+entity execution_stage is
+end execution_stage;
 
-architecture Behavioral of execution is
+architecture Behavioral of execution_stage is
 
 begin
 
