@@ -59,7 +59,8 @@ entity execution_stage is
           -- Signals out 
           write_register    : out STD_LOGIC_VECTOR(31 downto 0);
           alu_result        : out STD_LOGIC_VECTOR(31 downto 0);
-          addr_adder_result   : out STD_LOGIC_VECTOR (31 downto 0));
+          addr_adder_result : out STD_LOGIC_VECTOR (31 downto 0);
+          write_data        : out STD_LOGIC_VECTOR (63 downto 0);
 end execution_stage;
 
 architecture Behavioral of execution_stage is
