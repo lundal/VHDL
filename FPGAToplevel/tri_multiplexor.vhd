@@ -31,11 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity tri_multiplexor is
     generic (N : integer);
-    Port ( sel : in  STD_LOGIC_VECTOR (1 downto 0);
-           in0 : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           in1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           in2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           output  : in  STD_LOGIC_VECTOR (N-1 downto 0));
+    Port ( sel    : in  STD_LOGIC_VECTOR (1 downto 0);
+           in0    : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           in1    : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           in2    : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           output : out  STD_LOGIC_VECTOR (N-1 downto 0));
 end tri_multiplexor;
 
 architecture Behavioral of tri_multiplexor is
