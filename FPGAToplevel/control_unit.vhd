@@ -35,7 +35,6 @@ entity control_unit is
            reg_dst : out  STD_LOGIC_VECTOR (1 downto 0);
            alu_src : out  STD_LOGIC;
            branch : out  STD_LOGIC;
-           mem_read : out  STD_LOGIC;
            mem_write  : out  STD_LOGIC;
            reg_write : out  STD_LOGIC;
            mem_to_reg : out  STD_LOGIC);
@@ -55,9 +54,6 @@ constant OP_CODE_STI           : STD_LOGIC_VECTOR(3 downto 0) := "1010";
 constant OP_CODE_LDG           : STD_LOGIC_VECTOR(3 downto 0) := "1001";
 constant OP_CODE_SETG          : STD_LOGIC_VECTOR(3 downto 0) := "1001";
 constant OP_CODE_STG           : STD_LOGIC_VECTOR(3 downto 0) := "1010";
-
-
-
 
 
 begin
