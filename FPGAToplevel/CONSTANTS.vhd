@@ -7,10 +7,28 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 
+library WORK;
+
 package CONSTANTS is
 	
 	constant ALU_FUNC_WIDTH	:	integer	:=	4;
 	constant COND_WIDTH		:	integer	:=	4;
+	constant OP_CODE_WIDTH	:	integer :=	4;
+	constant REG_WIDTH		:	integer :=	64;
+	constant REG_ADDR_WIDTH	:	integer	:=	5;
+	
+	--OPCODES 
+	constant OP_CODE_RRR	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1000";
+	constant OP_CODE_RRI	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1100";
+	constant OP_CODE_LW		:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0000";
+	constant OP_CODE_SW		:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0001";
+	constant OP_CODE_LDI	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0100";
+	constant OP_CODE_JMP	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0010";
+	constant OP_CODE_CALL	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0011";
+	constant OP_CODE_STI	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0101";
+	constant OP_CODE_LDG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1001";
+	constant OP_CODE_SETG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1010";
+	constant OP_CODE_STG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1011";
 	
 	-- ALU Functions
 	constant ALU_FUNC_ADD	:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"0000";
