@@ -41,25 +41,25 @@ end alu_control_unit;
 architecture Behavioral of alu_control_unit is
 
 begin
-
-ALU_CONTROL_PROCESS : process(alu_op, func)
+	ALU_CONTROL_PROCESS : process(alu_op, func)
     begin 
         case alu_op is
-        when "00" => 
-            
-            
-            
-        when "01" =>
-            --Arithmetic
-            alu_ctrl_out <= function_code;
-        
-        when "10" =>
-         
-        when others =>
-            --nothing
-            alu_ctrl_out <= "0000";
-        
-        
-
+			when "00" => 
+				
+				
+				
+			when "01" =>
+				--Arithmetic
+				alu_ctrl_out <= function_code;
+			
+			when "10" =>
+			 
+			when others =>
+				--nothing
+				alu_ctrl_out <= "0000";
+			
+			
+		end case;
+	end process;
 end Behavioral;
 
