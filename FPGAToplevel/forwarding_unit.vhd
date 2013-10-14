@@ -45,7 +45,7 @@ architecture Behavioral of forwarding_unit is
 begin
 
 
-FORWARD_UNIT : process (rs, rt, stage3_reg_rd, stage4_reg_rd, stage3_reg_write, stage4_reg_write)
+FORWARD_UNIT : process (rs, rt, stage4_reg_rd, stage5_reg_rd, stage4_reg_write, stage5_reg_write)
     begin 
         -- MEM hazard
         if (stage5_reg_write = '1' 
