@@ -44,8 +44,8 @@ begin
 			increased_random_number((O*2)-1 downto O) <= random_number(O-1 downto 0);
 			increased_random_number(O-1 downto 0) <= random_number(O-1 downto 0);
 			
-			for i in A-1 downto 0 loop
---			for i in N-1 downto 0 loop
+--			for i in A-1 downto 0 loop
+			for i in N-1 downto 0 loop
 				
 				-- For each bit in increased_random_number which is 1, there will be a crossover on bit nr i from parents to children
 --				if (increased_random_number(i)= '1') then 
