@@ -7,7 +7,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 
-package ALU_CONSTANTS is
+package CONSTANTS is
 	
 	constant ALU_FUNC_WIDTH	:	integer	:=	4;
 	constant COND_WIDTH		:	integer	:=	4;
@@ -54,4 +54,4 @@ package ALU_CONSTANTS is
 	constant ONE32	: STD_LOGIC_VECTOR(31 downto 0) :=  (31 downto 0 => '1');
 	constant ONE64	: STD_LOGIC_VECTOR(63 downto 0) :=  (63 downto 0 => '1');
 	
-end ALU_CONSTANTS;
+end CONSTANTS;
