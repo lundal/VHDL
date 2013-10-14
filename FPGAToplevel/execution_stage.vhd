@@ -50,12 +50,13 @@ entity execution_stage is
           pc_incremented      : in STD_LOGIC_VECTOR(31 downto 0);
           read_data1          : in STD_LOGIC_VECTOR(63 downto 0);
           read_data2          : in STD_LOGIC_VECTOR(63 downto 0);
-          immediate_value     : in STD_LOGIC_VECTOR (63 downto 0);
-          immediate_address   : in STD_LOGIC_VECTOR (31 downto 0);
+          immediate_value     : in STD_LOGIC_VECTOR(63 downto 0);
+          immediate_address   : in STD_LOGIC_VECTOR(31 downto 0);
           immediate           : in STD_LOGIC_VECTOR(31 downto 0);
           rs_addr             : in STD_LOGIC_VECTOR(4 downto 0);
           rt_addr             : in STD_LOGIC_VECTOR(4 downto 0);
           rd_addr             : in STD_LOGIC_VECTOR(4 downto 0);
+          alu_function        : in STD_LOGIC_VECTOR(3 downto 0);
           
           -- From other stages
           stage4_alu_result   : in STD_LOGIC_VECTOR(63 downto 0);
@@ -69,8 +70,8 @@ entity execution_stage is
           -- Signals out 
           write_register_addr : out STD_LOGIC_VECTOR(31 downto 0);
           alu_result          : out STD_LOGIC_VECTOR(31 downto 0);
-          addr_adder_result   : out STD_LOGIC_VECTOR (31 downto 0);
-          write_data          : out STD_LOGIC_VECTOR (63 downto 0));
+          addr_adder_result   : out STD_LOGIC_VECTOR(31 downto 0);
+          write_data          : out STD_LOGIC_VECTOR(63 downto 0));
 end execution_stage;
 
 architecture Behavioral of execution_stage is
@@ -140,7 +141,6 @@ signal tri_mux1_out                : STD_LOGIC_VECTOR(63 downto 0);
 signal tri_mux2_out                : STD_LOGIC_VECTOR(63 downto 0);
 signal alu_op2                     : STD_LOGIC_VECTOR(63 downto 0);
 signal immediate_op2               : STD_LOGIC_VECTOR(63 downto 0);
-signal alu_control_output          : STD_LOGIC_VECTOR(3 downto 0);
 signal shifted_immediate_addr      : STD_LOGIC_VECTOR(63 downto 0);
 
 --Control signals
@@ -202,7 +202,7 @@ generic map(N => 64)
 port map( X => tri_mux1_out, 
           Y =>alu_op2, 
           R => alu_result,
-          FUNC => alu_control_output, 
+          FUNC => alu_function, 
           FLAGS.Overflow => overflow);
      
 
