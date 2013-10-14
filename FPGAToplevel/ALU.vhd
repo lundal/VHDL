@@ -29,11 +29,11 @@ entity ALU is
 	generic(N : integer := 64);
 	
 	port(
-		X		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-		Y		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-		R		:	out	STD_LOGIC_VECTOR(N-1 downto 0);
-		FUNC	:	in	STD_LOGIC_VECTOR(3 downto 0);
-		FLAGS	:	out ALU_FLAGS
+		X			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+		Y			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+		R			:	out	STD_LOGIC_VECTOR(N-1 downto 0);
+		FUNC		:	in	STD_LOGIC_VECTOR(3 downto 0);
+		OVERFLOW	:	out STD_LOGIC
 	);
 	
 end ALU;
@@ -48,16 +48,6 @@ architecture Behavioral of ALU is
 			R			:	out	STD_LOGIC_VECTOR(N-1 downto 0);
 			CARRY_IN	:	in	STD_LOGIC;
 			OVERFLOW	:	out	STD_LOGIC
-		);
-	end component;
-	
-	component ZeroTester is
-		generic (N : integer := 64);
-		port (
-			I		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-			Pos		:	out	STD_LOGIC;
-			Zero	:	out	STD_LOGIC;
-			Neg		:	out	STD_LOGIC
 		);
 	end component;
 	
@@ -119,15 +109,6 @@ begin
 		R			=> r_addsub,
 		CARRY_IN	=> add_carry_in,
 		OVERFLOW	=> add_overflow
-	);
-	
-	ZERO_TESTER : ZeroTester
-	generic map (N => N)
-	port map(
-		I		=> result,
-		Pos		=> FLAGS.Positive,
-		Zero	=> FLAGS.Zero,
-		Neg		=> FLAGS.Negative
 	);
 	
 	SHIFTER : ShifterVariable
@@ -209,9 +190,9 @@ begin
 	OVERFLOWIFIER : process(FUNC, add_overflow)
 	begin
 		case FUNC is
-			when ALU_FUNC_ADD	=>	FLAGS.Overflow <= add_overflow;
-			when ALU_FUNC_SUB	=>	FLAGS.Overflow <= add_overflow;
-			when others			=>	FLAGS.Overflow <= '0';
+			when ALU_FUNC_ADD	=>	OVERFLOW <= add_overflow;
+			when ALU_FUNC_SUB	=>	OVERFLOW <= add_overflow;
+			when others			=>	OVERFLOW <= '0';
 		end case;
 	end process;
 	
