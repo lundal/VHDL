@@ -21,7 +21,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 library WORK;
-use WORK.ALU_CONSTANTS.ALL;
+use WORK.CONSTANTS.ALL;
 
 entity ZeroTester is
 	generic (N : integer := 64);
