@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    12:35:37 09/26/2013 
+-- Create Date:    16:08:41 09/21/2013 
 -- Design Name: 
--- Module Name:    ZeroTester - Behavioral 
+-- Module Name:    Control Unit - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -19,25 +19,19 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 library WORK;
 use WORK.CONSTANTS.ALL;
 
-entity ZeroTester is
-	generic (N : integer := 64);
+entity control_unit is
 	port (
-		I		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-		Pos		:	out	STD_LOGIC;
-		Zero	:	out	STD_LOGIC;
-		Neg		:	out	STD_LOGIC
+		OP_CODE		:	in	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0);
+		ALU_SOURCE	:	out	STD_LOGIC;
+		IMM_SOURCE	:	out STD_LOGIC;
+		MEM_WRITE	:	out	STD_LOGIC;
+		REG_WRITE	:	out	STD_LOGIC;
+		MEM_TO_REG	:	out	STD_LOGIC;
+		REG_DEST	:	out	STD_LOGIC
 	);
-end ZeroTester;
-
-architecture Behavioral of ZeroTester is
-	
-begin
-	Pos		<= '1' when not (I = ZERO64) and I(N-1) = '0' else '0';
-	Zero	<= '1' when I = ZERO64 else '0';
-	Neg		<= '1' when I(N-1) = '1' else '0';
-end Behavioral;
-
+end entity;

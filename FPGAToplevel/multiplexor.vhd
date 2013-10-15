@@ -2,7 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 
-entity multiplexer is
+entity multiplexor is
     generic(N : integer);
     Port ( sel : in  STD_LOGIC;
            in0 : in  STD_LOGIC_VECTOR (N-1 downto 0);
@@ -26,4 +26,3 @@ begin
  end process MULTIPLEXER;
 
 end Behavioral;
-
