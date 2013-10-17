@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------
+ ----------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
 -- 
@@ -21,50 +21,51 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL; 
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+library WORK;
+use WORK.CONSTANTS.ALL;
+
 
 entity ID_EX is
     Port ( clk                          : in  STD_LOGIC;
            reset                        : in  STD_LOGIC;
-           --SIGNALS in
-           reg_dst_in                   : in  STD_LOGIC;
-           alu_op_in                    : in  STD_LOGIC_VECTOR(1 downto 0);
+           
+           -- CONTROL SIGNALS in
            alu_src_in                   : in  STD_LOGIC;
-           branch_in                    : in  STD_LOGIC;
-           mem_read_in                  : in  STD_LOGIC;
-           mem_write_in                 : in  STD_LOGIC;
            reg_write_in                 : in  STD_LOGIC;
-           mem_to_reg_in                : in  STD_LOGIC;
-           --SIGNALS out
-           reg_dst_out                  : out STD_LOGIC;
-           alu_op_out                   : out STD_LOGIC_VECTOR(1 downto 0);
-           alu_src_out                  : out STD_LOGIC;
-           branch_out                   : out STD_LOGIC;
-           mem_read_out                 : out STD_LOGIC;
-           mem_write_out                : out STD_LOGIC;
-           reg_write_out                : out STD_LOGIC;
-           mem_to_reg_out               : out STD_LOGIC;
+           jump_in                      : in  STD_LOGIC;
+           alu_func_in                  : in  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
+           cond_in                      : in  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
+           gen_op_in                    : in  STD_LOGIC_VECTOR(GEN_OPERATION_WIDTH-1 downto 0);
+           mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OPERATION_WIDTH-1 downto 0);
+           to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OPERATION_WIDTH-1 downto 0);
+           
+           
+           -- CONTROL SIGNALS out
+           alu_src_out                  : out  STD_LOGIC;
+           reg_write_out                : out  STD_LOGIC;
+           jump_out                     : out  STD_LOGIC;
+           alu_func_out                 : out  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
+           cond_out                     : out  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
+           gen_op_out                   : out  STD_LOGIC_VECTOR(GEN_OPERATION_WIDTH-1 downto 0);
+           mem_operation_out            : out  STD_LOGIC_VECTOR(MEM_OPERATION_WIDTH-1 downto 0);
+           to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OPERATION_WIDTH-1 downto 0);
+           
            --DATA in
-           data_in1                     : in  STD_LOGIC_VECTOR (31 downto 0);
-           data_in2                     : in  STD_LOGIC_VECTOR (31 downto 0);
-           data_in3                     : in  STD_LOGIC_VECTOR (31 downto 0);
-           data_in4                     : in  STD_LOGIC_VECTOR (31 downto 0);
-           data_in5                     : in  STD_LOGIC_VECTOR (4 downto 0);
-           data_in6                     : in  STD_LOGIC_VECTOR (4 downto 0);
+           data_in1                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           data_in2                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           data_in3                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           data_in4                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           data_in5                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           data_in6                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           
            --DATA out
-           data_out1                    : out STD_LOGIC_VECTOR (31 downto 0);
-           data_out2                    : out STD_LOGIC_VECTOR (31 downto 0);
-           data_out3                    : out STD_LOGIC_VECTOR (31 downto 0);
-           data_out4                    : out STD_LOGIC_VECTOR (31 downto 0);
-           data_out5                    : out STD_LOGIC_VECTOR (4 downto 0);
-           data_out6                    : out STD_LOGIC_VECTOR (4 downto 0)
+           data_out1                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           data_out2                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           data_out3                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           data_out4                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           data_out5                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           data_out6                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
            );
 end ID_EX;
 
@@ -88,7 +89,8 @@ end component flip_flop;
 begin
 
 -- Mappings
---WIRES based on the instruction  
+
+--DATA IN/OUT mappings 
 DATA_1_REGISTER : flip_flop
 generic map(N => 32)
 port map (clk => clk, 
@@ -119,7 +121,7 @@ port map( clk => clk,
 
 
 DATA_4_REGISTER : flip_flop 
-generic map (N => 32)
+generic map (N => 5)
 port map (clk => clk, 
           reset => reset, 
           enable => '1',
@@ -146,22 +148,63 @@ port map (clk => clk,
           data_out => data_out6
 );
 
--- Control SIGNALS
+-- Control SIGNALS mapping
+
+CONTROL_ALU_FUNCTION : flip_flop
+generic map(N => ALU_FUNC_WIDTH)
+port map( clk => clk, 
+          reset => reset, 
+          enable => '1', 
+          data_in => alu_func_in, 
+          data_out => alu_func_out);
+          
+CONTROL_CONDITION : flip_flop
+generic map(N => COND_WIDTH)
+port map( clk => clk, 
+          reset => reset, 
+          enable => '1',
+          data_in => cond_in, 
+          data_out => cond_out);
+          
+CONTROL_GEN_OPERATION : flip_flop
+generic map(N => GEN_OPERATION_WIDTH)
+port map( clk => clk, 
+          reset => reset, 
+          enable => '1', 
+          data_in => gen_op_in, 
+          data_out => gen_op_out);
+          
+CONTROL_MEM_OPERATION : flip_flop 
+generic map(N => MEM_OPERATION_WIDTH)
+port map( clk => clk, 
+          reset => reset, 
+          enable => '1',
+          data_in => mem_operation_in, 
+          data_out => mem_operation_out);
+          
+          
+CONTROL_TO_REG_OPERATION : flip_flop 
+generic map(N => TO_REG_OPERATION_WIDTH)
+port map( clk => clk, 
+          reset => reset,
+          enable => '1', 
+          data_in => to_reg_operation_in, 
+          data_out => to_reg_operation_out);
+
+
+
 CONTROL_SIGNALS : process (clk)
     begin 
         if reset = '1' then 
             --Reset signals
+            alu_src_out <= '0';
             reg_write_out <= '0';
-            mem_write_out <= '0';
+            jump_out <= '0';
+            
         elsif rising_edge(clk) then 
-            reg_dst_out <= reg_dst_in;
-            alu_op_out <= alu_op_in;
             alu_src_out <= alu_src_in;
-            branch_out <= branch_in;
-            mem_read_out <= mem_read_in;
-            mem_write_out <= mem_write_in;
             reg_write_out <= reg_write_in;
-            mem_to_reg_out <= mem_to_reg_in; 
+            jump_out <= jump_in;
         end if;
 end process CONTROL_SIGNALS;
 
