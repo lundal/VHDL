@@ -16,15 +16,18 @@ package CONSTANTS is
 	constant OP_CODE_WIDTH	        :	integer :=	4;
 	constant REG_WIDTH		        :	integer :=	64;
 	constant REG_ADDR_WIDTH	        :	integer	:=	5;
+	
+	constant ADDR_WIDTH				:	integer := 19;
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
+	
     -- TODO - Change these to their correct values
+	
     constant GEN_OPERATION_WIDTH    : integer := 2; 
-    constant MEM_OPERATION_WIDTH    : integer := 3;
+    constant MEM_OPERATION_WIDTH    : integer := 2;
     constant TO_REG_OPERATION_WIDTH : integer := 3;
     
-    
-    
+    type MEM_OP is (MEM_NOP, MEM_LOAD, MEM_STORE);
 	
 	--OPCODES 
 	constant OP_CODE_RRR	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1000";
