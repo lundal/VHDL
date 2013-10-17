@@ -26,7 +26,7 @@ component selection_core_control
 	Port ( clk 					  		: in  std_logic;
 			 reset 				  		: in  std_logic;
 			 selection_core_enable 	    : in  std_logic;
-			 crossover_core_enable      : in  std_logic;
+			 crossover_core_enable      : out  std_logic;
              comparator_signal  		: in  std_logic_vector(1 downto 0);
 			 update_fitness     		: out std_logic;
 			 update_chromosome  		: out std_logic;
@@ -85,11 +85,13 @@ signal ground_signal    	: std_logic;
 
 begin
 
+
+
 CONTROL_UNIT : selection_core_control 
 port map ( clk =>  clk, 
 			  reset => reset, 
 			  selection_core_enable => selection_core_enable,
-			  crossover_core_enable => crossover_core_enable ,
+			  crossover_core_enable => crossover_core_enable,
               comparator_signal => comparison_signal, 
 			  update_fitness => update_fitness, 
 			  update_chromosome =>update_chromosome, 
