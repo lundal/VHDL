@@ -37,7 +37,7 @@ entity control_unit is
         ALU_FUNC    :   out STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
         GENE_OP     :   out STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
         MEM_OP      :   out STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
-        TO_REG      :   out STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+        TO_REG      :   out STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0)
 	);
 end entity;
 
@@ -51,7 +51,7 @@ CONTROL_UNIT : process (OP_CODE)
         when RRR =>
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= NOP; 
             MEM_OP <= NOP;
@@ -63,7 +63,7 @@ CONTROL_UNIT : process (OP_CODE)
         when RRI =>
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= NOP;
@@ -75,7 +75,7 @@ CONTROL_UNIT : process (OP_CODE)
         when CALL =>
             ALU_FUNC <= ADD;
             REG_SOURCE <= '1';
-            IMM_SOURCE <= '1';'
+            IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= NOP;
@@ -87,7 +87,7 @@ CONTROL_UNIT : process (OP_CODE)
         when JUMP => 
             ALU_FUNC <= ADD;
             REG_SOURCE <= '1';
-            IMM_SOURCE <= '1';'
+            IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= NOP;
@@ -99,7 +99,7 @@ CONTROL_UNIT : process (OP_CODE)
         when LOAD =>
             ALU_FUNC <= ADD;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= LOAD_DATA;
@@ -111,7 +111,7 @@ CONTROL_UNIT : process (OP_CODE)
         when LOAD_IMM =>
             ALU_FUNC <= ADD;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '1';'
+            IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= LOAD_DATA;
@@ -123,7 +123,7 @@ CONTROL_UNIT : process (OP_CODE)
         when STORE =>
             ALU_FUNC <= ADD;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= STORE_DATA;
@@ -135,7 +135,7 @@ CONTROL_UNIT : process (OP_CODE)
         when STORE_IMM =>
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '1';'
+            IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= NOP; 
             MEM_OP <= STORE_DATA;
@@ -147,7 +147,7 @@ CONTROL_UNIT : process (OP_CODE)
         when LOAD_GENE =>
             ALU_FUNC <= NOP;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= LOAD_GENE; 
             MEM_OP <= NOP;
@@ -159,7 +159,7 @@ CONTROL_UNIT : process (OP_CODE)
         when STORE_GENE =>
             ALU_FUNC <= NOP;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= NOP; 
             MEM_OP <= NOP;
@@ -171,7 +171,7 @@ CONTROL_UNIT : process (OP_CODE)
         when SET_GENE_OPS =>
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
-            IMM_SOURCE <= '0';'
+            IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= NOP; 
             MEM_OP <= NOP;
