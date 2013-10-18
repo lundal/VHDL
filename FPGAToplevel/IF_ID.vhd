@@ -33,6 +33,7 @@ entity IF_ID is
     generic(N : integer := 32);
     Port ( clk       : in  STD_LOGIC;
            reset     : in  STD_LOGIC;
+           enable    : in  STD_LOGIC;
            data_in1  : in  STD_LOGIC_VECTOR (N-1 downto 0);
            data_in2  : in  STD_LOGIC_VECTOR (N-1 downto 0);
            data_out1 : out STD_LOGIC_VECTOR(N-1 downto 0);
@@ -63,7 +64,7 @@ INCREMENTED_REGISTER : flip_flop
 generic map(N => 32)
 port map (clk => clk,
           reset => reset,
-          enable => '1', --Not sure if we need an enable signal  
+          enable => enable, 
           data_in => data_in1, 
           data_out => data_out1
 );
@@ -73,7 +74,7 @@ INSTRUCTION_REGISTER : flip_flop
 generic map(N => 32)
 port map (clk => clk, 
           reset => reset, 
-          enable => '1', --Not sure if we need an enable signal 
+          enable => enable,
           data_in => data_in2,
           data_out => data_out2
 );
