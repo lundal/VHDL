@@ -37,9 +37,9 @@ entity ID_EX is
            jump_in                      : in  STD_LOGIC;
            alu_func_in                  : in  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
            cond_in                      : in  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
-           gene_op_in                   : in  STD_LOGIC_VECTOR(GEN_OPERATION_WIDTH-1 downto 0);
-           mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OPERATION_WIDTH-1 downto 0);
-           to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OPERATION_WIDTH-1 downto 0);
+           gene_op_in                   : in  STD_LOGIC_VECTOR(GEN_OP_WIDTH-1 downto 0);
+           mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP-1 downto 0);
+           to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            
            
            -- CONTROL SIGNALS out
@@ -48,9 +48,9 @@ entity ID_EX is
            jump_out                     : out  STD_LOGIC;
            alu_func_out                 : out  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
            cond_out                     : out  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
-           gene_op_out                  : out  STD_LOGIC_VECTOR(GEN_OPERATION_WIDTH-1 downto 0);
-           mem_operation_out            : out  STD_LOGIC_VECTOR(MEM_OPERATION_WIDTH-1 downto 0);
-           to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OPERATION_WIDTH-1 downto 0);
+           gene_op_out                  : out  STD_LOGIC_VECTOR(GEN_OP_WIDTH-1 downto 0);
+           mem_operation_out            : out  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
+           to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            
            --DATA in
            data_in1                     : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
