@@ -19,9 +19,9 @@ package CONSTANTS is
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
     -- TODO - Change these to their correct values
-    constant GEN_OPERATION_WIDTH    : integer := 2; 
-    constant MEM_OPERATION_WIDTH    : integer := 3;
-    constant TO_REG_OPERATION_WIDTH : integer := 3;
+    constant GEN_OP_WIDTH    : integer := 2; 
+    constant MEM_OP_WIDTH    : integer := 3;
+    constant TO_REG_OP_WIDTH : integer := 3;
     
     
     
