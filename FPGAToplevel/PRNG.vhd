@@ -69,11 +69,11 @@ begin
         elsif load = '1' then
             for index in seed'range loop
 			
-				if seed(index) = '1' then
-					LFSR_register := seed;
-				end if;
+					if seed(index) = '1' then
+						LFSR_register := seed;
+					end if;
 			
-			end loop;
+				end loop;
         
         elsif rising_edge(clk) then 
             Feedback := LFSR_register(Width-1);

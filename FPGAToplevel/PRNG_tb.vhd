@@ -65,6 +65,34 @@ BEGIN
       reset <= '1';
 
       -- insert stimulus here 
+		
+		--Random number generator should be produsing different outputs at each clock cyccle
+		
+		wait for clk_period*5;
+		reset<='0';
+		
+		wait for clk_period*4;
+		
+		--Activating load signal
+		load<='1';
+		
+		wait for clk_period*4;
+		
+		--Dectivating load signal and resetting
+		load<='0';
+		reset<='1';
+		
+		wait for clk_period*2;
+		
+		--Activating load signal and havind a seed-value
+		reset<='0';
+		seed<= "00001010000010100000101000001010";
+		load<='1';
+		
+		wait for clk_period*4;
+		
+		--Deactivating load, keep pouring out random generated outputs
+		load<='0';
 
       wait;
    end process;
