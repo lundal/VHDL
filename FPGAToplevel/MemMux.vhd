@@ -12,21 +12,25 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity MemMux is
-	port (
+	generic(
+		ADDR_WIDTH : natural := 19;
+		DATA_WIDTH : natural := 16
+	);
+	port(
 		CE     : out STD_LOGIC;
 		WE     : out STD_LOGIC;
-		ADDR   : out STD_LOGIC_VECTOR(18 downto 0);
-		DATA   : inout STD_LOGIC_VECTOR(15 downto 0);
+		ADDR   : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+		DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 		
 		A_CE   : in  STD_LOGIC;
 		A_WE   : in  STD_LOGIC;
-		A_ADDR : in  STD_LOGIC_VECTOR(18 downto 0);
-		A_DATA : inout STD_LOGIC_VECTOR(15 downto 0);
+		A_ADDR : in  STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+		A_DATA : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 		
 		B_CE   : in  STD_LOGIC;
 		B_WE   : in  STD_LOGIC;
-		B_ADDR : in  STD_LOGIC_VECTOR(18 downto 0);
-		B_DATA : inout STD_LOGIC_VECTOR(15 downto 0);
+		B_ADDR : in  STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+		B_DATA : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 		
 		Sel    : in  STD_LOGIC
 	);
