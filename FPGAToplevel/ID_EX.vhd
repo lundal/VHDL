@@ -1,22 +1,3 @@
- ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    10:39:10 09/30/2013 
--- Design Name: 
--- Module Name:    ID_EX - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL; 
@@ -29,7 +10,7 @@ use WORK.CONSTANTS.ALL;
 entity ID_EX is
     Port ( clk                          : in  STD_LOGIC;
            reset                        : in  STD_LOGIC;
-           enable                       : in  STD_LOGIC;
+           halt                       : in  STD_LOGIC;
            
            -- PC in
            pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
@@ -59,22 +40,20 @@ entity ID_EX is
            to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            
            --DATA in
-           data_in1                     : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
-           data_in2                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           data_in3                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           data_in4                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           data_in5                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
-           data_in6                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
-           data_in7                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           rs_in                     : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+           rt_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           imm_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           rsa_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           rta_in                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           rda_in                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
           
            --DATA out
-           data_out1                    : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
-           data_out2                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           data_out3                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           data_out4                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           data_out5                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
-           data_out6                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
-           data_out7                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
+           rs_out                    : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+           rt_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           imm_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           rsa_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           rta_out                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           rda_out                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
            );
 end ID_EX;
 
@@ -82,7 +61,7 @@ architecture Behavioral of ID_EX is
 
 --Component declerations
 component flip_flop 
-    generic(N : integer := 64);
+    generic(N : integer := DATA_WIDTH);
     Port ( clk      : in std_logic;
            reset    : in std_logic;
            enable   : in std_logic;
@@ -100,69 +79,60 @@ begin
 -- Mappings
 
 --DATA IN/OUT mappings 
-DATA_1_REGISTER : flip_flop
+RS_REGISTER : flip_flop
 generic map(N => INST_WIDTH)
 port map (clk => clk, 
           reset =>reset, 
-          enable => enable,
-          data_in => data_in1, 
-          data_out => data_out1
+          enable => halt,
+          data_in => rs_in, 
+          data_out => rs_out
 );
 
 
-DATA_2_REGISTER : flip_flop 
+RT_REGISTER : flip_flop 
 generic map(N => DATA_WIDTH)
 port map (clk => clk, 
           reset => reset, 
-          enable => enable, 
-          data_in => data_in2, 
-          data_out => data_out2
+          enable => halt, 
+          data_in => rt_in, 
+          data_out => rt_out
 );
 
-DATA_3_REGISTER : flip_flop 
+IMM_REGISTER : flip_flop 
 generic map( N => DATA_WIDTH)
 port map( clk => clk,
           reset => reset, 
-          enable => enable, 
-          data_in => data_in3,
-          data_out => data_out3
+          enable => halt, 
+          data_in => imm_in,
+          data_out => imm_out
 );
 
-DATA_4_REGISTER : flip_flop 
-generic map(N => DATA_WIDTH)
+RSA_REGISTER : flip_flop 
+generic map(N => REG_ADDR_WIDTH)
 port map(clk => clk, 
          reset => reset, 
-         enable => enable, 
-         data_in => data_in4, 
-         data_out => data_out4);
+         enable => halt, 
+         data_in => rsa_in, 
+         data_out => rsa_out);
 
 
-DATA_5_REGISTER : flip_flop 
+RTA_REGISTER : flip_flop 
 generic map (N => REG_ADDR_WIDTH)
 port map (clk => clk, 
           reset => reset, 
-          enable => enable,
-          data_in => data_in5,
-          data_out => data_out5
+          enable => halt,
+          data_in => rta_in,
+          data_out => rta_out
 );
 
 
-DATA_6_REGISTER : flip_flop 
+RDA_REGISTER : flip_flop 
 generic map(N => REG_ADDR_WIDTH)
 port map ( clk => clk,
            reset => reset, 
-           enable => enable,
-           data_in => data_in6,
-           data_out => data_out6
-);
-
-DATA_7_REGISTER : flip_flop 
-generic map(N => REG_ADDR_WIDTH)
-port map (clk => clk, 
-          reset => reset, 
-          enable => enable,
-          data_in => data_in7, 
-          data_out => data_out7
+           enable => halt,
+           data_in => rda_in,
+           data_out => rda_out
 );
 
 -- Control SIGNALS mapping
@@ -171,7 +141,7 @@ CONTROL_ALU_FUNCTION : flip_flop
 generic map(N => ALU_FUNC_WIDTH)
 port map( clk => clk, 
           reset => reset, 
-          enable => enable, 
+          enable => halt, 
           data_in => alu_func_in, 
           data_out => alu_func_out);
           
@@ -179,7 +149,7 @@ CONTROL_CONDITION : flip_flop
 generic map(N => COND_WIDTH)
 port map( clk => clk, 
           reset => reset, 
-          enable => enable,
+          enable => halt,
           data_in => cond_in, 
           data_out => cond_out);
           
@@ -187,7 +157,7 @@ CONTROL_GEN_OPERATION : flip_flop
 generic map(N => GEN_OPERATION_WIDTH)
 port map( clk => clk, 
           reset => reset, 
-          enable => enable, 
+          enable => halt, 
           data_in => gen_op_in, 
           data_out => gen_op_out);
           
@@ -195,7 +165,7 @@ CONTROL_MEM_OPERATION : flip_flop
 generic map(N => MEM_OPERATION_WIDTH)
 port map( clk => clk, 
           reset => reset, 
-          enable => enable,
+          enable => halt,
           data_in => mem_operation_in, 
           data_out => mem_operation_out);
           
@@ -204,7 +174,7 @@ CONTROL_TO_REG_OPERATION : flip_flop
 generic map(N => TO_REG_OPERATION_WIDTH)
 port map( clk => clk, 
           reset => reset,
-          enable => enable, 
+          enable => halt, 
           data_in => to_reg_operation_in, 
           data_out => to_reg_operation_out);
 
