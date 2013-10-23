@@ -34,6 +34,12 @@ entity EX_MEM is
            reset                  : in  STD_LOGIC;
            enable                 : in  STD_LOGIC;
            
+           -- PC in
+           pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
+           
+           -- PC out
+           pc_incremented_out : out std_logic_vector(INST_WIDTH-1 downto 0);
+           
            --Control signals
            signal gene_op_in      : in  STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
            signal cond_in         : in  STD_LOGIC_VECTOR (COND_WIDTH-1 downto 0);

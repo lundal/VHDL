@@ -36,8 +36,11 @@ entity IF_ID is
            enable    : in  STD_LOGIC;
            data_in1  : in  STD_LOGIC_VECTOR (N-1 downto 0);
            data_in2  : in  STD_LOGIC_VECTOR (N-1 downto 0);
+           pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
+           
            data_out1 : out STD_LOGIC_VECTOR(N-1 downto 0);
-           data_out2 : out STD_LOGIC_VECTOR(N-1 downto 0)
+           data_out2 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           pc_incremented_out : out std_logic_vector(INST_WIDTH-1 downto 0)
            
            );
 end IF_ID;

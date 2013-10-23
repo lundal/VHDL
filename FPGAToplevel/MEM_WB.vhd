@@ -34,6 +34,12 @@ entity MEM_WB is
            reset            : in  STD_LOGIC;
            enable           : in  STD_LOGIC;
            
+           -- PC in
+           pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
+           
+           -- PC out
+           pc_incremented_out : out std_logic_vector(INST_WIDTH-1 downto 0);
+           
            --CONTROL in
            to_reg_op_in     : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_in          : in  STD_LOGIC;
