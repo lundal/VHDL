@@ -1,7 +1,0 @@
-[Inputs]
-=A[63:0]=
-=B[63:0]=
-[Outputs]
-Overflow
-=Result[63:0]=
-[BiDir]
