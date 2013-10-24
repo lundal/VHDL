@@ -68,3 +68,10 @@ work/
 # Extra
 wlft*
 transcript
+
+# linux toolchain garbage
+*.o
+*.cf
+
+# vim swap files
+*.swp
