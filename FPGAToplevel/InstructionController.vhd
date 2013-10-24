@@ -2,7 +2,6 @@
 -- Engineer: Per Thomas Lundal
 -- Project:  Galapagos
 -- Created:  2013-10-22 15:20
--- Updated:  2013-10-22 16:48
 -- Tested:   Never
 --
 -- Description:
@@ -15,19 +14,21 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity InstructionController is
 	generic(
-		N : natural := 2
+		NUM_CACHES : natural := 2;
+        ADDR_WIDTH : natural := 19;
+        INST_WIDTH : natural := 32
 	);
 	port(
-		MemCE   : out STD_LOGIC;
-		MemWE   : out STD_LOGIC;
-		MemAddr	: out STD_LOGIC_VECTOR (18 downto 0);
-		MemData : inout STD_LOGIC_VECTOR (31 downto 0);
-		Request : in  STD_LOGIC_VECTOR (N-1 downto 0);
-		Ack     : out STD_LOGIC_VECTOR (N-1 downto 0);
-		Addr    : in  STD_LOGIC_VECTOR (18 downto 0);
-		Data    : out STD_LOGIC_VECTOR (31 downto 0);
-		Enabled : in  STD_LOGIC;
-		Clock   : in  STD_LOGIC
+		MemCE   : out   STD_LOGIC;
+		MemWE   : out   STD_LOGIC;
+		MemAddr	: out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+		MemData : inout STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+		Request : in    STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
+		Ack     : out   STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
+		Addr    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+		Data    : out   STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+		Enabled : in    STD_LOGIC;
+		Clock   : in    STD_LOGIC
 	);
 end InstructionController;
 
@@ -46,7 +47,7 @@ begin
 	Data <= MemData;
 	
 	-- Check if any 
-	HasRequest <= '0' when Request(N-1 downto 0) = (N-1 downto 0 => '0') else '1';
+	HasRequest <= '0' when Request(NUM_CACHES-1 downto 0) = (NUM_CACHES-1 downto 0 => '0') else '1';
 	
 	StateSelector : process(Clock, Enabled, HasRequest)
 	begin
@@ -61,16 +62,16 @@ begin
 	end process;
 	
 	StateMachine : process(State, HasRequest, Request)
-		variable Chosen : integer range 0 to N := 0;
+		variable Chosen : integer range 0 to NUM_CACHES := 0;
 	begin
 		if State = Choose then
 			-- Reset Ack signals
 			Ack <= (others => '0');
 			
 			-- Choose
-			for I in 0 to N-1 loop
+			for I in 0 to NUM_CACHES-1 loop
 				if Request(Chosen) = '0' then
-					if Chosen = N-1 then
+					if Chosen = NUM_CACHES-1 then
 						Chosen := 0;
 					else
 						Chosen := Chosen + 1;
