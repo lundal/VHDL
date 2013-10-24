@@ -9,7 +9,7 @@ entity fitness_core_memory_controller is
         mem_op_in : in std_logic;
         
         data_out : out std_logic_vector(DATA_WIDTH-1 downto 0);
-        halt_out : out std_logic;
+        halt_out : out std_logic
     );
 end fitness_core_memory_controller;
 

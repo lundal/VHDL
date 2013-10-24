@@ -10,7 +10,7 @@ entity fitness_core_genetic_controller is
         gene_in : std_logic_vector(DATA_WIDTH-1 downto 0);
         
         gene_out : std_logic_vector(DATA_WIDTH-1 downto 0);
-        halt_out : std_logic;
+        halt_out : std_logic
     );
 end fitness_core_genetic_controller;
 
