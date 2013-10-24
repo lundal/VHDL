@@ -77,7 +77,7 @@ signal propagate_data 	    	: std_logic;
 signal increment_addr 		    : std_logic;
 signal fetch_fitness            : std_logic;
 signal fetch_chromosome         : std_logic;
-signal crossover_core_enable    : std_logic;
+--signal crossover_core_enable    : std_logic;
 signal flush_registers          : std_logic;
 
 --misc 
@@ -91,7 +91,7 @@ CONTROL_UNIT : selection_core_control
 port map ( clk =>  clk, 
 			  reset => reset, 
 			  selection_core_enable => selection_core_enable,
-			  crossover_core_enable => crossover_core_enable,
+			  crossover_core_enable => crossover_enable,
               comparator_signal => comparison_signal, 
 			  update_fitness => update_fitness, 
 			  update_chromosome =>update_chromosome, 
@@ -154,20 +154,43 @@ begin
     --Modify address to fit memory
     random_address <= random_number(RATED_POOL_ADDR_BUS-1 downto 0);
     
-	 if fetch_fitness = '1' then 
-        random_address(0) <= '0'; --even
-     elsif fetch_chromosome = '1' then 
-        random_address(1) <= '1';
-    end if;
+	if fetch_fitness = '1' then 
+		random_address(0) <= '0'; -- even number
+	elsif fetch_chromosome = '1' then 
+		random_address(1) <= '1'; -- odd number
+	end if;
     
 end process PREPARE_ADDR_PROCESS;
 
 RUN_SELECTION_CORE : process(selection_core_enable, rated_pool_addr_internal) 
 begin 
-	 if selection_core_enable = '1' then 
-            rated_pool_addr <= rated_pool_addr_internal; 
-     end if;
+	if selection_core_enable = '1' then 
+		rated_pool_addr <= rated_pool_addr_internal;
+		best_chromosome <= best_chromosome_internal;
+	else
+		best_chromosome <= (others => '0');
+		
+	end if;
      
 end process RUN_SELECTION_CORE;
+
+-- Flushing all registers
+FLUSH_ALL_REGISTERS : process(flush_registers, reset)
+begin
+	-- flush_registers overrides the usual reset-signal to the registers
+	if flush_registers = '1' then
+		RANDOM_ADDRESS_STORAGE.reset <='1';
+		INCOMMING_DATA_STORAGE.reset <='1';
+		BEST_CHROMOSOME_STORAGE.reset <='1';
+		BEST_FITNESS_STORAGE.reset <= '1';
+	else
+		RANDOM_ADDRESS_STORAGE.reset <= reset;
+		INCOMMING_DATA_STORAGE.reset <= reset;
+		BEST_CHROMOSOME_STORAGE.reset <= reset;
+		BEST_FITNESS_STORAGE.reset <= reset;
+	
+	end if;
+	
+end process FLUSH_ALL_REGISTERS;
 
 end Behavioral;

@@ -127,14 +127,17 @@ begin
     when STATE_COMPARE => 
         --Set appropiate signals
         request_memory <= '0';
-        propagate_data <= '0';
+--        propagate_data <= '0';
         update_chromosome <= '0'; 
         
         case comparator_signal is 
         when GREATER_THAN => 
              -- The new fitness is the best
              update_fitness <= '1'; --Update best fitness register with new best
-             request_memory <= '0';
+				 
+				 fetch_chromosome <='1';
+             
+				 request_memory <= '0';
              NEXT_STATE <= STATE_FETCH_CHROMOSOME;
              
         when LESS_THAN => 
@@ -157,7 +160,8 @@ begin
         propagate_data <= '1';
         update_chromosome <= '1';
         update_fitness <= '0';
-        NEXT_STATE <= STATE_FETCH_FITNESS;
+--        NEXT_STATE <= STATE_FETCH_FITNESS;
+			NEXT_STATE <= STATE_STALL;
     
     
     when STATE_STALL =>
