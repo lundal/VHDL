@@ -25,7 +25,6 @@ end fitness_core;
 architecture Behavioral of fitness_core is
 
       OP_CODE		:	 std_logic_vector(OP_CODE_WIDTH-1 downto 0);
-		FUNC        :   std_logic_vector(ALU_FUNC_WIDHT-1 downto 0);
       ALU_SOURCE	:   std_logic;
 		IMM_SOURCE	:	 std_logic;
 		REG_SOURCE  :   std_logic;
@@ -39,32 +38,60 @@ architecture Behavioral of fitness_core is
 --SIGNAL DECLERATIONS --
 
 --FETCH Signals
- signal  : std_logic_vector(X downto 0);
- signal XXXXXXXX : std_logic;
 
 --DECODE signals-- 
- signal alu_src_decode : std_logic;
- signal XXXXXXXX : std_logic;
  
  --CONTROL SIGNALS--
- 
- --Internally used
+ -- Internally used
+ signal imm_src_signal_decode     : std_logic;
+ signal reg_src_signal_decode     : std_logic;
+ signal store_src_signal_decode   : std_logic;
  
  --Passing signals
- 
- 
- --END CONTROL SIGNALS--
+ signal alu_src_signal_decode     : std_logic;
+ signal reg_write_signal_decode   : std_logic;
+ signal call_signal_decode        : std_logic;
+ signal imm_src_signal_decode     : std_logic;
+ signal alu_func_signal_decode    : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+ signal gene_op_signal_decode     : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_decode      : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal to_reg_signal_decode      : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+
 
 --EXECUTE signals--
- signal XXXXXXXX : std_logic_vector(X downto 0);
- signal XXXXXXXX : std_logic;
+ 
+ --Internally used 
+ signal alu_src_signal_execute     : std_logic;
+ signal alu_func_signal_execute    : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+ 
+ --Passing signals
+ signal reg_write_signal_execute   : std_logic;
+ signal call_signal_execute        : std_logic;
+ signal gene_op_signal_execute     : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_execute      : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal to_reg_signal_execute      :  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+
+ 
 --MEMORY signals--
- signal XXXXXXXX : std_logic_vector(X downto 0);
- signal XXXXXXXX : std_logic;
+
+ --Internally used
+ signal gene_op_signal_mem     		: std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_mem      		: std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ 
+
+-- Passing signals
+ signal reg_write_signal_mem   		: std_logic;
+ signal call_signal_mem        		: std_logic;
+ signal to_reg_signal_mem      		:  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
 
 --WRITE-BACK signals--
- signal XXXXXXXX : std_logic_vector(X downto 0);
- signal XXXXXXXX : std_logic;
+ 
+ --Internally useed
+ signal call_signal_wb              : std_logic;
+ signal to_reg_signal_wb            :  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ 
+ --Passing signals
+signal reg_write_signal_wb   			: std_logic;
 
 
 
