@@ -16,7 +16,7 @@ entity IF_ID is
            
            -- bus out
            pc_incremented_out : out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
-           instruction_out : out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+           instruction_out : out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0)
            
            );
 end IF_ID;

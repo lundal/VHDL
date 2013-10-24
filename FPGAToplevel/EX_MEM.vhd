@@ -1,33 +1,7 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    10:40:08 09/30/2013 
--- Design Name: 
--- Module Name:    EX_MEM - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.constants.all;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity EX_MEM is
     Port ( clk                    : in  STD_LOGIC;
@@ -59,25 +33,23 @@ entity EX_MEM is
            signal overflow_out    : out STD_LOGIC;
            
            --Data in 
-           signal data_in1        : in  STD_LOGIC_VECTOR  (INST_WIDTH-1 downto 0);
-           signal data_in2        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal data_in3        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal data_in4        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal data_in5        : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+           signal rs_in        : in  STD_LOGIC_VECTOR  (INST_WIDTH-1 downto 0);
+           signal rt_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           signal res_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           signal rda_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            
            --Data out
-           signal data_out1       : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
-           signal data_out2       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal data_out3       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal data_out4       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal data_out5       : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
+           signal rs_out       : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+           signal rt_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           signal res_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           signal rda_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0)
            );
 end EX_MEM;
 
 architecture Behavioral of EX_MEM is
 
 --Component declerations
-component flip_flop 
+component flip_flop
     generic(N : NATURAL);
     Port ( clk      : in std_logic;
            reset    : in std_logic;
@@ -94,43 +66,43 @@ begin
 
 --Signals are represented from top to bottom (see pipeline figure)
 
-DATA_1_REGISTER : flip_flop 
+RS_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
              enable => enable,
-             data_in => data_in1,
-             data_out => data_out1
+             data_in => rs_in,
+             data_out => rs_out
 );
 
 
-DATA_2_REGISTER : flip_flop 
+RT_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
              enable => enable,
-             data_in => data_in2,
-             data_out => data_out2
+             data_in => rt_in,
+             data_out => rt_out
 );
 
 
-DATA_3_REGISTER : flip_flop 
+RES_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
              enable => enable, 
-             data_in => data_in3,
-             data_out => data_out3
+             data_in => res_in,
+             data_out => res_out
 );
 
 
-DATA_4_REGISTER : flip_flop 
+RDA_REGISTER : flip_flop
 generic map(N => REG_ADDR_WIDTH)
     port map (clk => clk, 
               reset => reset, 
               enable => enable, 
-              data_in => data_in4, 
-              data_out => data_out4
+              data_in => rda_in,
+              data_out => rda_out
 );
 
 
@@ -142,7 +114,7 @@ port map(clk => clk,
          data_in => cond_in, 
          data_out => cond_out);
          
-CONTROL_GENE_OP : flip_flop 
+CONTROL_GENE_OP : flip_flop
 generic map(N => GENE_OP_WIDTH)
 port map(clk => clk,
          reset => reset,
@@ -157,7 +129,7 @@ port map(clk => clk,
          data_in =>to_reg_in, 
          data_out =>to_reg_out);
          
-CONTROL_MEM_OP : flip_flop 
+CONTROL_MEM_OP : flip_flop
 generic map(N => MEM_OP_WIDTH)
 port map(clk => clk, 
          reset => reset, 
@@ -173,8 +145,8 @@ CONTROL_SIGNALS : process(clk, reset)
            call_out <= '0';
            jump_out <= '0'; 
         elsif rising_edge(clk) then 
-           call_in <= call_in;
-           jump_in <= jump_in;
+           call_out <= call_in;
+           jump_out <= jump_in;
         end if;
 end process CONTROL_SIGNALS;    
 

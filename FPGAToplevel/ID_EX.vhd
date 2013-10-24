@@ -25,7 +25,7 @@ entity ID_EX is
            alu_func_in                  : in  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
            cond_in                      : in  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
            gene_op_in                   : in  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
-           mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP-1 downto 0);
+           mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
            to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            
            
@@ -84,7 +84,7 @@ generic map(N => INST_WIDTH)
 port map (clk => clk, 
           reset =>reset, 
           enable => halt,
-          data_in => rs_in, 
+          data_in => rs_in,
           data_out => rs_out
 );
 
@@ -94,7 +94,7 @@ generic map(N => DATA_WIDTH)
 port map (clk => clk, 
           reset => reset, 
           enable => halt, 
-          data_in => rt_in, 
+          data_in => rt_in,
           data_out => rt_out
 );
 
@@ -112,7 +112,7 @@ generic map(N => REG_ADDR_WIDTH)
 port map(clk => clk, 
          reset => reset, 
          enable => halt, 
-         data_in => rsa_in, 
+         data_in => rsa_in,
          data_out => rsa_out);
 
 
@@ -142,7 +142,7 @@ generic map(N => ALU_FUNC_WIDTH)
 port map( clk => clk, 
           reset => reset, 
           enable => halt, 
-          data_in => alu_func_in, 
+          data_in => alu_func_in,
           data_out => alu_func_out);
           
 CONTROL_CONDITION : flip_flop
@@ -150,32 +150,32 @@ generic map(N => COND_WIDTH)
 port map( clk => clk, 
           reset => reset, 
           enable => halt,
-          data_in => cond_in, 
+          data_in => cond_in,
           data_out => cond_out);
           
 CONTROL_GEN_OPERATION : flip_flop
-generic map(N => GEN_OPERATION_WIDTH)
+generic map(N => GENE_OP_WIDTH)
 port map( clk => clk, 
           reset => reset, 
           enable => halt, 
-          data_in => gen_op_in, 
-          data_out => gen_op_out);
+          data_in => gene_op_in,
+          data_out => gene_op_out);
           
 CONTROL_MEM_OPERATION : flip_flop 
-generic map(N => MEM_OPERATION_WIDTH)
+generic map(N => MEM_OP_WIDTH)
 port map( clk => clk, 
           reset => reset, 
           enable => halt,
-          data_in => mem_operation_in, 
+          data_in => mem_operation_in,
           data_out => mem_operation_out);
           
           
 CONTROL_TO_REG_OPERATION : flip_flop 
-generic map(N => TO_REG_OPERATION_WIDTH)
+generic map(N => TO_REG_OP_WIDTH)
 port map( clk => clk, 
           reset => reset,
           enable => halt, 
-          data_in => to_reg_operation_in, 
+          data_in => to_reg_operation_in,
           data_out => to_reg_operation_out);
 
 
