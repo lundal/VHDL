@@ -21,6 +21,12 @@ package CONSTANTS is
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
 	
+    constant STATE_WIDTH            :   integer := 2;
+    constant STATE_PROC             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "00";
+    constant STATE_INST_HI          :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "01";
+    constant STATE_INST_LO          :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "10";
+    constant STATE_DATA             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "11";
+
     -- TODO - Change these to their correct values
 	
     constant GEN_OPERATION_WIDTH    : integer := 2; 
