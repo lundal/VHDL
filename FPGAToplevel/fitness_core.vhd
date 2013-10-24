@@ -24,21 +24,47 @@ end fitness_core;
 
 architecture Behavioral of fitness_core is
 
---Signal declerations
+      OP_CODE		:	 std_logic_vector(OP_CODE_WIDTH-1 downto 0);
+		FUNC        :   std_logic_vector(ALU_FUNC_WIDHT-1 downto 0);
+      ALU_SOURCE	:   std_logic;
+		IMM_SOURCE	:	 std_logic;
+		REG_SOURCE  :   std_logic;
+      REG_WRITE	:	 std_logic;
+      CALL        :   std_logic;
+      JUMP        :   std_logic;
+      ALU_FUNC    :   std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+      GENE_OP     :   std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+      MEM_OP      :   std_logic_vector(MEM_OP_WIDTH-1 downto 0);
+      TO_REG      :   std_logic_vector(TO_REG_OP_WIDTH-1 downto 0)
+--SIGNAL DECLERATIONS --
 
 --FETCH Signals
+ signal  : std_logic_vector(X downto 0);
+ signal XXXXXXXX : std_logic;
 
+--DECODE signals-- 
+ signal alu_src_decode : std_logic;
+ signal XXXXXXXX : std_logic;
+ 
+ --CONTROL SIGNALS--
+ 
+ --Internally used
+ 
+ --Passing signals
+ 
+ 
+ --END CONTROL SIGNALS--
 
---DECODE signals 
+--EXECUTE signals--
+ signal XXXXXXXX : std_logic_vector(X downto 0);
+ signal XXXXXXXX : std_logic;
+--MEMORY signals--
+ signal XXXXXXXX : std_logic_vector(X downto 0);
+ signal XXXXXXXX : std_logic;
 
-
---EXECUTE signals
-
---MEMORY signals
-
-
---WRITE BACK signals
-
+--WRITE-BACK signals--
+ signal XXXXXXXX : std_logic_vector(X downto 0);
+ signal XXXXXXXX : std_logic;
 
 
 
