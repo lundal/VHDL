@@ -20,6 +20,7 @@ entity MemMux is
     );
     port(
         SCU_STATE   : in    STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0);
+        
         SCU_CE      : in    STD_LOGIC;
         SCU_WE      : in    STD_LOGIC;
         SCU_DATA    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -51,9 +52,7 @@ entity MemMux is
         DMEM_WE     : out   STD_LOGIC;
         DMEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         DMEM_ADDR   : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-        DMEM_LBUB   : out   STD_LOGIC;
-        
-        Sel    : in  STD_LOGIC
+        DMEM_LBUB   : out   STD_LOGIC
     );
 end MemMux;
 
