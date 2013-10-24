@@ -23,77 +23,101 @@ entity fitness_core is
 end fitness_core;
 
 architecture Behavioral of fitness_core is
-
-      OP_CODE		:	 std_logic_vector(OP_CODE_WIDTH-1 downto 0);
-      ALU_SOURCE	:   std_logic;
-		IMM_SOURCE	:	 std_logic;
-		REG_SOURCE  :   std_logic;
-      REG_WRITE	:	 std_logic;
-      CALL        :   std_logic;
-      JUMP        :   std_logic;
-      ALU_FUNC    :   std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
-      GENE_OP     :   std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-      MEM_OP      :   std_logic_vector(MEM_OP_WIDTH-1 downto 0);
-      TO_REG      :   std_logic_vector(TO_REG_OP_WIDTH-1 downto 0)
 --SIGNAL DECLERATIONS --
 
 --FETCH Signals
 
---DECODE signals-- 
+-- Bus signals
+signal instruction_fetch              : std_logic_vector(INST_WIDTH-1 downto 0);
+signal pc_incremented_fetch           : std_logic_vector(INST_WIDTH-1 downto 0);
+
+--DECODE SIGNALS-- 
  
  --CONTROL SIGNALS--
  -- Internally used
- signal imm_src_signal_decode     : std_logic;
- signal reg_src_signal_decode     : std_logic;
- signal store_src_signal_decode   : std_logic;
+ signal imm_src_signal_decode         : std_logic;
+ signal reg_src_signal_decode         : std_logic;
+ signal store_src_signal_decode   	  : std_logic;
  
  --Passing signals
- signal alu_src_signal_decode     : std_logic;
- signal reg_write_signal_decode   : std_logic;
- signal call_signal_decode        : std_logic;
- signal imm_src_signal_decode     : std_logic;
- signal alu_func_signal_decode    : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
- signal gene_op_signal_decode     : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
- signal mem_op_signal_decode      : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
- signal to_reg_signal_decode      : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ signal alu_src_signal_decode         : std_logic;
+ signal reg_write_signal_decode       : std_logic;
+ signal call_signal_decode            : std_logic;
+ signal imm_src_signal_decode         : std_logic;
+ signal alu_func_signal_decode        : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+ signal gene_op_signal_decode         : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_decode          : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal to_reg_signal_decode     	  : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
 
+--BUS signals 
 
---EXECUTE signals--
- 
+--Internally used
+signal rs_signal_decode 				  : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal rt_signal_decode 				  : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal imm_signal_decode              : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal rsa_signal_decode              : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+signal rta_signal_decode              : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+
+--Passing signals
+signal rda_signal_decode              : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+signal pc_incremented_signal_decode   : std_logic_vector(INST_WIDTH-1 downto 0);
+
+--EXECUTE SIGNALS--
+
  --Internally used 
- signal alu_src_signal_execute     : std_logic;
- signal alu_func_signal_execute    : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+ signal alu_src_signal_execute        : std_logic;
+ signal alu_func_signal_execute       : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
  
  --Passing signals
- signal reg_write_signal_execute   : std_logic;
- signal call_signal_execute        : std_logic;
- signal gene_op_signal_execute     : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
- signal mem_op_signal_execute      : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
- signal to_reg_signal_execute      :  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ signal reg_write_signal_execute      : std_logic;
+ signal call_signal_execute           : std_logic;
+ signal gene_op_signal_execute        : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_execute         : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal to_reg_signal_execute         : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ signal pc_incremented_signal_execute : std_logic_vector(INST_WIDTH-1 downto 0);
+ signal overflow_signal_execute       : std_logic;
+
+--BUS signals
+signal rs_signal_execute              : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal rt_signal_execute              : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal res_signal_execute             : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal rda_signal_execute             : std_logic_vector(DATA_WIDTH-1 downto 0);
+
 
  
 --MEMORY signals--
 
  --Internally used
- signal gene_op_signal_mem     		: std_logic_vector(GENE_OP_WIDTH-1 downto 0);
- signal mem_op_signal_mem      		: std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal gene_op_signal_mem     		  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_mem      		  : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal overflow_signal_mem           : std_logic; 
  
-
 -- Passing signals
- signal reg_write_signal_mem   		: std_logic;
- signal call_signal_mem        		: std_logic;
- signal to_reg_signal_mem      		:  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ signal reg_write_signal_mem   		  : std_logic;
+ signal call_signal_mem        		  : std_logic;
+ signal to_reg_signal_mem      		  :  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
 
---WRITE-BACK signals--
+--BUS signals
+signal gene_out_signal_mem 			  : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal res_signal_mem 			        : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal pc_incremented_signal_mem      : std_logic_vector(INST_WIDTH-1 downto 0);
+signal rda_signal_mem 			        : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+signal data_out_signal_mem				  : std_logic_vector(DATA_WIDTH-1 downto 0);
+
+--WRITE-BACK SIGNALS--
  
- --Internally useed
- signal call_signal_wb              : std_logic;
- signal to_reg_signal_wb            :  std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ --CONTROL SIGNALS--
+ 
+ --Internally used
+ signal call_signal_wb                 : std_logic;
+ signal to_reg_signal_wb               : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
  
  --Passing signals
-signal reg_write_signal_wb   			: std_logic;
+ signal reg_write_signal_wb   			: std_logic;
 
-
+ --BUS SIGNALS --
+signal WBB_signal_wb   				      : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal WBA_signal_wb						   : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 
 begin
 
