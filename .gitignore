@@ -68,3 +68,5 @@ work/
 # Extra
 wlft*
 transcript
+*.swp
+*.o
