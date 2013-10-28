@@ -11,11 +11,29 @@ library WORK;
 
 package CONSTANTS is
 	
-	constant ALU_FUNC_WIDTH	:	integer	:=	4;
-	constant COND_WIDTH		:	integer	:=	4;
-	constant OP_CODE_WIDTH	:	integer :=	4;
-	constant REG_WIDTH		:	integer :=	64;
-	constant REG_ADDR_WIDTH	:	integer	:=	5;
+	constant ALU_FUNC_WIDTH	        :	integer	:=	4;
+	constant COND_WIDTH		        :	integer	:=	4;
+	constant OP_CODE_WIDTH	        :	integer :=	4;
+	constant REG_WIDTH		        :	integer :=	64;
+	constant REG_ADDR_WIDTH	        :	integer	:=	5;
+	
+	constant ADDR_WIDTH				:	integer := 19;
+    constant INST_WIDTH             :   integer := 32;
+    constant DATA_WIDTH             :   integer := 64;
+	
+    constant STATE_WIDTH            :   integer := 2;
+    constant STATE_PROC             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "00";
+    constant STATE_INST_HI          :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "01";
+    constant STATE_INST_LO          :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "10";
+    constant STATE_DATA             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "11";
+
+    -- TODO - Change these to their correct values
+	
+    constant GEN_OPERATION_WIDTH    : integer := 2; 
+    constant MEM_OPERATION_WIDTH    : integer := 2;
+    constant TO_REG_OPERATION_WIDTH : integer := 3;
+    
+    type MEM_OP is (MEM_NOP, MEM_LOAD, MEM_STORE);
 	
 	--OPCODES 
 	constant OP_CODE_RRR	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1000";

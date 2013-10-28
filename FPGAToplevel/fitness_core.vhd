@@ -78,36 +78,34 @@ component fetch_stage is
 end component;
 
 
---STAGE 2 - DECODE instruction
-component control_unit is
-    Port ( reset : in  STD_LOGIC;
-           op_code : in  STD_LOGIC_VECTOR (5 downto 0);
-           reg_dst : out  STD_LOGIC_VECTOR (1 downto 0);
-           alu_src : out  STD_LOGIC;
-           branch : out  STD_LOGIC;
-           mem_read : out  STD_LOGIC;
-           mem_write  : out  STD_LOGIC;
-           reg_write : out  STD_LOGIC;
-           mem_to_reg : out  STD_LOGIC);
-end component;
+-- DECODE stage
 
-entity decode_stage is
+component decode_stage
     port( clk                   : in STD_LOGIC;
           reset                 : in STD_LOGIC;
           processor_enable      : in STD_LOGIC;
+          
+          --Control signals
           reg_write             : in STD_LOGIC;
-          instruction           : in STD_LOGIC_VECTOR(31 downto 0);
-          write_data            : in STD_LOGIC_VECTOR(63 downto 0);
-          write_register        : in STD_LOGIC_VECTOR(4 downto 0);
-          read_data1            : out STD_LOGIC_VECTOR(63 downto 0);
-          read_data2            : out STD_LOGIC_VECTOR(63 downto 0);
-          immediate_value_out   : out STD_LOGIC_VECTOR(31 downto 0);
-          immediate_address_out : out STD_LOGIC_VECTOR(31 downto 0);
-          rs                    : out STD_LOGIC_VECTOR(4 downto 0);
-          rt                    : out STD_LOGIC_VECTOR(4 downto 0);
-          rd                    : out STD_LOGIC_VECTOR(4 downto 0);
-          condition_out         : out STD_LOGIC_VECTOR(3 downto 0));
---STAGE 3 - Execute instruction 
+          imm_src               : in STD_LOGIC;
+          reg_src               : in STD_LOGIC;
+          reg_store             : in STD_LOGIC;
+          
+          --Input signals
+          instruction           : in STD_LOGIC_VECTOR(INST_WIDTH downto 0);
+          write_data            : in STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          write_register        : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          
+          --Output signals
+          read_data1            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          read_data2            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          immediate             : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          rs_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1  downto 0);
+          rt_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rd_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          condition_out         : out STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0));
+          
+end component;
 
 
 
