@@ -13,12 +13,15 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
+library WORK;
+use WORK.CONSTANTS.ALL;
+
 entity Toplevel is
     generic(
 		NUM_PROC_PAIRS : natural := 4;
-        ADDR_WIDTH     : natural := 19
+        ADDR_WIDTH     : natural := 19;
 		INST_WIDTH     : natural := 32;
-        DATA_WIDTH     : natural := 16;
+        DATA_WIDTH     : natural := 16
     );
     port(
         SCU_ENABLE  : in    STD_LOGIC;
@@ -104,6 +107,7 @@ architecture Behavioral of Toplevel is
         port(
             MemCE   : out   STD_LOGIC;
             MemWE   : out   STD_LOGIC;
+            MemLBUB : out   STD_LOGIC;
             MemAddr	: out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
             MemData : inout STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
             Request : in    STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
@@ -115,25 +119,10 @@ architecture Behavioral of Toplevel is
         );
     end component;
 	
-        
-    -- begin TODO
-        ICTRL_CE    : in    STD_LOGIC;
-        ICTRL_WE    : in    STD_LOGIC;
-        ICTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        ICTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-        ICTRL_LBUB  : in    STD_LOGIC;
-        
-        DCTRL_CE    : in    STD_LOGIC;
-        DCTRL_WE    : in    STD_LOGIC;
-        DCTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        DCTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-        DCTRL_LBUB  : in    STD_LOGIC;
-    
-    -- end TODO
-    
 	-- Instruction controller signals
 	signal InstCE   : STD_LOGIC;
 	signal InstWE   : STD_LOGIC;
+	signal InstLBUB : STD_LOGIC;
 	signal InstAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
 	signal InstData : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
 	signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
@@ -144,6 +133,7 @@ architecture Behavioral of Toplevel is
 	-- Data controller signals
 	signal DataCE   : STD_LOGIC;
 	signal DataWE   : STD_LOGIC;
+	signal DataLBUB : STD_LOGIC;
 	signal DataAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
 	signal DataData : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	signal DataRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
@@ -153,6 +143,48 @@ architecture Behavioral of Toplevel is
 	
 begin
 	
+    MegaMux : MemMux
+    generic map(
+        DATA_WIDTH => DATA_WIDTH,
+        ADDR_WIDTH => ADDR_WIDTH
+    )
+    port map(
+        SCU_STATE   => SCU_STATE,
+        
+        SCU_CE      => SCU_CE,
+        SCU_WE      => SCU_WE,
+        SCU_DATA    => SCU_DATA,
+        SCU_ADDR    => SCU_ADDR,
+        SCU_LBUB    => SCU_LBUB,
+        
+        ICTRL_CE    => InstCE,
+        ICTRL_WE    => InstWE,
+        ICTRL_DATA  => InstData,
+        ICTRL_ADDR  => InstAddr,
+        ICTRL_LBUB  => InstLBUB,
+        
+        DCTRL_CE    => DataCE,
+        DCTRL_WE    => DataWE,
+        DCTRL_DATA  => DataData,
+        DCTRL_ADDR  => DataAddr,
+        DCTRL_LBUB  => DataLBUB,
+        
+        IMEM_CE_HI      => IMEM_CE_HI,
+        IMEM_CE_LO      => IMEM_CE_LO,
+        IMEM_WE_HI      => IMEM_WE_HI,
+        IMEM_WE_LO      => IMEM_WE_LO,
+        IMEM_DATA_HI    => IMEM_DATA_HI,
+        IMEM_DATA_LO    => IMEM_DATA_LO,
+        IMEM_ADDR       => IMEM_ADDR,
+        IMEM_LBUB       => IMEM_LBUB,
+        
+        DMEM_CE     => DMEM_CE,
+        DMEM_WE     => DMEM_WE,
+        DMEM_DATA   => DMEM_DATA,
+        DMEM_ADDR   => DMEM_ADDR,
+        DMEM_LBUB   => DMEM_LBUB
+    );
+    
 	InstCtrl : InstructionController
 	generic map(
 		NUM_CACHES => NUM_PROC_PAIRS,
