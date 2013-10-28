@@ -21,6 +21,7 @@ entity InstructionController is
 	port(
 		MemCE   : out   STD_LOGIC;
 		MemWE   : out   STD_LOGIC;
+		MemLBUB : out   STD_LOGIC;
 		MemAddr	: out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
 		MemData : inout STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
 		Request : in    STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
@@ -41,8 +42,9 @@ architecture Behavioral of InstructionController is
 	
 begin
 	
-	MemCE <= '1';
-	MemWE <= '0';
+	MemCE <= '0';
+	MemWE <= '1';
+    MemLBUB <= '0';
 	MemAddr <= Addr;
 	Data <= MemData;
 	
