@@ -2,12 +2,10 @@
 -- Engineer: Per Thomas Lundal
 -- Project:  Galapagos
 -- Created:  2013-10-22 19:04
--- Updated:  2013-10-22 19:04
 -- Tested:   Never
 --
 -- Description:
 -- Toplevel design for the project
--- Hooked up with fake memory for now
 ----------------------------------------------------------------------------------
 
 library IEEE;
