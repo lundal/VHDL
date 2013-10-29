@@ -1,22 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    16:43:05 10/12/2013 
--- Design Name: 
--- Module Name:    execution_stage - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -40,12 +21,12 @@ entity execution_stage is
           stage5_reg_write    : in STD_LOGIC;
           
           --Signals in 
-          read_data1          : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          read_data2          : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          rs          : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          rt          : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           immediate           : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          rs_addr             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          rt_addr             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          rd_addr             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rsa             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rta             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rda             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           
           -- From other stages
           stage4_alu_result   : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -128,7 +109,7 @@ begin
 TRI_MUX1_MAP : tri_multiplexor
 generic map(N => 64)
 port map(sel => forwardA, 
-         in0 => read_data1, 
+         in0 => rs, 
          in1 => stage5_write_data, 
          in2 => stage4_alu_result, 
          output => tri_mux1_out);
@@ -137,7 +118,7 @@ port map(sel => forwardA,
 TRI_MUX2_MAP : tri_multiplexor
 generic map(N => 64)
 port map(sel => forwardB, 
-         in0 => read_data2, 
+         in0 => rt, 
          in1 => stage5_write_data, 
          in2 => stage4_alu_result,
          output => tri_mux2_out);
@@ -162,8 +143,8 @@ port map( X => tri_mux1_out,
 
 
 FORWARD_UNIT_MAP : forwarding_unit 
-port map(rs => rs_addr, 
-         rt => rt_addr, 
+port map(rs => rsa, 
+         rt => rta, 
          stage4_reg_rd => stage4_reg_rd, 
          stage5_reg_rd => stage5_reg_rd, 
          stage4_reg_write => stage4_reg_write, 
@@ -177,7 +158,7 @@ port map(rs => rs_addr,
 
 
 --Output(s)
-write_register_addr <= rd_addr;
+write_register_addr <= rda;
 
 
 end Behavioral;

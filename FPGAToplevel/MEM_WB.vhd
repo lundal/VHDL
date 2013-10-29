@@ -6,7 +6,7 @@ use work.constants.all;
 entity MEM_WB is
     Port ( clk              : in  STD_LOGIC;
            reset            : in  STD_LOGIC;
-           enable           : in  STD_LOGIC;
+           halt           : in  STD_LOGIC;
            
            -- PC in
            pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);

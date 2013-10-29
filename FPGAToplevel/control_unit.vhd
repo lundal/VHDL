@@ -27,7 +27,7 @@ use WORK.CONSTANTS.ALL;
 entity control_unit is
 	port (
 		OP_CODE		:	in	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0);
-		FUNC        :   in  STD_LOGIC_VECTOR(ALU_FUNC_WIDHT-1 downto 0);
+		FUNC        :   in  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
         ALU_SOURCE	:	out	STD_LOGIC;
 		IMM_SOURCE	:	out STD_LOGIC;
 		REG_SOURCE  :   out STD_LOGIC;

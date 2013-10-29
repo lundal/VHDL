@@ -1,24 +1,6 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    15:39:11 10/12/2013 
--- Design Name: 
--- Module Name:    decode_stage - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+-- TODO: we should use numeric_std instead of std_logic_arith here.
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_SIGNED.ALL;
 
@@ -44,10 +26,10 @@ entity decode_stage is
           write_register        : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           
           --Output signals
-          read_data1            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
-          read_data2            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          rs            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          rt            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
           immediate             : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
-          rs_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1  downto 0);
+          rsa               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1  downto 0);
           rt_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           rd_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           condition_out         : out STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0));
@@ -79,7 +61,7 @@ end component;
 
 -- Signal declerations
 signal rd_addr_internal                 : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-signal rs_addr_internal                 : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+signal rsa_internal                 : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 signal rt_addr_internal                 : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 signal immediate_value_internal         : std_logic_vector(9 downto 0);
 signal immediate_address_internal       : std_logic_vector(18 downto 0);
@@ -97,7 +79,7 @@ begin
 REG_SRC_MUX_MAP : multiplexor
 generic map(N => REG_ADDR_WIDTH)
 port map( sel => reg_src, 
-          in0 =>rs_addr_internal, 
+          in0 =>rsa_internal, 
           in1 => rd_addr_internal, 
           output => reg_op1);
 
@@ -124,15 +106,15 @@ port map (CLK => clk,
           RT_ADDR => reg_op2, 
           RD_ADDR => write_register, 
           WRITE_DATA => write_data, 
-          RS => read_data1, 
-          RT => read_data2);
+          RS => rs, 
+          RT => rt);
           
           
 FETCH : process(processor_enable, instruction) 
 begin 
     if processor_enable = '1' then
        rd_addr_internal <= instruction(23 downto 19);
-       rs_addr_internal <= instruction(18 downto 14);
+       rsa_internal <= instruction(18 downto 14);
        rt_addr_internal <= instruction(13 downto 9);
        immediate_value_internal <= instruction(13 downto 4);
        immediate_address_internal <= instruction(18 downto 0);
@@ -140,7 +122,7 @@ begin
      
      elsif processor_enable = '0' then
         rd_addr_internal  <= (others => '0');
-        rs_addr_internal <= (others => '0');
+        rsa_internal <= (others => '0');
         rt_addr_internal <= (others => '0');
         immediate_value_internal <= (others => '0');
         immediate_address_internal <= (others => '0');
@@ -163,7 +145,7 @@ end process SIGN_EXTEND_IMMEDIATE_ADDRESS;
 
 --OUTPUT
 condition_out <= condition_internal;
-rs_addr <= rs_addr_internal;
+rsa <= rsa_internal;
 rt_addr <= rt_addr_internal;
 rd_addr <= rd_addr_internal;
 
