@@ -36,22 +36,22 @@ entity forwarding_unit is
            rt_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
            EX_MEM_write_reg_addr   : in  STD_LOGIC_VECTOR (4 downto 0);
            MEM_WB_write_reg_addr   : in  STD_LOGIC_VECTOR (4 downto 0);
-           forward_x               : out STD_LOGIC_VECTOR (1 downto 0);
-           forward_y               : out STD_LOGIC_VECTOR (1 downto 0));
+           forward_a               : out STD_LOGIC_VECTOR (1 downto 0);
+           forward_b               : out STD_LOGIC_VECTOR (1 downto 0));
 end forwarding_unit;
 
 architecture Behavioral of forwarding_unit is
 
 begin
 
-    X_HAZARD : process(MEM_WB_reg_write, MEM_WB_write_reg_addr, EX_MEM_reg_write, EX_MEM_write_reg_addr, rs_addr) begin
+    A_HAZARD : process(MEM_WB_reg_write, MEM_WB_write_reg_addr, EX_MEM_reg_write, EX_MEM_write_reg_addr, rs_addr) begin
         
         -- EXECUTE HAZARD
         if (EX_MEM_reg_write = '1')
         and (EX_MEM_write_reg_addr /= "00000")
         and (EX_MEM_write_reg_addr = rs_addr) 
         then
-            forward_x <= "10";
+            forward_a <= "10";
         
         -- MEMORY HAZARD
         elsif ((MEM_WB_reg_write = '1')
@@ -59,21 +59,21 @@ begin
       --  and not ((EX_MEM_reg_write = '1') and (EX_MEM_write_reg_addr /= "00000") and (EX_MEM_write_reg_addr = rs_addr))
         and (MEM_WB_write_reg_addr = rs_addr))
         then
-            forward_x <= "01";
+            forward_a <= "01";
         
         -- NO HAZARD
         else
-            forward_x <= "00";
+            forward_a <= "00";
         end if;    
     end process;
     
-    Y_HAZARD : process(MEM_WB_reg_write, MEM_WB_write_reg_addr, EX_MEM_reg_write, EX_MEM_write_reg_addr, rt_addr) begin
+    B_HAZARD : process(MEM_WB_reg_write, MEM_WB_write_reg_addr, EX_MEM_reg_write, EX_MEM_write_reg_addr, rt_addr) begin
         -- EXECUTE HAZARD
         if ((EX_MEM_reg_write = '1')
         and (EX_MEM_write_reg_addr /= "00000")
         and (EX_MEM_write_reg_addr = rt_addr)) 
         then
-            forward_y <= "10";
+            forward_b <= "10";
         
         -- MEMORY HAZARD
         elsif ((MEM_WB_reg_write = '1')
@@ -81,11 +81,11 @@ begin
         --and not ((EX_MEM_reg_write = '1') and (EX_MEM_write_reg_addr /= "00000") and (EX_MEM_write_reg_addr /= rt_addr))
         and (MEM_WB_write_reg_addr = rt_addr))
         then
-            forward_y <= "01";
+            forward_b <= "01";
             
         -- NO HAZARD
         else
-            forward_y <= "00";
+            forward_b <= "00";
         end if;    
     end process;
 
