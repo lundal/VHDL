@@ -43,11 +43,12 @@ signal pc_incremented_fetch : std_logic_vector(INST_WIDTH-1 downto 0);
  signal alu_src_signal_decode : std_logic;
  signal reg_write_signal_decode : std_logic;
  signal call_signal_decode : std_logic;
- signal imm_src_signal_decode : std_logic;
+ signal jump_signal_decode : std_logic;
  signal alu_func_signal_decode : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
  signal gene_op_signal_decode : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
  signal mem_op_signal_decode : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
  signal to_reg_signal_decode : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ signal cond_signal_decode : std_logic_vector(COND_WIDTH-1 downto 0);
 
 --BUS signals 
 
@@ -63,6 +64,21 @@ signal rda_signal_decode : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 signal pc_incremented_signal_decode : std_logic_vector(INST_WIDTH-1 downto 0);
 
 --EXECUTE SIGNALS--
+
+-- CONTROL SIGNALS 
+
+--Internally used signals 
+signal alu_src_signal_execute  : std_logic;
+signal alu_func_signal_execute : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+
+--Passing signals 
+ signal reg_write_signal_execute : std_logic;
+ signal call_signal_execute : std_logic;
+ signal jump_signal_execute : std_logic;
+ signal gene_op_signal_execute : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+ signal mem_op_signal_execute : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal to_reg_signal_execute : std_logic_vector(TO_REG_OP_WIDTH-1 downto);
+ signal cond_signal_execute 	: std_logic_vector(COND_WIDTH-1 downto 0);
 
  --Internally used 
  signal alu_src_signal_execute : std_logic;
@@ -89,7 +105,9 @@ signal rda_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
  --Internally used
  signal gene_op_signal_mem : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
  signal mem_op_signal_mem : std_logic_vector(GENE _OP_WIDTH-1 downto 0);
+ signal cond_signal_mem 	: std_logic_vector(COND_WIDTH-1 downto 0);
  signal overflow_signal_mem : std_logic; 
+ signal jump_signal_mem     : std_logic;
  
 -- Passing signals
  signal reg_write_signal_mem : std_logic;
@@ -117,6 +135,7 @@ signal data_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
  --BUS SIGNALS --
 signal WBB_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
 signal WBA_signal_wb : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+signal pc_incremented_signal_wb : std_logic_vector(INST_WIDTH-1 downto 0);
 
 begin
 
@@ -134,7 +153,7 @@ port map (
     reg_source <= reg_src_signal_decode,
     reg_write <= reg_write_signal_decode,
     call <= call_signal_decode,
-    jump <= placeholder,
+    jump <= jump_signal_decode,
     alu_func <= alu_func_signal_decode,
     gene_op <= gene_op_signal_decode,
     mem_op <= mem_op_signal_decode,
@@ -173,9 +192,9 @@ port map (
     -- CONTROL SIGNALS in
     alu_src_in <= alu_src_signal_decode,
     reg_write_in <= reg_write_signal_decode,
-    jump_in <= placeholder,
+    jump_in <= jump_signal_decode,
     alu_func_in <= alu_func_signal_decode,
-    cond_in <= placeholder,
+    cond_in <= cond_signal_decode,
     gene_op_in <= gene_op_signal_decode,
     mem_operation_in <= mem_op_signal_decode,
     to_reg_operation_in <= to_reg_signal_decode,
@@ -183,9 +202,9 @@ port map (
     -- CONTROL SIGNALS out
     alu_src_out <= alu_src_signal_execute,
     reg_write_out <= reg_write_signal_execute,
-    jump_out <= placeholder,
+    jump_out <= jump_signal_execute,
     alu_func_out <= alu_func_signal_execute,
-    cond_out <= placeholder,
+    cond_out <= cond_signal_execute,
     gene_op_out <= gene_op_signal_execute,
     mem_operation_out <= mem_op_signal_execute,
     to_reg_operation_out <= to_reg_signal_execute,
@@ -222,21 +241,21 @@ port map (
 
     --Control signals
     gene_op_in <= gene_op_signal_execute,
-    cond_in <= placeholder,
-    jump_in <= placeholder,
+    cond_in <= cond_signal_execute,
+    jump_in <= jump_signal_execute,
     mem_op_in <= mem_op_signal_execute,
     to_reg_in <= to_reg_signal_execute,
-    call_in <= placeholder,
-    overflow_in <= placeholder,
+    call_in <= call_signal_execute,
+    overflow_in <= overflow_signal_execute,
 
     --Control signals out 
     gene_op_out <= gene_op_signal_mem,
-    cond_out <= placeholder,
-    jump_out <= placeholder,
+    cond_out <= cond_signal_mem,
+    jump_out <= jump_signal_mem,
     mem_op_out <= mem_op_signal_mem,
     to_reg_out <= to_reg_signal_mem,
-    call_out <= placeholder,
-    overflow_out <= placeholder,
+    call_out <= call_signal_mem,
+    overflow_out <= overflow_signal_mem,
 
     --Data in 
     rs_in <= rs_signal_execute,
@@ -259,10 +278,10 @@ port map (
     halt <= halt,
 
     -- PC in
-    pc_incremented_in <= placeholder,
+    pc_incremented_in <= pc_incremented_signal_mem,
 
     -- PC out
-    pc_incremented_out <= placeholder,
+    pc_incremented_out <= pc_incremented_signal_wb,
 
     --CONTROL in
     to_reg_op_in <= to_reg_signal_mem,
@@ -273,7 +292,7 @@ port map (
     call_out <= call_signal_wb,
 
     --DATA in
-    gene_in <= gene_op_signal_mem,
+    gene_in <= gene_signal_mem,
     res_in <= res_signal_mem,
     data_in <= data_out_signal_mem,
     rda_in <= rda_signal_mem,
@@ -316,7 +335,7 @@ port map (
 
     --Input signals
     instruction <= instruction_out_signal_fetch,
-    write_data <= placeholder,
+    write_data <= placeholder,       --WBA/WBB_signal_wb
     write_register <= placeholder,
 
     --Output signals
@@ -357,7 +376,7 @@ port map (
     stage4_reg_rd <= placeholder,
     stage5_reg_rd <= placeholder,
     --Control signals out
-    overflow <= placeholder,
+    overflow <= overflow_signal_execute,
 
     -- Signals out 
     write_register_addr <= placeholder,
@@ -366,9 +385,47 @@ port map (
 
 
 -- TODO: incomplete
-memory_stage : entity work.memory_stage;
+memory_stage : entity work.memory_stage
+port map (
+			 --Control signals in
+			 overflow_in => overflow_signal_mem,
+			 jump_in => jump_signal_mem, 
+			 gene_op_in => gene_op_signal_mem, 
+			 cond_op_in => cond_signal_mem, 
+			 mem_op_in => mem_op_signal_mem, 
+			 
+			 --Control signals out
+			 halt => placeholder,
+			 
+			 --Bus signals in 
+			 fitness_in => rs_signal_mem, 
+			 gene_in => rt_signal_mem, 
+			 res_in =>res_signal_mem, 
+			 pc_incremented => pc_incremented_signal_mem, 
+			 
+			 --Bus signals out 
+			 gene_out => gene_signal_mem, 
+			 data_out => data_out_signal_mem
+			);
+
 
 -- TODO: incomplete
-write_back_stage : entity work.write_back_stage;
+write_back_stage : entity work.write_back_stage
+port map( 
+			--Control signals in
+			to_reg =>, 
+			call => call_signal_wb, 
+			
+			--Bus signals in
+			gene_in =>gene_signal_wb, 
+			res_in =>res_signal_wb, 
+			data_in => data_out_signal_wb, 
+			
+			--Bus signals out
+			WBA => WBA_signal_wb, 
+			WBB => WBB_signal_wb
+		
+	);
+	
 
 end behavioral;
