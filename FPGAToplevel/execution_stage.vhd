@@ -74,14 +74,14 @@ end component;
 
 
 component forwarding_unit 
-    Port ( rs : in  STD_LOGIC_VECTOR (4 downto 0);
-           rt : in  STD_LOGIC_VECTOR (4 downto 0);
-           stage4_reg_rd : in  STD_LOGIC_VECTOR (4 downto 0);
-           stage5_reg_rd : in  STD_LOGIC_VECTOR (4 downto 0);
-           stage4_reg_write : in  STD_LOGIC;
-           stage5_reg_write : in  STD_LOGIC;
-           forwardA : out  STD_LOGIC_VECTOR (1 downto 0);
-           forwardB : out  STD_LOGIC_VECTOR (1 downto 0));
+    Port ( EX_MEM_reg_write        : in  STD_LOGIC;
+		  MEM_WB_reg_write        : in  STD_LOGIC;
+		  rs_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
+		  rt_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
+		  EX_MEM_write_reg_addr   : in  STD_LOGIC_VECTOR (4 downto 0);
+		  MEM_WB_write_reg_addr   : in  STD_LOGIC_VECTOR (4 downto 0);
+		  forward_a               : out STD_LOGIC_VECTOR (1 downto 0);
+		  forward_b               : out STD_LOGIC_VECTOR (1 downto 0));
 end component;
 
 
@@ -143,17 +143,16 @@ port map( X => tri_mux1_out,
 
 
 FORWARD_UNIT_MAP : forwarding_unit 
-port map(rs => rsa, 
-         rt => rta, 
-         stage4_reg_rd => stage4_reg_rd, 
-         stage5_reg_rd => stage5_reg_rd, 
-         stage4_reg_write => stage4_reg_write, 
-         stage5_reg_write => stage5_reg_write, 
-         forwardA => forwardA,
-         forwardB => forwardB );
-
-
-
+port map(
+			EX_MEM_reg_write => stage_4_reg_write, 
+			MEM_WB_reg_write =>stage_5_reg_write, 
+			rs_addr => rsa, 
+			rt_addr => rta, 
+			EX_MEM_write_reg_addr => stage4_reg_write, 
+			MEM_WB_write_reg_addr => stage5_reg_write, 
+			forward_a =>forwardA, 
+			forward_b =>forwardB);
+			
 --Processes
 
 
