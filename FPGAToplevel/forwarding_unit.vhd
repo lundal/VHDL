@@ -2,7 +2,7 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    14:40:25 10/13/2013 
+-- Create Date:    12:53:40 10/24/2013 
 -- Design Name: 
 -- Module Name:    forwarding_unit - Behavioral 
 -- Project Name: 
@@ -22,7 +22,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
@@ -30,67 +30,64 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity forwarding_unit is
-    Port ( rs : in  STD_LOGIC_VECTOR (4 downto 0);
-           rt : in  STD_LOGIC_VECTOR (4 downto 0);
-           stage4_reg_rd : in  STD_LOGIC_VECTOR (4 downto 0);
-           stage5_reg_rd : in  STD_LOGIC_VECTOR (4 downto 0);
-           stage4_reg_write : in  STD_LOGIC;
-           stage5_reg_write : in  STD_LOGIC;
-           forwardA : out  STD_LOGIC_VECTOR (1 downto 0);
-           forwardB : out  STD_LOGIC_VECTOR (1 downto 0));
+    Port ( EX_MEM_reg_write        : in  STD_LOGIC;
+           MEM_WB_reg_write        : in  STD_LOGIC;
+           rs_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
+           rt_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
+           EX_MEM_write_reg_addr   : in  STD_LOGIC_VECTOR (4 downto 0);
+           MEM_WB_write_reg_addr   : in  STD_LOGIC_VECTOR (4 downto 0);
+           forward_x               : out STD_LOGIC_VECTOR (1 downto 0);
+           forward_y               : out STD_LOGIC_VECTOR (1 downto 0));
 end forwarding_unit;
 
 architecture Behavioral of forwarding_unit is
 
 begin
 
-
-FORWARD_UNIT : process (rs, rt, stage4_reg_rd, stage5_reg_rd, stage4_reg_write, stage5_reg_write)
-    begin 
-        -- MEM hazard
-        if (stage5_reg_write = '1' 
-            and (stage5_reg_rd /= "00000")
-            and not (stage4_reg_write = '1' and (stage4_reg_rd /= "00000"))
-                and (stage4_reg_rd /= rs)
-            and (stage5_reg_rd = rs)) then 
-            
-            forwardA <= "01";
-            
-        else 
-            forwardA <= "00";
-        end if; 
+    X_HAZARD : process(MEM_WB_reg_write, MEM_WB_write_reg_addr, EX_MEM_reg_write, EX_MEM_write_reg_addr, rs_addr) begin
         
+        -- EXECUTE HAZARD
+        if (EX_MEM_reg_write = '1')
+        and (EX_MEM_write_reg_addr /= "00000")
+        and (EX_MEM_write_reg_addr = rs_addr) 
+        then
+            forward_x <= "10";
         
-        if (stage4_reg_write = '1' 
-            and (stage5_reg_rd /= "00000")
-            and not (stage4_reg_write = '1' and (stage4_reg_rd /= "00000"))
-                and (stage4_reg_rd = rt)
-            and (stage5_reg_rd = rt)) then 
-            
-            forwardB <= "01";
-        else 
-            forwardB <= "00";
-        end if;
-            
-            
-       --EX hazard 
-        if (stage4_reg_write = '1'
-            and (stage4_reg_rd /= "0000")
-            and (stage4_reg_rd = rs)) then 
-            
-            forwardA <= "10";
-        end if;
+        -- MEMORY HAZARD
+        elsif ((MEM_WB_reg_write = '1')
+        and (MEM_WB_write_reg_addr /= "00000")
+      --  and not ((EX_MEM_reg_write = '1') and (EX_MEM_write_reg_addr /= "00000") and (EX_MEM_write_reg_addr = rs_addr))
+        and (MEM_WB_write_reg_addr = rs_addr))
+        then
+            forward_x <= "01";
         
-        if (stage4_reg_write = '1'
-            and (stage4_reg_rd /= "00000")
-            and (stage4_reg_rd = rt)) then 
-             
-            forwardB <= "10";
-        end if;
+        -- NO HAZARD
+        else
+            forward_x <= "00";
+        end if;    
+    end process;
+    
+    Y_HAZARD : process(MEM_WB_reg_write, MEM_WB_write_reg_addr, EX_MEM_reg_write, EX_MEM_write_reg_addr, rt_addr) begin
+        -- EXECUTE HAZARD
+        if ((EX_MEM_reg_write = '1')
+        and (EX_MEM_write_reg_addr /= "00000")
+        and (EX_MEM_write_reg_addr = rt_addr)) 
+        then
+            forward_y <= "10";
+        
+        -- MEMORY HAZARD
+        elsif ((MEM_WB_reg_write = '1')
+        and (MEM_WB_write_reg_addr /= "00000")
+        --and not ((EX_MEM_reg_write = '1') and (EX_MEM_write_reg_addr /= "00000") and (EX_MEM_write_reg_addr /= rt_addr))
+        and (MEM_WB_write_reg_addr = rt_addr))
+        then
+            forward_y <= "01";
             
-              
-end process FORWARD_UNIT;
-
+        -- NO HAZARD
+        else
+            forward_y <= "00";
+        end if;    
+    end process;
 
 end Behavioral;
 
