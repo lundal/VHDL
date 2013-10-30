@@ -48,14 +48,16 @@ port map (clk => clk,
           data_out => pc_incremented_out
 );
 
-
-INSTRUCTION_REGISTER : flip_flop 
-generic map(N => INST_WIDTH)
-port map (clk => clk, 
-          reset => reset, 
-          enable => halt,
-          data_in => instruction_in,
-          data_out => instruction_out
-);
+--The register file works as an flip-flop, no no need to use one more clock cycle here
+instruction_out <= instruction_in;
+--
+--INSTRUCTION_REGISTER : flip_flop 
+--generic map(N => INST_WIDTH)
+--port map (clk => clk, 
+--          reset => reset, 
+--          enable => halt,
+--          data_in => instruction_in,
+--          data_out => instruction_out
+--);
 
 end behavioral;
