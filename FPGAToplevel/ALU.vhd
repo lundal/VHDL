@@ -129,11 +129,11 @@ begin
 	GEN_MULT : if MULTIPLIER = 1 generate
 		MULTIPLY : Multiplier2
 		generic map (
-			N => 32 -- Todo: Generic?
+			N => N/2
 		)
 		port map (
-			A			=> X(32-1 downto 0),
-			B			=> Y(32-1 downto 0),
+			A			=> X(N/2-1 downto 0),
+			B			=> Y(N/2-1 downto 0),
 			Result		=> r_mul
 		);
 	end generate;
