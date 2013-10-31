@@ -5,22 +5,12 @@ entity fetch_stage is
     Port ( clk : in STD_LOGIC;
            reset : in STD_LOGIC;
            pc_update : in STD_LOGIC;
-           pc_src : in STD_LOGIC;
            pc_input : in STD_LOGIC_VECTOR(31 downto 0);
            pc_incremented : out STD_LOGIC_VECTOR(31 downto 0);
            pc_signal : out STD_LOGIC_VECTOR(31 downto 0));
 end fetch_stage;
 
 architecture Behavioral of fetch_stage is
-
---COMPONENT declerations
-component multiplexor
-    generic (N : NATURAL);
-    port (sel : in STD_LOGIC;
-          in0 : in STD_LOGIC_VECTOR(N-1 downto 0);
-          in1 : in STD_LOGIC_VECTOR(N-1 downto 0);
-          output : out STD_LOGIC_VECTOR(N-1 downto 0));
-end component;
 
 component Adder
     generic (N : NATURAL);
@@ -43,26 +33,18 @@ end component;
 
 -- SIGNAL declerations
 signal ground_signal : STD_LOGIC; 
-signal pc_input_signal : STD_LOGIC_VECTOR(31 downto 0);
 signal pc_incremented_signal : STD_LOGIC_VECTOR(31 downto 0);
 signal pc_out_signal         : STD_LOGIC_VECTOR(31 downto 0);
 
 begin
 
 
-PC_SRC_MUX : multiplexor 
-generic map(N => 32)
-port map( sel => pc_src, 
-          in0 => pc_incremented_signal, 
-          in1 => pc_input,
-          output => pc_input_signal);
-          
           
 PROGRAM_COUNTER_MAP : pc 
 port map(clk => clk, 
          reset => reset, 
          pc_update => pc_update, 
-         addr => pc_input_signal, 
+         addr => pc_input, 
          addr_out => pc_out_signal);
          
 
