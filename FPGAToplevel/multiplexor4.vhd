@@ -43,7 +43,7 @@ architecture Behavioral of multiplexor4 is
 begin
 
 
-4_TO_1_MULTIPLEXOR : process(sel) 
+MULTIPLEXOR4 : process(sel) 
 begin 
 	case sel is 
 	when "00" =>
@@ -56,7 +56,8 @@ begin
 		output <= in3;
 	when others => 
 		output <= (others => '0');
-end process 4_TO_1_MULTIPLEXOR;
+	end case;
+end process;
 
 end Behavioral;
 
