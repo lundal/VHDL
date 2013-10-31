@@ -179,7 +179,7 @@ begin
 		end case;
 	end process;
 	
-	RESULTIFIER : process(FUNC, r_addsub, r_mul, r_and, r_or, r_xor, r_shift)
+	RESULTIFIER : process(FUNC, r_addsub, r_mul, r_and, r_or, r_xor, r_shift, X, Y)
 	begin
 		case FUNC is
 			when ALU_FUNC_ADD	=>	result <= r_addsub;
@@ -191,6 +191,8 @@ begin
 			when ALU_FUNC_SRA	=>	result <= r_shift;
 			when ALU_FUNC_SLL	=>	result <= r_shift;
 			when ALU_FUNC_SRL	=>	result <= r_shift;
+			when ALU_FUNC_A		=>	result <= X;
+			when ALU_FUNC_B		=>	result <= Y;
 			when others			=>	result <= ZERO64;
 		end case;
 	end process;
