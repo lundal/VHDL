@@ -7,11 +7,6 @@
 -- Description:
 -- A cache for 2 CPUs with room for 512 instructions
 -- Address 0 is reserved for cache fault
--- WARNING (TODO):
--- According to http://www.xilinx.com/support/documentation/user_guides/ug383.pdf
--- page 15 WRITE_FIRST may cause invalid data for one CPU if both CPUs get a fault
--- on the same address. Can change to READ_FIRST, but that adds one cycle and
--- changes the timing. Testing needed.
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -172,7 +167,11 @@ begin
             MemRq <= '1';
             
             -- Replace data
-            if (FaultA = '1') then
+            if (FaultA = '1' and FaultB = '1' and CacheAddrA = CacheAddrB) then
+                MemAddr <= PCA;
+                WriteA <= '1';
+                WriteB <= '1';
+            elsif (FaultA = '1') then
                 MemAddr <= PCA;
                 WriteA <= '1';
                 WriteB <= '0';
