@@ -26,7 +26,10 @@ use WORK.CONSTANTS.ALL;
 
 entity ALU is
 	
-	generic(N : integer := 64);
+	generic(
+		N : integer := 64;
+		MULTIPLIER : integer := 1
+	);
 	
 	port(
 		X			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -89,7 +92,6 @@ architecture Behavioral of ALU is
 	-- Result signals
 	signal r_addsub	:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_mul	:	STD_LOGIC_VECTOR(N-1 downto 0);
-	--signal r_mul	:	STD_LOGIC_VECTOR(32-1 downto 0);
 	signal r_and	:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_or		:	STD_LOGIC_VECTOR(N-1 downto 0);
 	signal r_xor	:	STD_LOGIC_VECTOR(N-1 downto 0);
@@ -124,15 +126,21 @@ begin
 		Count => Y(6-1 downto 0)
 	);
 	
-	MULTIPLY : Multiplier2
-	generic map (
-		N => 32 -- Todo: Generic?
-	)
-	port map (
-		A			=> X(32-1 downto 0),
-		B			=> Y(32-1 downto 0),
-		Result		=> r_mul
-	);
+	GEN_MULT : if MULTIPLIER = 1 generate
+		MULTIPLY : Multiplier2
+		generic map (
+			N => 32 -- Todo: Generic?
+		)
+		port map (
+			A			=> X(32-1 downto 0),
+			B			=> Y(32-1 downto 0),
+			Result		=> r_mul
+		);
+	end generate;
+	
+	GEN_MULT_RES : if MULTIPLIER /= 1 generate
+		r_mul <= (others => '0');
+	end generate;
 	
 	INVERT_Y : process(Y, FUNC)
 	begin
