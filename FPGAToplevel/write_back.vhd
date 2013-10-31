@@ -78,7 +78,7 @@ multiplexor : entity work.multiplexor
 
 --Output signals
 WBD <= WBD_out_signal;
-WBA => WBA_out_signal;
+WBA <= WBA_out_signal;
 
 
 end Behavioral;
