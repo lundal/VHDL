@@ -42,8 +42,8 @@ entity write_back is
 				RDA_in 	: in std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 				
 				-- Bus signals out
-				WBA 		: out std_logic_vector();
-				WBB 		: out std_logic_vector()
+				WBA 		: out std_logic_vector(REG_ADDR_WIDHT-1 downto 0);
+				WBD 		: out std_logic_vector(DATA_WIDTH-1 downto 0));
 				
 end write_back;
 

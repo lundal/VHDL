@@ -23,7 +23,8 @@ entity memory_stage is
 	
 	--Bus signals out
 	gene_out 		: out std_logic_vector(DATA_WIDTH-1 downto 0);
-	data_out 		: out std_logic_vector(DATA_WIDTh-1 downto 0));
+	data_out 		: out std_logic_vector(DATA_WIDTh-1 downto 0);
+	pc_out 			: out std_logic_vector(INST_WIDTH-1 downto 0));
 end memory_stage;
 
 architecture Behavioral of memory_stage is
