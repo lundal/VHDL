@@ -20,8 +20,9 @@ package CONSTANTS is
     constant DATA_WIDTH             :   integer := 64;
     -- TODO - Change these to their correct values
     constant GENE_OP_WIDTH    : integer := 2;
-    constant MEM_OP_WIDTH    : integer := 3;
+    constant MEM_OP_WIDTH    : integer := 2;
     constant TO_REG_OP_WIDTH : integer := 3;
+	 constant MEM_ADDR_WIDTH : integer := 19;
     
     
     
