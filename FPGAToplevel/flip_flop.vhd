@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 
 entity flip_flop is
-    generic (N : NATURAL);
+    generic (N : NATURAL := 64);
     Port ( clk : in STD_LOGIC;
            reset: in STD_LOGIC;
            enable : in STD_LOGIC;
