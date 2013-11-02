@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------
+				----------------------------------------------------------------------------------
 -- Company: 
 -- Engineer: 
 -- 
@@ -37,11 +37,11 @@ entity fitness_memory_controller is
 			
 			--Control signals in
 			mem_op : in std_logic_vector(MEM_OP_WIDTH-1 downto 0);
-			request_ack : in std_logic;
+			ack_mem_ctrl : in std_logic;
 			
 			
 			--Control signals out
-			op_mem_ctrl : out std_logic_vector(MEM_OP_WIDTH-1 downto 0);
+			mem_op_ctrl : out std_logic_vector(MEM_OP_WIDTH-1 downto 0);
 			request_bus : out std_logic;
 			halt 			: out std_logic;
 			
@@ -62,11 +62,12 @@ end fitness_memory_controller;
 
 architecture Behavioral of fitness_memory_controller is
 
-type state_type is (REQUEST, WAIT_FOR_ACK);
+type state_type is (REQUEST, WAIT_FOR_ACK, PERFORM_OPERATION, WAIT_FOR_MEMORY);
 signal CURRENT_STATE, NEXT_STATE : state_type;
 
 constant WRITE_DATA : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "11";
 constant READ_DATA  : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "01";
+constant NOP 		  : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "00";
 
 begin
 
@@ -79,34 +80,54 @@ RUN : process(clk)
 		end if;
 	end process; 
 
-STATE_MACHINE : process(CURRENT_STATE, mem_op, request_ack) 
+STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl) 
 	begin 
 	case CURRENT_STATE is 
 		when REQUEST => 
-			op_mem_ctrl <= mem_op;
-			addr_mem_ctrl <= addr;
-			read_data_out <= read_data_mem_ctrl;
-			addr_mem_ctrl <= addr;
+			--Disconnect from buses
+			mem_op_ctrl   		 <= (others => 'Z');
+ 			addr_mem_ctrl 		 <= (others => 'Z'); 
+			data_mem_ctrl 		 <= (others => 'Z'); 			
 			
-			case mem_op is 
-			when READ_DATA =>
-				halt <= '1';
-				request_bus <= '1';
-				NEXT_STATE <= WAIT_FOR_ACK;
-			
-			when WRITE_DATA =>
-				halt <= '1';
-				request_bus <= '1';
-				NEXT_STATE <= WAIT_FOR_ACK;
-			when others => 
-				halt <= '1';
-				request_bus <= '1';
+			case mem_op is
+				when NOP => 
+					halt <= '0';
+					request_bus <= '0';
+					NEXT_STATE <= REQUEST;
+				when others => 
+					halt <= '1';
+					request_bus <= '1';
+					NEXT_STATE <= WAIT_FOR_ACK; 
 			end case;
 			
 		when WAIT_FOR_ACK =>
-			if request_ack = '1' then
+			if ack_mem_ctrl = '1' then
+				request_bus <= '0';
+				addr_mem_ctrl <= addr; --Got access, put addr on bus
+			   mem_op_ctrl <= mem_op; 
+				if mem_op = WRITE_DATA then 
+					data_mem_ctrl <= store_data; -- If write, put data on data bus
+					NEXT_STATE <= PERFORM_OPERATION;
+				else 
+					NEXT_STATE <= WAIT_FOR_MEMORY;
+				end if;
+			else 
+				NEXT_STATE <= WAIT_FOR_ACK;				
+			end if;
+		
+		when WAIT_FOR_MEMORY => 
+			if ack_mem_ctrl = '1' then
+				NEXT_STATE <= WAIT_FOR_MEMORY;
+			elsif ack_mem_ctrl = '0' then 
+				read_data_out <= read_data_mem_ctrl;
+				halt <= '0';
 				NEXT_STATE <= REQUEST;
 			end if;
+			
+		when PERFORM_OPERATION => 
+			halt <= '0';
+			NEXT_STATE <= REQUEST;
+			
 	end case;
 end process STATE_MACHINE;
 
