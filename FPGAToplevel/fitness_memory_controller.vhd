@@ -34,6 +34,7 @@ entity fitness_memory_controller is
 	Port (
 			clk : in std_logic;
 			reset : in std_logic;
+			processor_enable : in std_logic;
 			
 			--Control signals in
 			mem_op : in std_logic_vector(MEM_OP_WIDTH-1 downto 0);
@@ -71,7 +72,7 @@ constant NOP 		  : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "00";
 
 begin
 
-RUN : process(clk)
+RUN : process(clk, reset)
 	begin 
 		if reset = '1' then
 			CURRENT_STATE <= REQUEST;

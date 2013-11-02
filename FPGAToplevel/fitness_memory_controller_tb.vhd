@@ -43,7 +43,8 @@ ARCHITECTURE behavior OF fitness_memory_controller_tb IS
     PORT(
          clk : IN  std_logic;
          reset : IN  std_logic;
-         mem_op : IN  std_logic_vector(1 downto 0);
+         processor_enable : IN std_logic;
+			mem_op : IN  std_logic_vector(1 downto 0);
          ack_mem_ctrl : IN  std_logic;
          mem_op_ctrl : OUT  std_logic_vector(1 downto 0);
          request_bus : OUT  std_logic;
@@ -59,7 +60,8 @@ ARCHITECTURE behavior OF fitness_memory_controller_tb IS
     
 
    --Inputs
-   signal clk : std_logic := '0';
+   signal processor_enable : std_logic := '0';
+	signal clk : std_logic := '0';
    signal reset : std_logic := '0';
    signal mem_op : std_logic_vector(1 downto 0) := (others => '0');
    signal ack_mem_ctrl : std_logic := '0';
@@ -84,7 +86,8 @@ BEGIN
    uut: fitness_memory_controller PORT MAP (
           clk => clk,
           reset => reset,
-          mem_op => mem_op,
+          processor_enable => procssor_enable,
+			 mem_op => mem_op,
           ack_mem_ctrl => ack_mem_ctrl,
           mem_op_ctrl => mem_op_ctrl,
           request_bus => request_bus,
