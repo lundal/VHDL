@@ -61,6 +61,37 @@ architecture Behavioral of GeneticPipeline2 is
         );
     end component;
     
+    component GeneticController is
+        port (
+            RATED_RQ    : out STD_LOGIC;
+            RATED_ACK   : in  STD_LOGIC;
+            UNRATED_RQ  : out STD_LOGIC;
+            UNRATED_ACK : in  STD_LOGIC;
+            SEL_0_RUN   : out STD_LOGIC;
+            SEL_0_DONE  : in  STD_LOGIC;
+            SEL_1_RUN   : out STD_LOGIC;
+            SEL_1_DONE  : in  STD_LOGIC;
+            STORE       : out STD_LOGIC;
+            ENABLE      : in  STD_LOGIC;
+            CLK	        : in  STD_LOGIC
+        );
+    end component;
+    
+    component UnratedController is
+        generic (
+            NUM_PROC   : natural := 4;
+            ADDR_WIDTH : natural := 9
+        );
+        port (
+            REQUEST_PROC : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+            REQUEST_GENE : in  STD_LOGIC;
+            ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+            ACK_GENE     : out STD_LOGIC;
+            ADDR         : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+            CLK	         : in  STD_LOGIC
+        );
+    end component;
+    
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal rated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -84,6 +115,28 @@ architecture Behavioral of GeneticPipeline2 is
     -- Distributor signals
     signal rated_store   : STD_LOGIC := '0';
     signal unrated_store : STD_LOGIC := '0';
+    
+    -- Request/Ack signals
+    signal request_unrated_proc : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal request_unrated_gene : STD_LOGIC;
+    signal request_rated_proc   : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal request_rated_gene   : STD_LOGIC;
+    signal ack_unrated_proc     : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal ack_unrated_gene     : STD_LOGIC;
+    signal ack_rated_proc       : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal ack_rated_gene       : STD_LOGIC;
+    
+    -- Selection Core signals
+    signal selector_0_run  : STD_LOGIC;
+    signal selector_0_done : STD_LOGIC;
+    signal selector_1_run  : STD_LOGIC;
+    signal selector_1_done : STD_LOGIC;
+    
+    -- Settings signals
+    signal settings_gene_ctrl : STD_LOGIC;
+    signal settings_selector  : STD_LOGIC;
+    signal settings_crossover : STD_LOGIC;
+    signal settings_mutation  : STD_LOGIC;
     
 begin
     
@@ -147,6 +200,34 @@ begin
         STORE  => unrated_store
     );
     
+    GENE_CTRL : GeneticController
+    port map (
+        RATED_RQ    => request_rated_gene,
+        RATED_ACK   => ack_rated_gene,
+        UNRATED_RQ  => request_unrated_gene,
+        UNRATED_ACK => ack_unrated_gene,
+        SEL_0_RUN   => selector_0_run,
+        SEL_0_DONE  => selector_0_done,
+        SEL_1_RUN   => selector_1_run,
+        SEL_1_DONE  => selector_1_done,
+        STORE       => unrated_store,
+        ENABLE      => settings_gene_ctrl,
+        CLK	        => CLK
+    );
+    
+    UNRATED_CTRL : UnratedController
+    generic map (
+        NUM_PROC   => NUM_PROC,
+        ADDR_WIDTH => ADDR_WIDTH
+    )
+    port map (
+        REQUEST_PROC => request_unrated_proc,
+        REQUEST_GENE => request_unrated_gene,
+        ACK_PROC     => ack_unrated_proc,
+        ACK_GENE     => ack_unrated_gene,
+        ADDR         => unrated_a_addr,
+        CLK	         => CLK
+    );
     
 end Behavioral;
 
