@@ -35,7 +35,7 @@ architecture Behavioral of GeneticController is
     
 begin
     
-	StateSelector : process(CLK, RATED_ACK, UNRATED_ACK, SEL_0_DONE, SEL_1_DONE)
+	StateSelector : process(CLK, state, RATED_ACK, UNRATED_ACK, SEL_0_DONE, SEL_1_DONE)
 	begin
 		if rising_edge(CLK) then
 			-- Only go to Feed if there is a request and it is enabled
@@ -56,7 +56,7 @@ begin
 		end if;
 	end process;
     
-	StateMachine : process(CLK, ENABLE)
+	StateMachine : process(CLK, state, ENABLE, RATED_ACK, UNRATED_ACK)
 	begin
         -- Only go to Feed if there is a request and it is enabled
         case state is
