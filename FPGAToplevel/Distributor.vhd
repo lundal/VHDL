@@ -26,7 +26,7 @@ end Distributor;
 
 architecture Behavioral of Distributor is
     
-    signal counter : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
+    signal counter : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0) := (others => '0');
     
 begin
     
