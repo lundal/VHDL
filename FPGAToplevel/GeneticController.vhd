@@ -31,7 +31,7 @@ architecture Behavioral of GeneticController is
     
     -- State
 	type   state_type is (Ready, Run, Save);
-	signal state       : state_type := Run;
+	signal state       : state_type := Ready;
     
 begin
     
