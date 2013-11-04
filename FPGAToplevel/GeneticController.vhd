@@ -56,7 +56,7 @@ begin
 		end if;
 	end process;
     
-	StateMachine : process(CLK, state, ENABLE, RATED_ACK, UNRATED_ACK)
+	StateMachine : process(CLK, state, ENABLE, RATED_ACK, UNRATED_ACK, SEL_0_DONE, SEL_1_DONE)
 	begin
         -- Only go to Feed if there is a request and it is enabled
         case state is
@@ -93,6 +93,8 @@ begin
                 -- Request unrated pool if done
                 if (SEL_0_DONE = '1' and SEL_1_DONE = '1') then
                     RATED_RQ <= '1';
+                else
+                    RATED_RQ <= '0';
                 end if;
                 
             when Save =>
