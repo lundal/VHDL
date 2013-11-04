@@ -43,7 +43,7 @@ begin
     ACK_GENE    <= ack_int(0);
     
 	-- Check if any request
-	has_request <= '0' when request_int(NUM_PROC-1 downto 0) = (NUM_PROC-1 downto 0 => '0') else '1';
+	has_request <= '0' when request_int(NUM_PROC downto 0) = (NUM_PROC downto 0 => '0') else '1';
     
     CTRL : process (CLK)
 		variable chosen : integer range 0 to NUM_PROC := 0;
