@@ -120,8 +120,8 @@ begin
     B_IN_L <= B_IN(DATA_WIDTH/2-1 downto 0);
     
     -- Concatenate output signals
-    A_OUT <= A_IN_H & A_IN_L;
-    B_OUT <= B_IN_H & B_IN_L;
+    A_OUT <= A_OUT_H & A_OUT_L;
+    B_OUT <= B_OUT_H & B_OUT_L;
     
 end Behavioral;
 
