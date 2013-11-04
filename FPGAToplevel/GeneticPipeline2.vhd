@@ -130,6 +130,23 @@ architecture Behavioral of GeneticPipeline2 is
         );
     end component;
     
+    component crossover_toplevel is
+        generic (
+            N : integer := 64;
+            O : integer := 32
+        );
+        port (
+            clk           : in  STD_LOGIC;
+            enabled       : in  STD_LOGIC;
+            control_input : in  STD_LOGIC_VECTOR(2 downto 0);
+            random_number : in  STD_LOGIC_VECTOR(O-1 downto 0);
+            parent1       : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            parent2       : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            child1        : out STD_LOGIC_VECTOR(N-1 downto 0);
+            child2        : out STD_LOGIC_VECTOR(N-1 downto 0)
+        );
+    end component;
+    
     component mutation_core is
         generic (
             N : integer :=64;
@@ -148,7 +165,7 @@ architecture Behavioral of GeneticPipeline2 is
     
     -- Constants
     constant settings_width_selection : integer := 5;
-    constant settings_width_crossover : integer := 5;
+    constant settings_width_crossover : integer := 3;
     constant settings_width_mutation  : integer := 7;
     
     -- Rated Pool signals
@@ -353,6 +370,22 @@ begin
         CLK    => CLK
     );
     
+    CROSSOVER : crossover_toplevel
+    generic map (
+        N => DATA_WIDTH,
+        O => RANDOM_WIDTH
+    )
+    port map (
+        enabled       => '1',
+        control_input => settings_crossover,
+        random_number => random,
+        parent1       => parent_0,
+        parent2       => parent_1,
+        child1        => child_0,
+        child2        => child_1,
+        clk           => CLK
+    );
+    
     MUTATOR_0 : mutation_core
     generic map (
         N => DATA_WIDTH,
@@ -412,10 +445,6 @@ begin
     rated_a_in <= DATA_IN;
     rated_b_in <= DATA_IN;
     DATA_OUT <= unrated_a_out;
-    
-    -- Circumvent crossover
-    child_0 <= parent_0;
-    child_1 <= parent_1;
     
 end Behavioral;
 
