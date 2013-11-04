@@ -25,6 +25,7 @@ entity RatedController is
         STORE        : out STD_LOGIC;
         WRITE_FIT    : out STD_LOGIC;
         WRITE_GENE   : out STD_LOGIC;
+        WRITE_SET    : out STD_LOGIC;
         CLK	         : in  STD_LOGIC
     );
 end RatedController;
@@ -40,6 +41,7 @@ architecture Behavioral of RatedController is
     -- State
 	type   state_type is (Choose, Gene, Proc);
 	signal state       : state_type := Choose;
+    
 begin
     
     -- Combine request and ack signals
@@ -56,9 +58,6 @@ begin
 	STATE_SELECTOR : process(CLK, state, has_request, has_request_set, request_int, ack_int)
 	begin
 		if rising_edge(CLK) then
-            -- Default state
-            state <= Choose;
-            
             case state is
                 when Choose =>
                     -- If ack given to genetic
@@ -67,12 +66,18 @@ begin
                     -- If ack given to processor
                     elsif (has_request = '1') then
                         state <= Proc;
+                    -- If settings ack given to processor
                     elsif (has_request_set = '1') then
+                        state <= Choose;
+                    -- No request
+                    else
                         state <= Choose;
                     end if;
                 when Gene =>
                     if (request_int(0) = '0') then
                         state <= Choose;
+                    else
+                        state <= Gene;
                     end if;
                 when Proc =>
                     state <= Choose;
@@ -120,8 +125,11 @@ begin
 			-- Reset Ack signals
 			ack_int <= (others => '0');
             
+            -- Reset write settings
+            WRITE_SET <= '0';
+            
             -- If state is changing back to Choose
-            if (state = Proc or (state = Gene and REQUEST_GENE = '0')) then
+            if ((state = Choose and has_request_set = '1') or state = Proc or (state = Gene and REQUEST_GENE = '0')) then
             
                 -- Check if there exists a settings request
                 if (has_request_set = '1') then
@@ -146,6 +154,9 @@ begin
                     
                     -- Send ack
                     ack_int(chosen_set) <= '1';
+                    
+                    -- Write settings
+                    WRITE_SET <= '1';
                     
                 -- Check if there exists a request
                 elsif (has_request = '1') then
