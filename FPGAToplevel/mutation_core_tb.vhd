@@ -38,6 +38,7 @@ ARCHITECTURE behavior OF mutation_core_tb IS
     COMPONENT mutation_core
     PORT(
          enabled : IN  std_logic;
+			active : IN std_logic;
          random_number : IN  std_logic_vector(31 downto 0);
          input : IN  std_logic_vector(63 downto 0);
 			chance_input : IN std_logic_vector(5 downto 0);
@@ -48,6 +49,7 @@ ARCHITECTURE behavior OF mutation_core_tb IS
 
    --Inputs
    signal enabled : std_logic := '0';
+	signal active : std_logic := '0';
    signal random_number : std_logic_vector(31 downto 0) := (others => '0');
 	signal chance_input : std_logic_vector(5 downto 0) := (others => '0');
    signal input : std_logic_vector(63 downto 0) := (others => '0');
@@ -60,6 +62,7 @@ BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: mutation_core PORT MAP (
           enabled => enabled,
+			 active => active,
           random_number => random_number,
 			 chance_input => chance_input,
           input => input,
@@ -84,12 +87,13 @@ BEGIN
 		
 		wait for 40 ns;
 		
-		-- Enabling. Mutation should be at bit 0
+		-- Enabling and activating Mutation should be at bit 0
 		enabled <= '1';
+		active <= '1';
 		
 		wait for 40 ns;
 		
-		-- Setting mutation to bit nr. 7 (000111), but top 6 bits does not allow mutation
+		-- Setting mutation to bit nr. 7 (000111), but top 6 bits do not allow mutation
 		random_number <= "11110000000000000000000000000111";
 	
 		wait for 40 ns;
@@ -234,11 +238,39 @@ BEGIN
 		
 		random_number <= "00000011001000000111000110000101";
 		
-		wait for 40 ns;
+		wait for 40 ns;		
 		
 		-- Reducing mutations, removing number 3 and 4: 7 (000111) and 8 (001000), keeping  number 2 and 3: 5 (000101) and 6 (000110)
 		
 		random_number <= "00000001001000000111000110000101";
+		
+		wait for 40 ns;
+		
+		-- Setting active to 0, no mutation should occur, but input should still be passed through:
+		
+		active <='0';
+		
+		wait for 40 ns;
+		
+		-- Change in input should still change output.
+		
+		input <= "0000000000000000111111111111111100000000000000001111111111111111";
+		
+		wait for 40 ns;
+		
+		-- Change in random_number should not matter when not active
+		random_number <= "00110001001000000111000110011111";
+		
+		wait for 40 ns;
+		
+		-- Change in control_input should not matter when not active
+		
+		chance_input <= "111111";
+		
+		wait for 40 ns;
+		
+		-- Resetting active
+		active <= '1';
 		
 		wait for 40 ns;
 		

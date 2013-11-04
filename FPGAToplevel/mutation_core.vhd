@@ -37,6 +37,7 @@ entity mutation_core is
 	generic (N : integer :=64; O : integer :=32; P : integer :=6);
 	Port (
 				enabled : in STD_LOGIC;
+				active : in STD_LOGIC;
 				random_number : in STD_LOGIC_VECTOR (O-1 downto 0);
 				input : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				chance_input : in STD_LOGIC_VECTOR(P-1 downto 0);
@@ -63,13 +64,13 @@ architecture Behavioral of mutation_core is
 	
 begin
 
-	MUTATE : Process(enabled, random_number, input, chance_input, reduced_random_numberC, reduced_random_numberA, reduced_random_number1, reduced_random_number2,
-							reduced_random_number3, reduced_random_number4, mutation_amount, mutation_spot1, mutation_spot2, 
-							mutation_spot3, mutation_spot4)
+	MUTATE : Process(enabled, active, random_number, input, chance_input, reduced_random_numberC, reduced_random_numberA, reduced_random_number1, reduced_random_number2,
+							reduced_random_number3, reduced_random_number4, mutation_amount, mutation_spot1, mutation_spot2, mutation_spot3, mutation_spot4)
 	begin
 		
 		-- Mutation core will only be allowed to run whenever enabled
-		if enabled='1' then
+		-- Mutation will only accour when active
+		if (enabled = '1' and active = '1') then
 			
 			--Setting mutation_result to be equal to input first, then do eventual mutations
 			mutation_result <= input;
@@ -117,6 +118,10 @@ begin
 					mutation_result(mutation_spot4) <= not input(mutation_spot4);
 				end if;
 			end if;
+		-- If enabled, but not active, the mutation_core will still pass through the input,
+		-- but no mutation will happen at all
+		elsif enabled = '1' and active = '0' then
+			mutation_result <= input;
 		else
 			mutation_result <= (others => '0');
 		end if;

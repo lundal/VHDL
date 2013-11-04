@@ -34,7 +34,7 @@ entity crossover_toplevel is
     Port (
 				clk : in STD_LOGIC;
 				enabled : in STD_LOGIC;
-				control_input : in STD_LOGIC_VECTOR (1 downto 0);
+				control_input : in STD_LOGIC_VECTOR (2 downto 0);
 				random_number: in STD_LOGIC_VECTOR (O-1 downto 0);
 				parent1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				parent2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
@@ -91,11 +91,12 @@ architecture Behavioral of crossover_toplevel is
 	END COMPONENT;
 	
 	-- Multiplexer for choosing output from the selected crossover_core
-	COMPONENT multiplexer_triple
+	COMPONENT multiplexer_quadruple
 		PORT( sel : in  STD_LOGIC_VECTOR (1 downto 0);
            in0 : in  STD_LOGIC_VECTOR (N-1 downto 0);
            in1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 			  in2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
+			  in3 : in 	STD_LOGIC_VECTOR (N-1 downto 0);
            output : out  STD_LOGIC_VECTOR (N-1 downto 0));
 	END COMPONENT;
 	
@@ -167,52 +168,54 @@ begin
 		);
 	
 	-- Multiplexers used in choosing final output, based on which crossover_core is active
-	mux1: multiplexer_triple PORT MAP(
+	mux1: multiplexer_quadruple PORT MAP(
 			sel => mux_control,
 			in0 => split_child1,
          in1 => doublesplit_child1,
 			in2 => xor_child1,
+			in3 => parent1,
          output => child1
 		);
 		
-	mux2: multiplexer_triple PORT MAP(
+	mux2: multiplexer_quadruple PORT MAP(
 			sel => mux_control,
 			in0 => split_child2,
          in1 => doublesplit_child2,
 			in2 => xor_child2,
+			in3 => parent2,
          output => child2
 	);
 		
 	random_control_input(1 downto 0) <= random_number(O-1 downto O-2);
 	
-	CROSSOVER: Process (enabled, control_input, random_number, split_enabled, doublesplit_enabled, xor_enabled, mux_control)
+	CROSSOVER: Process (enabled, control_input, random_number, random_control_input, split_enabled, doublesplit_enabled, xor_enabled, mux_control)
 	begin
 		if enabled = '1' then
 			
 			CASE control_input IS
 				-- Option 1: Use core_split
-				WHEN "00" =>
+				WHEN "000" =>
 					split_enabled <= '1';
 					doublesplit_enabled <= '0';
 					xor_enabled <= '0';
 					mux_control <= "00";
 					
 				-- Option 2: Use core_doublesplit
-				WHEN "01" =>
+				WHEN "001" =>
 					split_enabled <= '0';
 					doublesplit_enabled <= '1';
 					xor_enabled <= '0';
 					mux_control <= "01";
 				
 				-- Option 3: Use core_xor
-				WHEN "10" =>
+				WHEN "010" =>
 					split_enabled <= '0';
 					doublesplit_enabled <= '0';
 					xor_enabled <= '1';
 					mux_control <= "10";
 			
 				-- Option 4: Randomize the use, based on the 2 first bits of the random_number
-				WHEN "11" =>
+				WHEN "011" =>
 					CASE random_control_input IS
 						
 						-- Random choices 1 and 2: core_split
@@ -244,9 +247,14 @@ begin
 						WHEN OTHERS  =>
 							--Absolutely nothing more
 					END CASE;
-					
+				
+				-- Option 5: No crossover whatsoever. This is chosen when most significant bit
+				-- from control_input is 1.
 				WHEN OTHERS =>
-					-- Absolutely nothing more
+					split_enabled <= '0';
+					doublesplit_enabled <= '0';
+					xor_enabled <= '0';
+					mux_control <= "11";
 				
 			END CASE;
 		else

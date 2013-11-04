@@ -43,7 +43,7 @@ ARCHITECTURE behavior OF crossover_toplevel_tb IS
     PORT(
          clk : IN  std_logic;
          enabled : IN  std_logic;
-         control_input : IN  std_logic_vector(1 downto 0);
+         control_input : IN  std_logic_vector(2 downto 0);
          random_number : IN  std_logic_vector(31 downto 0);
          parent1 : IN  std_logic_vector(63 downto 0);
          parent2 : IN  std_logic_vector(63 downto 0);
@@ -56,7 +56,7 @@ ARCHITECTURE behavior OF crossover_toplevel_tb IS
    --Inputs
    signal clk : std_logic := '0';
    signal enabled : std_logic := '0';
-   signal control_input : std_logic_vector(1 downto 0) := (others => '0');
+   signal control_input : std_logic_vector(2 downto 0) := (others => '0');
    signal random_number : std_logic_vector(31 downto 0) := (others => '0');
    signal parent1 : std_logic_vector(63 downto 0) := (others => '0');
    signal parent2 : std_logic_vector(63 downto 0) := (others => '0');
@@ -113,19 +113,19 @@ BEGIN
 		random_number <= "00000000000000000000010111110001";
 		
 		-- Testing selection of core_split first: Setting control_input to "00"
-		control_input <= "00";
+		control_input <= "000";
 		
 		wait for 40 ns;
 		
 		-- Now testing selection of core_doublesplit first: Setting control_input to "01"
-		control_input <="01";
+		control_input <="001";
 		
 		wait for 40 ns;
 		
 		-- Now testing selection of core_xor
-		control_input <="10";
+		control_input <="010";
 		
-		wait for 45 ns;
+		wait for 46 ns;
 		
 		-- Changing input on random_number, to verify that random_number is set to random_number_ff during next cycle
 		-- This should cause both random_number_inputs to be different at all times on the final implementation, 
@@ -138,7 +138,7 @@ BEGIN
 		-- Not testing selecting random use of cores:
 		-- First two most significant bits in random_number is "00", so expected core is core_split
 		
-		control_input <= "11";
+		control_input <= "011";
 		
 		wait for 40 ns;
 		
@@ -168,6 +168,26 @@ BEGIN
 		-- Enabling
 		
 		enabled <= '1';
+		
+		wait for 40 ns;
+		
+		-- Setting control input to any value "1XX" should disbale crossover altogether.
+		-- Output is then same as parents
+		control_input <= "100";
+		
+		wait for 10 ns;
+		
+		control_input <= "101";
+		
+		wait for 10 ns;
+		
+		control_input <= "110";
+		
+		wait for 10 ns;
+		
+		control_input <= "111";
+		
+		wait for 10 ns;
 		
       wait;
    end process;
