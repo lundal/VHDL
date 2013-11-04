@@ -22,6 +22,9 @@ entity Distributor is
         ADDR_B : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
         STORE  : in  STD_LOGIC
     );
+    -- Assign clock signal
+    attribute CLOCK_SIGNAL : string;
+    attribute CLOCK_SIGNAL of STORE : signal is "no";
 end Distributor;
 
 architecture Behavioral of Distributor is

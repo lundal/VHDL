@@ -30,6 +30,9 @@ entity SelectionCore2 is
         DONE   : out STD_LOGIC;
         CLK    : in  STD_LOGIC
     );
+    -- Assign clock signal
+    attribute CLOCK_SIGNAL : string;
+    attribute CLOCK_SIGNAL of CLK : signal is "yes";
 end SelectionCore2;
 
 architecture Behavioral of SelectionCore2 is

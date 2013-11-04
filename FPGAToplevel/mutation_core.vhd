@@ -42,6 +42,13 @@ entity mutation_core is
 				input : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				chance_input : in STD_LOGIC_VECTOR(P-1 downto 0);
 				output : out  STD_LOGIC_VECTOR (N-1 downto 0));
+    -- Assign clock signal
+    attribute CLOCK_SIGNAL : string;
+    attribute CLOCK_SIGNAL of enabled       : signal is "no";
+    attribute CLOCK_SIGNAL of active        : signal is "no";
+    attribute CLOCK_SIGNAL of random_number : signal is "no";
+    attribute CLOCK_SIGNAL of input         : signal is "no";
+    attribute CLOCK_SIGNAL of chance_input  : signal is "no";
 end mutation_core;
 
 architecture Behavioral of mutation_core is

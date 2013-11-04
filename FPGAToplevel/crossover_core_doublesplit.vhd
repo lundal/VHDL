@@ -11,6 +11,12 @@ entity crossover_core_doublesplit is
 				parent2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
 				child1 : out  STD_LOGIC_VECTOR (N-1 downto 0);
 				child2 : out  STD_LOGIC_VECTOR (N-1 downto 0));
+    -- Assign clock signal
+    attribute CLOCK_SIGNAL : string;
+    attribute CLOCK_SIGNAL of enabled       : signal is "no";
+    attribute CLOCK_SIGNAL of random_number : signal is "no";
+    attribute CLOCK_SIGNAL of parent1       : signal is "no";
+    attribute CLOCK_SIGNAL of parent2       : signal is "no";
 end crossover_core_doublesplit;
 
 architecture Behavioral of crossover_core_doublesplit is

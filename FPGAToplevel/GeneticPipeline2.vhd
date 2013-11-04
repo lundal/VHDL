@@ -26,6 +26,9 @@ entity GeneticPipeline2 is
         DATA_OUT  : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         CLK	      : in  STD_LOGIC
     );
+    -- Assign clock signal
+    attribute CLOCK_SIGNAL : string;
+    attribute CLOCK_SIGNAL of CLK : signal is "yes";
 end GeneticPipeline2;
 
 architecture Behavioral of GeneticPipeline2 is
