@@ -193,11 +193,11 @@ architecture Behavioral of GeneticPipeline2 is
     signal selector_1_done : STD_LOGIC;
     
     -- Settings signals
-    signal settings           : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal settings_gene_ctrl : STD_LOGIC;
-    signal settings_selection : STD_LOGIC_VECTOR(settings_width_selection-1 downto 0);
-    signal settings_crossover : STD_LOGIC_VECTOR(settings_width_crossover-1 downto 0);
+    signal settings           : STD_LOGIC_VECTOR(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0);
     signal settings_mutation  : STD_LOGIC_VECTOR(settings_width_mutation-1 downto 0);
+    signal settings_crossover : STD_LOGIC_VECTOR(settings_width_crossover-1 downto 0);
+    signal settings_selection : STD_LOGIC_VECTOR(settings_width_selection-1 downto 0);
+    signal settings_gene_ctrl : STD_LOGIC;
     signal settings_we        : STD_LOGIC;
     
     -- Gene signals
@@ -386,11 +386,11 @@ begin
     FF_SETTINGS : process(CLK, DATA_IN, settings_we)
     begin
         if rising_edge(CLK) and settings_we = '1' then
-            settings <= DATA_IN;
+            settings <= DATA_IN(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0);
         end if;
     end process;
     
-    -- Decode settings signal (TODO)
+    -- Decode settings signal
     settings_mutation  <= settings(settings_width_mutation - 1 downto 0);
     settings_crossover <= settings(settings_width_crossover + settings_width_mutation - 1 downto settings_width_mutation);
     settings_selection <= settings(settings_width_selection + settings_width_crossover + settings_width_mutation - 1 downto settings_width_crossover + settings_width_mutation);
@@ -412,6 +412,10 @@ begin
     rated_a_in <= DATA_IN;
     rated_b_in <= DATA_IN;
     DATA_OUT <= unrated_a_out;
+    
+    -- Circumvent crossover
+    child_0 <= parent_0;
+    child_1 <= parent_1;
     
 end Behavioral;
 
