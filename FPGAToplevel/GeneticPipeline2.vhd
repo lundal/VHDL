@@ -163,6 +163,19 @@ architecture Behavioral of GeneticPipeline2 is
         );
     end component;
     
+    component PRNG is
+        generic (
+            Width : integer := 32
+        );
+        port (
+           clk     : in  STD_LOGIC;
+           reset   : in  STD_LOGIC;
+           load    : in  STD_LOGIC;
+           seed    : in  STD_LOGIC_VECTOR (Width-1 downto 0);
+           rnd_out : out STD_LOGIC_VECTOR (Width-1 downto 0)
+        );
+    end component;
+    
     -- Constants
     constant settings_width_selection : integer := 5;
     constant settings_width_crossover : integer := 3;
@@ -414,6 +427,18 @@ begin
         input         => child_1,
         chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
         output        => unrated_b_in
+    );
+    
+    PRNG_UNIT : PRNG
+    generic map (
+        Width => RANDOM_WIDTH
+    )
+    port  map(
+       reset   => '0',
+       load    => '0',
+       seed    => (others => '0'),
+       rnd_out => random,
+       clk     => CLK
     );
     
     FF_SETTINGS : process(CLK, DATA_IN, settings_we)
