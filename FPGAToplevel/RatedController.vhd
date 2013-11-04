@@ -85,7 +85,7 @@ begin
 		end if;
 	end process;
     
-	STATE_MACHINE : process(state)
+	STATE_MACHINE : process(state, ack_int)
 	begin
         case state is
             when Choose =>
