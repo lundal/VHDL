@@ -1,12 +1,11 @@
 ----------------------------------------------------------------------------------
 -- Engineer: Per Thomas Lundal
 -- Project:  Galapagos
--- Created:  2013-11-03 12:12
--- Tested:   Never
+-- Created:  2013-11-04 13:17
+-- Tested:   NA
 --
 -- Description:
--- Outputs two consecutive addresses while STORE is high
--- Increments them each time STORE goes low
+-- Test bench for Distributor
 ----------------------------------------------------------------------------------
 
 library IEEE;

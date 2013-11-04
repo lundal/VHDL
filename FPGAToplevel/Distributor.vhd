@@ -2,7 +2,7 @@
 -- Engineer: Per Thomas Lundal
 -- Project:  Galapagos
 -- Created:  2013-11-03 12:12
--- Tested:   Never
+-- Tested:   2013-11-04 13:17
 --
 -- Description:
 -- Outputs two consecutive addresses while STORE is high
