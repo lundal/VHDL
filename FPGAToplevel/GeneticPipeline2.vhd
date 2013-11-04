@@ -13,9 +13,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity GeneticPipeline2 is
     generic (
-        NUM_PROC   : natural := 4;
-        ADDR_WIDTH : natural := 9;
-        DATA_WIDTH : natural := 64
+        NUM_PROC     : natural := 4;
+        ADDR_WIDTH   : natural := 9;
+        DATA_WIDTH   : natural := 64;
+        RANDOM_WIDTH : natural := 32
     );
     port (
         REQUEST_0 : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
@@ -77,6 +78,24 @@ architecture Behavioral of GeneticPipeline2 is
         );
     end component;
     
+    component RatedController is
+        generic (
+            NUM_PROC   : natural := 4
+        );
+        port (
+            REQUEST_SET  : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+            REQUEST_PROC : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+            REQUEST_GENE : in  STD_LOGIC;
+            ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+            ACK_GENE     : out STD_LOGIC;
+            STORE        : out STD_LOGIC;
+            WRITE_FIT    : out STD_LOGIC;
+            WRITE_GENE   : out STD_LOGIC;
+            WRITE_SET    : out STD_LOGIC;
+            CLK	         : in  STD_LOGIC
+        );
+    end component;
+    
     component UnratedController is
         generic (
             NUM_PROC   : natural := 4;
@@ -91,6 +110,30 @@ architecture Behavioral of GeneticPipeline2 is
             CLK	         : in  STD_LOGIC
         );
     end component;
+    
+    component SelectionCore2 is
+        generic(
+            ADDR_SIZE    : natural := 9;
+            DATA_SIZE    : natural := 64;
+            RANDOM_SIZE  : natural := 32;
+            COUNTER_SIZE : natural := 4
+        );
+        port(
+            ADDR   : out STD_LOGIC_VECTOR(ADDR_SIZE-1 downto 0);
+            RANDOM : in  STD_LOGIC_VECTOR(RANDOM_SIZE-1 downto 0);
+            DATA   : in  STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
+            BEST   : out STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
+            NUMBER : in  STD_LOGIC_VECTOR(COUNTER_SIZE-1 downto 0);
+            ENABLE : in  STD_LOGIC;
+            DONE   : out STD_LOGIC;
+            CLK    : in  STD_LOGIC
+        );
+    end component;
+    
+    -- Constants
+    constant settings_width_selection : integer := 5;
+    constant settings_width_crossover : integer := 5;
+    constant settings_width_mutation  : integer := 5;
     
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -119,6 +162,7 @@ architecture Behavioral of GeneticPipeline2 is
     -- Request/Ack signals
     signal request_unrated_proc : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal request_unrated_gene : STD_LOGIC;
+    signal request_rated_set    : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal request_rated_proc   : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal request_rated_gene   : STD_LOGIC;
     signal ack_unrated_proc     : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
@@ -133,10 +177,21 @@ architecture Behavioral of GeneticPipeline2 is
     signal selector_1_done : STD_LOGIC;
     
     -- Settings signals
+    signal settings           : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal settings_gene_ctrl : STD_LOGIC;
-    signal settings_selector  : STD_LOGIC;
-    signal settings_crossover : STD_LOGIC;
-    signal settings_mutation  : STD_LOGIC;
+    signal settings_selection : STD_LOGIC_VECTOR(settings_width_selection-1 downto 0);
+    signal settings_crossover : STD_LOGIC_VECTOR(settings_width_crossover-1 downto 0);
+    signal settings_mutation  : STD_LOGIC_VECTOR(settings_width_mutation-1 downto 0);
+    signal settings_we        : STD_LOGIC;
+    
+    -- Gene signals
+    signal parent_0 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal parent_1 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal child_0  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    
+    -- Others
+    signal random : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
     
 begin
     
@@ -215,6 +270,23 @@ begin
         CLK	        => CLK
     );
     
+    RATED_CTRL : RatedController
+    generic map (
+        NUM_PROC => NUM_PROC
+    )
+    port map (
+        REQUEST_SET  => request_rated_set,
+        REQUEST_PROC => request_rated_proc,
+        REQUEST_GENE => request_rated_gene,
+        ACK_PROC     => ack_rated_proc,
+        ACK_GENE     => ack_rated_gene,
+        STORE        => rated_store,
+        WRITE_FIT    => rated_a_we,
+        WRITE_GENE   => rated_b_we,
+        WRITE_SET    => settings_we,
+        CLK	         => CLK
+    );
+    
     UNRATED_CTRL : UnratedController
     generic map (
         NUM_PROC   => NUM_PROC,
@@ -228,6 +300,63 @@ begin
         ADDR         => unrated_a_addr,
         CLK	         => CLK
     );
+    
+    SELECTOR_0 : SelectionCore2
+    generic map (
+        ADDR_SIZE    => ADDR_WIDTH,
+        DATA_SIZE    => DATA_WIDTH,
+        RANDOM_SIZE  => RANDOM_WIDTH,
+        COUNTER_SIZE => settings_width_selection
+    )
+    port map (
+        ADDR   => rated_a_addr,
+        RANDOM => random,
+        DATA   => rated_a_out,
+        BEST   => parent_0,
+        NUMBER => settings_selection,
+        ENABLE => selector_0_run,
+        DONE   => selector_0_done,
+        CLK    => CLK
+    );
+    
+    SELECTOR_1 : SelectionCore2
+    generic map (
+        ADDR_SIZE    => ADDR_WIDTH,
+        DATA_SIZE    => DATA_WIDTH,
+        RANDOM_SIZE  => RANDOM_WIDTH,
+        COUNTER_SIZE => settings_width_selection
+    )
+    port map (
+        ADDR   => rated_b_addr,
+        RANDOM => random,
+        DATA   => rated_b_out,
+        BEST   => parent_1,
+        NUMBER => settings_selection,
+        ENABLE => selector_1_run,
+        DONE   => selector_1_done,
+        CLK    => CLK
+    );
+    
+    FF_SETTINGS : process(CLK, DATA_IN, settings_we)
+    begin
+        if rising_edge(CLK) and settings_we = '1' then
+            settings <= DATA_IN;
+        end if;
+    end process;
+    
+    -- Decode settings signal (TODO)
+    settings_gene_ctrl <= settings(DATA_WIDTH-1);
+    settings_mutation  <= settings(settings_width_mutation - 1 downto 0);
+    settings_crossover <= settings(settings_width_crossover + settings_width_mutation - 1 downto settings_width_mutation);
+    settings_selection <= settings(settings_width_selection + settings_width_crossover + settings_width_mutation - 1 downto settings_width_crossover + settings_width_mutation);
+    
+    -- Decode request signals
+    request_unrated_proc <= not REQUEST_0 and     REQUEST_1; -- 01
+    request_rated_proc   <=     REQUEST_0 and not REQUEST_1; -- 10
+    request_rated_set    <=     REQUEST_0 and     REQUEST_1; -- 11
+    
+    -- Combine ack signals
+    ACK <= ack_rated_proc or ack_unrated_proc;
     
 end Behavioral;
 
