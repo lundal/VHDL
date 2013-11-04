@@ -130,10 +130,26 @@ architecture Behavioral of GeneticPipeline2 is
         );
     end component;
     
+    component mutation_core is
+        generic (
+            N : integer :=64;
+            O : integer :=32;
+            P : integer :=6
+        );
+        port (
+            enabled       : in  STD_LOGIC;
+            active        : in  STD_LOGIC;
+            random_number : in  STD_LOGIC_VECTOR(O-1 downto 0);
+            input         : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            chance_input  : in  STD_LOGIC_VECTOR(P-1 downto 0);
+            output        : out STD_LOGIC_VECTOR(N-1 downto 0)
+        );
+    end component;
+    
     -- Constants
     constant settings_width_selection : integer := 5;
     constant settings_width_crossover : integer := 5;
-    constant settings_width_mutation  : integer := 5;
+    constant settings_width_mutation  : integer := 7;
     
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
@@ -337,6 +353,36 @@ begin
         CLK    => CLK
     );
     
+    MUTATOR_0 : mutation_core
+    generic map (
+        N => DATA_WIDTH,
+        O => RANDOM_WIDTH,
+        P => settings_width_mutation-1
+    )
+    port map (
+        enabled       => '1',
+        active        => settings_mutation(settings_width_mutation-1),
+        random_number => random,
+        input         => child_0,
+        chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
+        output        => unrated_a_in
+    );
+    
+    MUTATOR_1 : mutation_core
+    generic map (
+        N => DATA_WIDTH,
+        O => RANDOM_WIDTH,
+        P => settings_width_mutation-1
+    )
+    port map (
+        enabled       => '1',
+        active        => settings_mutation(settings_width_mutation-1),
+        random_number => random,
+        input         => child_1,
+        chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
+        output        => unrated_b_in
+    );
+    
     FF_SETTINGS : process(CLK, DATA_IN, settings_we)
     begin
         if rising_edge(CLK) and settings_we = '1' then
@@ -345,10 +391,10 @@ begin
     end process;
     
     -- Decode settings signal (TODO)
-    settings_gene_ctrl <= settings(DATA_WIDTH-1);
     settings_mutation  <= settings(settings_width_mutation - 1 downto 0);
     settings_crossover <= settings(settings_width_crossover + settings_width_mutation - 1 downto settings_width_mutation);
     settings_selection <= settings(settings_width_selection + settings_width_crossover + settings_width_mutation - 1 downto settings_width_crossover + settings_width_mutation);
+    settings_gene_ctrl <= settings(settings_width_selection + settings_width_crossover + settings_width_mutation);
     
     -- Decode request signals
     request_unrated_proc <= not REQUEST_0 and     REQUEST_1; -- 01
