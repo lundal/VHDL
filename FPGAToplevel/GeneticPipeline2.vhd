@@ -136,21 +136,21 @@ architecture Behavioral of GeneticPipeline2 is
     constant settings_width_mutation  : integer := 5;
     
     -- Rated Pool signals
-    signal rated_a_addr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal rated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal rated_a_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal rated_a_we   : STD_LOGIC;
-    signal rated_b_addr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal rated_b_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal rated_b_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal rated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal rated_b_we   : STD_LOGIC;
     
     -- Unrated Pool signals
-    signal unrated_a_addr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal unrated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal unrated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal unrated_a_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal unrated_a_we   : STD_LOGIC;
-    signal unrated_b_addr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal unrated_b_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal unrated_b_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal unrated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal unrated_b_we   : STD_LOGIC;
@@ -357,6 +357,15 @@ begin
     
     -- Combine ack signals
     ACK <= ack_rated_proc or ack_unrated_proc;
+    
+    -- Map unrated write signals
+    unrated_a_we <= unrated_store;
+    unrated_b_we <= unrated_store;
+    
+    -- Map DATA I/O
+    rated_a_in <= DATA_IN;
+    rated_b_in <= DATA_IN;
+    DATA_OUT <= unrated_a_out;
     
 end Behavioral;
 
