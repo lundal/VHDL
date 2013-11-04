@@ -70,15 +70,16 @@ begin
     
     CLOCK_SYNTHESIS : process
     begin
-        clock <= '0';
-        wait for clock_period/2;
         clock <= '1';
+        wait for clock_period/2;
+        clock <= '0';
         wait for clock_period/2;
     end process;
     
     STIMULUS : process
     begin
         -- Hold reset state
+        wait for 3 ns;
         wait for clock_period*10;
         
         -- Enable
