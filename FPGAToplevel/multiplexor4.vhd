@@ -19,6 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.CONSTANTS.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -30,12 +31,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity multiplexor4 is
-    Port ( sel : in  STD_LOGIC_VECTOR (1 downto 0);
-           in0 : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           in1 : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           in2 : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           in3 : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           output : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0));
+    Port ( sel 	: in  STD_LOGIC_VECTOR (1 downto 0);
+           in0 	: in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           in1 	: in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           in2 	: in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           in3 	: in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           output : out  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0));
 end multiplexor4;
 
 architecture Behavioral of multiplexor4 is
