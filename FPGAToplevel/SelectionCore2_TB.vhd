@@ -43,12 +43,11 @@ ARCHITECTURE behavior OF SelectionCore2_TB IS
         generic(
             ADDR_SIZE    : natural := 9;
             DATA_SIZE    : natural := 64;
-            RANDOM_SIZE  : natural := 32;
             COUNTER_SIZE : natural := 4
         );
         port(
             ADDR   : out STD_LOGIC_VECTOR(ADDR_SIZE-1 downto 0);
-            RANDOM : in  STD_LOGIC_VECTOR(RANDOM_SIZE-1 downto 0);
+            RANDOM : in  STD_LOGIC_VECTOR(ADDR_SIZE-2 downto 0);
             DATA   : in  STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
             BEST   : out STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
             NUMBER : in  STD_LOGIC_VECTOR(COUNTER_SIZE-1 downto 0);
@@ -82,7 +81,7 @@ ARCHITECTURE behavior OF SelectionCore2_TB IS
 	end component;
     
     --Inputs
-    signal RANDOM : std_logic_vector(9-1 downto 0) := (others => '0');
+    signal RANDOM : std_logic_vector(9-2 downto 0) := (others => '0');
     signal DATA   : std_logic_vector(32-1 downto 0) := (others => '0');
     signal NUMBER : std_logic_vector(4-1 downto 0) := (others => '0');
     signal ENABLE : std_logic := '0';
@@ -115,7 +114,6 @@ BEGIN
     generic map(
         ADDR_SIZE    => 9,
         DATA_SIZE    => 32,
-        RANDOM_SIZE  => 9,
         COUNTER_SIZE => 4
     )
     PORT MAP (
@@ -288,22 +286,22 @@ BEGIN
         ENABLE <= '1';
         
         -- Generate "random numbers"
-        RANDOM <= "000011010"; -- 2
+        RANDOM <= "00001101"; -- 2
         wait for CLK_period;
-        RANDOM <= "000000110";
+        RANDOM <= "00000011";
         wait for CLK_period;
             ENABLE <= '0';-- Tell Selection core to stop when done
-        RANDOM <= "000001110"; -- 4
+        RANDOM <= "00000111"; -- 4
         wait for CLK_period;
-        RANDOM <= "000000010";
+        RANDOM <= "00000001";
         wait for CLK_period;
-        RANDOM <= "000011100"; -- 1
+        RANDOM <= "00001110"; -- 1
         wait for CLK_period;
-        RANDOM <= "000010010"; -- 3
+        RANDOM <= "00001001"; -- 3
         wait for CLK_period;
-        RANDOM <= "000000100";
+        RANDOM <= "00000010";
         wait for CLK_period;
-        RANDOM <= "000001000"; -- 5
+        RANDOM <= "00000100"; -- 5
         wait for CLK_period;
         
         -- Since Number = 4, it should be done by now
@@ -314,22 +312,22 @@ BEGIN
         ENABLE <= '1';
         
         -- Generate "random numbers"
-        RANDOM <= "000000010"; -- 8
+        RANDOM <= "00000001"; -- 8
         wait for CLK_period;
-        RANDOM <= "000000110"; -- 7
+        RANDOM <= "00000011"; -- 7
         wait for CLK_period;
             ENABLE <= '0';-- Tell Selection core to stop when done
-        RANDOM <= "000001010"; -- 6
+        RANDOM <= "00000101"; -- 6
         wait for CLK_period;
-        RANDOM <= "000001100"; -- 5
+        RANDOM <= "00000110"; -- 5
         wait for CLK_period;
-        RANDOM <= "000010010"; -- 4
+        RANDOM <= "00001001"; -- 4
         wait for CLK_period;
-        RANDOM <= "000010100"; -- 3
+        RANDOM <= "00001010"; -- 3
         wait for CLK_period;
-        RANDOM <= "000011000"; -- 2
+        RANDOM <= "00001100"; -- 2
         wait for CLK_period;
-        RANDOM <= "000011110"; -- 1
+        RANDOM <= "00001111"; -- 1
         wait for CLK_period;
         
         -- Since Number = 4, it should be done by now
