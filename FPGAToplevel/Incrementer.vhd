@@ -12,7 +12,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity IncrementerDouble is
+entity Incrementer is
     generic (
         NUM_WIDTH : natural := 4
     );
@@ -20,9 +20,9 @@ entity IncrementerDouble is
         NUM       : out STD_LOGIC_VECTOR(NUM_WIDTH-1 downto 0);
         INCREMENT : in  STD_LOGIC
     );
-end IncrementerDouble;
+end Incrementer;
 
-architecture Behavioral of IncrementerDouble is
+architecture Behavioral of Incrementer is
     
     signal counter : STD_LOGIC_VECTOR(NUM_WIDTH-1 downto 0) := (others => '0');
     
