@@ -118,12 +118,11 @@ architecture Behavioral of GeneticPipeline2 is
         generic(
             ADDR_SIZE    : natural := 9;
             DATA_SIZE    : natural := 64;
-            RANDOM_SIZE  : natural := 32;
             COUNTER_SIZE : natural := 4
         );
         port(
             ADDR   : out STD_LOGIC_VECTOR(ADDR_SIZE-1 downto 0);
-            RANDOM : in  STD_LOGIC_VECTOR(RANDOM_SIZE-1 downto 0);
+            RANDOM : in  STD_LOGIC_VECTOR(ADDR_SIZE-2 downto 0);
             DATA   : in  STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
             BEST   : out STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
             NUMBER : in  STD_LOGIC_VECTOR(COUNTER_SIZE-1 downto 0);
@@ -237,7 +236,8 @@ architecture Behavioral of GeneticPipeline2 is
     signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     
     -- Others
-    signal random : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
+    signal random           : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
+    signal random_selection : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
     
 begin
     
@@ -351,12 +351,11 @@ begin
     generic map (
         ADDR_SIZE    => ADDR_WIDTH,
         DATA_SIZE    => DATA_WIDTH,
-        RANDOM_SIZE  => RANDOM_WIDTH,
         COUNTER_SIZE => settings_width_selection
     )
     port map (
         ADDR   => rated_a_addr,
-        RANDOM => random,
+        RANDOM => random_selection,
         DATA   => rated_a_out,
         BEST   => parent_0,
         NUMBER => settings_selection,
@@ -369,12 +368,11 @@ begin
     generic map (
         ADDR_SIZE    => ADDR_WIDTH,
         DATA_SIZE    => DATA_WIDTH,
-        RANDOM_SIZE  => RANDOM_WIDTH,
         COUNTER_SIZE => settings_width_selection
     )
     port map (
         ADDR   => rated_b_addr,
-        RANDOM => random,
+        RANDOM => random_selection,
         DATA   => rated_b_out,
         BEST   => parent_1,
         NUMBER => settings_selection,
@@ -467,6 +465,9 @@ begin
     rated_a_in <= DATA_IN;
     rated_b_in <= DATA_IN;
     DATA_OUT <= unrated_a_out;
+    
+    -- Map randoms
+    random_selection <= random(ADDR_WIDTH-2 downto 0);
     
 end Behavioral;
 

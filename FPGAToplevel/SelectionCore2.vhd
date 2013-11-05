@@ -7,22 +7,20 @@
 -- Description:
 -- Compares NUMBER genes and outputs the best
 -- RANDOM is used to decide the genes that are compared
--- Assumes RANDOM_SIZE >= ADDR_SIZE
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity SelectionCore2 is
     generic(
         ADDR_SIZE    : natural := 9;
         DATA_SIZE    : natural := 64;
-        RANDOM_SIZE  : natural := 32;
         COUNTER_SIZE : natural := 4
     );
     port(
         ADDR   : out STD_LOGIC_VECTOR(ADDR_SIZE-1 downto 0);
-        RANDOM : in  STD_LOGIC_VECTOR(RANDOM_SIZE-1 downto 0);
+        RANDOM : in  STD_LOGIC_VECTOR(ADDR_SIZE-2 downto 0);
         DATA   : in  STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
         BEST   : out STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0);
         NUMBER : in  STD_LOGIC_VECTOR(COUNTER_SIZE-1 downto 0);
@@ -48,7 +46,7 @@ architecture Behavioral of SelectionCore2 is
     
     -- Internal signals
     signal Done_Int     : STD_LOGIC := '0';
-    signal Random_Int   : STD_LOGIC_VECTOR(RANDOM_SIZE-1 downto 0) := (others => '0');
+    signal Random_Int   : STD_LOGIC_VECTOR(ADDR_SIZE-2 downto 0) := (others => '0');
     
     -- Best signals
     signal BestGene     : STD_LOGIC_VECTOR(DATA_SIZE-1 downto 0) := (others => '0');
@@ -84,7 +82,7 @@ begin
                     end if;
                     
                     -- Increment Counter
-                    Counter <= Counter + '1';
+                    Counter <= STD_LOGIC_VECTOR(UNSIGNED(Counter) + "1");
                 
                 when Update =>
                     State <= Compare;
@@ -105,10 +103,13 @@ begin
                 if (ENABLE = '1') then
                     -- Fetch new addresses
                     Random_Int <= RANDOM;
-                    ADDR <= Random_Int(ADDR_SIZE-1 downto 1) & '0';
+                    ADDR <= Random_Int & '0';
                 else
                     -- Disconnect from pool
                     ADDR <= (others => 'Z');
+                    
+                    -- To reduce latches
+                    Random_Int <= Random_Int;
                 end if;
             
             when Compare =>
@@ -122,19 +123,25 @@ begin
                     
                     -- Disconnect from pool
                     ADDR <= (others => 'Z');
+                    
+                    -- To reduce latches
+                    Random_Int <= Random_Int;
                 elsif (Counter = (COUNTER_SIZE-1 downto 0 => '0') or Better = '1') then
                     StoreFitness <= '1';
                     Done_Int <= '0';
                     
                     -- Next address
-                    ADDR <= Random_Int(ADDR_SIZE-1 downto 1) & '1';
+                    ADDR <= Random_Int & '1';
+                    
+                    -- To reduce latches
+                    Random_Int <= Random_Int;
                 else
                     StoreFitness <= '0';
                     Done_Int <= '0';
                     
                     -- Fetch new addresses
                     Random_Int <= RANDOM;
-                    ADDR <= Random_Int(ADDR_SIZE-1 downto 1) & '0';
+                    ADDR <= Random_Int & '0';
                 end if;
             
             when Update =>
@@ -145,7 +152,7 @@ begin
                 
                 -- Fetch new addresses
                 Random_Int <= RANDOM;
-                ADDR <= Random_Int(ADDR_SIZE-1 downto 1) & '0';
+                ADDR <= Random_Int & '0';
             
         end case;
     end process;
