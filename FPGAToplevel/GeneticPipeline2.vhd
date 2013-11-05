@@ -230,7 +230,7 @@ architecture Behavioral of GeneticPipeline2 is
     signal selector_1_done : STD_LOGIC;
     
     -- Settings signals
-    signal settings           : STD_LOGIC_VECTOR(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0);
+    signal settings           : STD_LOGIC_VECTOR(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0) := (others => '0');
     signal settings_mutation  : STD_LOGIC_VECTOR(settings_width_mutation-1 downto 0);
     signal settings_crossover : STD_LOGIC_VECTOR(settings_width_crossover-1 downto 0);
     signal settings_selection : STD_LOGIC_VECTOR(settings_width_selection-1 downto 0);

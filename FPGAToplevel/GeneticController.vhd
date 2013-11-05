@@ -65,8 +65,8 @@ begin
                 STORE <= '0';
                 UNRATED_RQ <= '0';
                 
-                -- Request rated pool if enabled (stop signal when given ack)
-                if (ENABLE = '1' and RATED_ACK = '0') then
+                -- Request rated pool if enabled
+                if (ENABLE = '1') then
                     RATED_RQ <= '1';
                 else
                     RATED_RQ <= '0';
@@ -90,11 +90,11 @@ begin
                 SEL_0_RUN <= '0';
                 SEL_1_RUN <= '0';
                 
-                -- Request unrated pool if done
+                -- Hold request while not done
                 if (SEL_0_DONE = '1' and SEL_1_DONE = '1') then
-                    RATED_RQ <= '1';
-                else
                     RATED_RQ <= '0';
+                else
+                    RATED_RQ <= '1';
                 end if;
                 
             when Save =>
