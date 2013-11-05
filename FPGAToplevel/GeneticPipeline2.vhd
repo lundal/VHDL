@@ -54,14 +54,24 @@ architecture Behavioral of GeneticPipeline2 is
         );
     end component;
     
-    component Distributor is
+    component Incrementer is
         generic (
-            ADDR_WIDTH : natural := 9
+            NUM_WIDTH : natural := 4
         );
         port (
-            ADDR_A : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            ADDR_B : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            STORE  : in  STD_LOGIC
+            NUM       : out STD_LOGIC_VECTOR(NUM_WIDTH-1 downto 0);
+            INCREMENT : in  STD_LOGIC
+        );
+    end component;
+    
+    component IncrementerDouble is
+        generic (
+            NUM_WIDTH : natural := 4
+        );
+        port (
+            NUM_A     : out STD_LOGIC_VECTOR(NUM_WIDTH-1 downto 0);
+            NUM_B     : out STD_LOGIC_VECTOR(NUM_WIDTH-1 downto 0);
+            INCREMENT : in  STD_LOGIC
         );
     end component;
     
@@ -91,7 +101,7 @@ architecture Behavioral of GeneticPipeline2 is
             REQUEST_GENE : in  STD_LOGIC;
             ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
             ACK_GENE     : out STD_LOGIC;
-            STORE        : out STD_LOGIC;
+            INCREMENT    : out STD_LOGIC;
             WRITE_FIT    : out STD_LOGIC;
             WRITE_GENE   : out STD_LOGIC;
             WRITE_SET    : out STD_LOGIC;
@@ -101,15 +111,14 @@ architecture Behavioral of GeneticPipeline2 is
     
     component UnratedController is
         generic (
-            NUM_PROC   : natural := 4;
-            ADDR_WIDTH : natural := 9
+            NUM_PROC   : natural := 4
         );
         port (
             REQUEST_PROC : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
             REQUEST_GENE : in  STD_LOGIC;
             ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
             ACK_GENE     : out STD_LOGIC;
-            ADDR         : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+            INCREMENT    : out STD_LOGIC;
             CLK	         : in  STD_LOGIC
         );
     end component;
@@ -200,10 +209,6 @@ architecture Behavioral of GeneticPipeline2 is
     signal unrated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal unrated_b_we   : STD_LOGIC;
     
-    -- Distributor signals
-    signal rated_store   : STD_LOGIC := '0';
-    signal unrated_store : STD_LOGIC := '0';
-    
     -- Request/Ack signals
     signal request_unrated_proc : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal request_unrated_gene : STD_LOGIC;
@@ -216,8 +221,10 @@ architecture Behavioral of GeneticPipeline2 is
     signal ack_rated_gene       : STD_LOGIC;
     
     -- Selection Core signals
+    signal selector_0_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal selector_0_run  : STD_LOGIC;
     signal selector_0_done : STD_LOGIC;
+    signal selector_1_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal selector_1_run  : STD_LOGIC;
     signal selector_1_done : STD_LOGIC;
     
@@ -239,6 +246,15 @@ architecture Behavioral of GeneticPipeline2 is
     signal random           : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
     signal random_selection : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
     
+    -- Incrementer signals
+    signal inc_gene      : STD_LOGIC := '0';
+    signal inc_gene_a    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_gene_b    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_rated     : STD_LOGIC := '0';
+    signal inc_rated_a   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_rated_b   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_unrated   : STD_LOGIC := '0';
+    signal inc_unrated_a : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
 begin
     
     RATED_POOL : BRAM_TDP_WIDE
@@ -281,24 +297,33 @@ begin
         CLK	   => CLK
     );
     
-    DIST_RATED : Distributor
+    INCREMENTER_GENE : IncrementerDouble
     generic map(
-        ADDR_WIDTH => ADDR_WIDTH
+        NUM_WIDTH => ADDR_WIDTH
     )
     port map(
-        ADDR_A => rated_a_addr,
-        ADDR_B => rated_b_addr,
-        STORE  => rated_store
+        NUM_A     => inc_gene_a,
+        NUM_B     => inc_gene_b,
+        INCREMENT => inc_gene
     );
     
-    DIST_UNRATED : Distributor
+    INCREMENTER_RATED : IncrementerDouble
     generic map(
-        ADDR_WIDTH => ADDR_WIDTH
+        NUM_WIDTH => ADDR_WIDTH
     )
     port map(
-        ADDR_A => unrated_a_addr,
-        ADDR_B => unrated_b_addr,
-        STORE  => unrated_store
+        NUM_A     => inc_rated_a,
+        NUM_B     => inc_rated_b,
+        INCREMENT => inc_rated
+    );
+    
+    INCREMENTER_UNRATED : Incrementer
+    generic map(
+        NUM_WIDTH => ADDR_WIDTH
+    )
+    port map(
+        NUM       => inc_unrated_a,
+        INCREMENT => inc_unrated
     );
     
     GENE_CTRL : GeneticController
@@ -311,7 +336,7 @@ begin
         SEL_0_DONE  => selector_0_done,
         SEL_1_RUN   => selector_1_run,
         SEL_1_DONE  => selector_1_done,
-        STORE       => unrated_store,
+        STORE       => inc_gene,
         ENABLE      => settings_gene_ctrl,
         CLK	        => CLK
     );
@@ -326,7 +351,7 @@ begin
         REQUEST_GENE => request_rated_gene,
         ACK_PROC     => ack_rated_proc,
         ACK_GENE     => ack_rated_gene,
-        STORE        => rated_store,
+        INCREMENT    => inc_rated,
         WRITE_FIT    => rated_a_we,
         WRITE_GENE   => rated_b_we,
         WRITE_SET    => settings_we,
@@ -335,15 +360,14 @@ begin
     
     UNRATED_CTRL : UnratedController
     generic map (
-        NUM_PROC   => NUM_PROC,
-        ADDR_WIDTH => ADDR_WIDTH
+        NUM_PROC   => NUM_PROC
     )
     port map (
         REQUEST_PROC => request_unrated_proc,
         REQUEST_GENE => request_unrated_gene,
         ACK_PROC     => ack_unrated_proc,
         ACK_GENE     => ack_unrated_gene,
-        ADDR         => unrated_a_addr,
+        INCREMENT    => inc_unrated,
         CLK	         => CLK
     );
     
@@ -354,7 +378,7 @@ begin
         COUNTER_SIZE => settings_width_selection
     )
     port map (
-        ADDR   => rated_a_addr,
+        ADDR   => selector_0_addr,
         RANDOM => random_selection,
         DATA   => rated_a_out,
         BEST   => parent_0,
@@ -371,7 +395,7 @@ begin
         COUNTER_SIZE => settings_width_selection
     )
     port map (
-        ADDR   => rated_b_addr,
+        ADDR   => selector_1_addr,
         RANDOM => random_selection,
         DATA   => rated_b_out,
         BEST   => parent_1,
@@ -458,8 +482,8 @@ begin
     ACK <= ack_rated_proc or ack_unrated_proc;
     
     -- Map unrated write signals
-    unrated_a_we <= unrated_store;
-    unrated_b_we <= unrated_store;
+    unrated_a_we <= inc_gene;
+    unrated_b_we <= inc_gene;
     
     -- Map DATA I/O
     rated_a_in <= DATA_IN;
@@ -468,6 +492,12 @@ begin
     
     -- Map randoms
     random_selection <= random(ADDR_WIDTH-2 downto 0);
+    
+    -- Pool address muxes
+    rated_a_addr <= inc_rated_a when rated_a_we = '1' or rated_b_we = '1' else selector_0_addr;
+    rated_b_addr <= inc_rated_b when rated_a_we = '1'  or rated_b_we = '1'  else selector_1_addr;
+    unrated_a_addr <= inc_gene_a when unrated_a_we = '1'  or unrated_b_we = '1'  else inc_unrated_a;
+    unrated_b_addr <= inc_gene_b;
     
 end Behavioral;
 
