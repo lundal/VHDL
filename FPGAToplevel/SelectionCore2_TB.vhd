@@ -1,36 +1,5 @@
-                            --------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   14:46:59 10/31/2013
--- Design Name:   
--- Module Name:   C:/Users/perthol/VHDL/FPGAToplevel/SelectionCore2_TB.vhd
--- Project Name:  FPGAToplevel
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: SelectionCore2
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
  
 ENTITY SelectionCore2_TB IS
 END SelectionCore2_TB;
@@ -63,7 +32,7 @@ ARCHITECTURE behavior OF SelectionCore2_TB IS
 			DATA_WIDTH : natural := 32;
 			WE_WIDTH   : natural := 4;
 			RAM_SIZE   : string	:= "18Kb";
-			WRITE_MODE : string	:= "WRITE_FIRST"
+			WRITE_MODE : string	:= "READ_FIRST"
 		);
 		port (
 			A_ADDR : in  STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
