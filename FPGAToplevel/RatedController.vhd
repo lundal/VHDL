@@ -22,7 +22,7 @@ entity RatedController is
         REQUEST_GENE : in  STD_LOGIC;
         ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
         ACK_GENE     : out STD_LOGIC;
-        STORE        : out STD_LOGIC;
+        INCREMENT    : out STD_LOGIC;
         WRITE_FIT    : out STD_LOGIC;
         WRITE_GENE   : out STD_LOGIC;
         WRITE_SET    : out STD_LOGIC;
@@ -91,26 +91,26 @@ begin
             when Choose =>
                 -- Ack given to genetic
                 if (ack_int(0) = '1') then
-                    STORE <= '0';
+                    INCREMENT <= '0';
                     WRITE_FIT <= '0';
                     WRITE_GENE <= '0';
                 -- Ack given to processor
                 elsif (ack_int /= (NUM_PROC downto 0 => '0')) then
-                    STORE <= '1';
+                    INCREMENT <= '1';
                     WRITE_FIT <= '1';
                     WRITE_GENE <= '0';
                 -- No ack given
                 else
-                    STORE <= '0';
+                    INCREMENT <= '0';
                     WRITE_FIT <= '0';
                     WRITE_GENE <= '0';
                 end if;
             when Gene =>
-                STORE <= '0';
+                INCREMENT <= '0';
                 WRITE_FIT <= '0';
                 WRITE_GENE <= '0';
             when Proc =>
-                STORE <= '1';
+                INCREMENT <= '1';
                 WRITE_FIT <= '0';
                 WRITE_GENE <= '1';
         end case;
