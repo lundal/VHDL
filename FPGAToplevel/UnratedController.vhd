@@ -14,15 +14,14 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity UnratedController is
     generic (
-        NUM_PROC   : natural := 4;
-        ADDR_WIDTH : natural := 9
+        NUM_PROC   : natural := 4
     );
     port (
         REQUEST_PROC : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
         REQUEST_GENE : in  STD_LOGIC;
         ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
         ACK_GENE     : out STD_LOGIC;
-        ADDR         : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        INCREMENT    : out STD_LOGIC;
         CLK	         : in  STD_LOGIC
     );
 end UnratedController;
@@ -32,8 +31,6 @@ architecture Behavioral of UnratedController is
     signal request_int : STD_LOGIC_VECTOR(NUM_PROC downto 0);
     signal ack_int     : STD_LOGIC_VECTOR(NUM_PROC downto 0);
 	signal has_request : STD_LOGIC := '0';
-    
-    signal counter    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
     
 begin
     
@@ -51,6 +48,9 @@ begin
         if (rising_edge(CLK)) then
 			-- Reset Ack signals
 			ack_int <= (others => '0');
+            
+            -- Do not increment if none connected
+            INCREMENT <= '0';
             
             -- Check if there exists a request
             if (has_request = '1') then
@@ -76,14 +76,9 @@ begin
                 -- Send ack
                 ack_int(chosen) <= '1';
                 
-                -- If connected to genetic
-                if (chosen = 0) then
-                    -- Disconnect from address
-                    ADDR <= (others => 'Z'); 
-                else
-                    -- Increment address
-                    ADDR <= counter;
-                    counter <= STD_LOGIC_VECTOR(UNSIGNED(counter) + 1);
+                -- Increment if connected to processor
+                if (chosen /= 0) then
+                    INCREMENT <= '1';
                 end if;
                 
             end if;
