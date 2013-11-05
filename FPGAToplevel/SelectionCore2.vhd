@@ -7,6 +7,7 @@
 -- Description:
 -- Compares NUMBER genes and outputs the best
 -- RANDOM is used to decide the genes that are compared
+-- Latches are required for RANDOM to keep things speedy
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -107,9 +108,6 @@ begin
                 else
                     -- Disconnect from pool
                     ADDR <= (others => 'Z');
-                    
-                    -- To reduce latches
-                    Random_Int <= Random_Int;
                 end if;
             
             when Compare =>
@@ -123,18 +121,12 @@ begin
                     
                     -- Disconnect from pool
                     ADDR <= (others => 'Z');
-                    
-                    -- To reduce latches
-                    Random_Int <= Random_Int;
                 elsif (Counter = (COUNTER_SIZE-1 downto 0 => '0') or Better = '1') then
                     StoreFitness <= '1';
                     Done_Int <= '0';
                     
                     -- Next address
                     ADDR <= Random_Int & '1';
-                    
-                    -- To reduce latches
-                    Random_Int <= Random_Int;
                 else
                     StoreFitness <= '0';
                     Done_Int <= '0';
