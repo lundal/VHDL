@@ -245,6 +245,8 @@ architecture Behavioral of GeneticPipeline2 is
     
     -- Random
     signal random           : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
+    signal random_prev      : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
+    signal random_extended  : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0);
     signal random_selection : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
     
     -- Incrementer signals
@@ -483,6 +485,16 @@ begin
         end if;
     end process;
     
+    FF_RANDOM : process(CLK, random)
+    begin
+        if rising_edge(CLK) then
+            random_prev <= random;
+        end if;
+    end process;
+    
+    -- Extended random
+    random_extended <= random & random_prev;
+    
     -- Decode settings signal
     settings_mutation  <= settings(settings_width_mutation - 1 downto 0);
     settings_crossover <= settings(settings_width_crossover + settings_width_mutation - 1 downto settings_width_mutation);
@@ -505,7 +517,7 @@ begin
     -- Map randoms
     random_selection <= random(ADDR_WIDTH-2 downto 0);
     
-    RESETIFIER : process(RESET, rated_a_we, rated_b_we, unrated_a_we, unrated_b_we)
+    RESETIFIER : process(RESET, CLK, random_extended, rated_a_we, rated_b_we, unrated_a_we, unrated_b_we)
     begin
         if (RESET = '1') then
             -- Incrementer input
@@ -519,10 +531,10 @@ begin
             unrated_b_we <= '1';
             
             -- Pool data input
-            rated_a_in <= random;
-            rated_b_in <= random;
-            unrated_a_in <= random;
-            unrated_b_in <= random;
+            rated_a_in <= random_extended;
+            rated_b_in <= random_extended;
+            unrated_a_in <= random_extended;
+            unrated_b_in <= random_extended;
         else
             -- Incrementer input
             inc_rated <= inc_rated_ctrl;
