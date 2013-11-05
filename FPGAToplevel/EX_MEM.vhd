@@ -144,7 +144,7 @@ CONTROL_SIGNALS : process(clk, reset)
         if reset = '1' then 
            call_out <= '0';
            jump_out <= '0'; 
-        elsif rising_edge(clk) then 
+        elsif rising_edge(clk) and halt = '0' then 
            call_out <= call_in;
            jump_out <= jump_in;
         end if;

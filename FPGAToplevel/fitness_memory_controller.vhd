@@ -40,7 +40,6 @@ entity fitness_memory_controller is
 			mem_op : in std_logic_vector(MEM_OP_WIDTH-1 downto 0);
 			ack_mem_ctrl : in std_logic;
 			
-			
 			--Control signals out
 			mem_op_ctrl : out std_logic_vector(MEM_OP_WIDTH-1 downto 0);
 			request_bus : out std_logic;
@@ -51,9 +50,9 @@ entity fitness_memory_controller is
 			store_data : in std_logic_vector(DATA_WIDTH-1 downto 0);
 			
 			--Memory bus controller
-			addr_mem_ctrl : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
-			data_mem_ctrl : out std_logic_vector(DATA_WIDTH-1 downto 0);
-			read_data_mem_ctrl : in std_logic_vector(DATA_WIDTH-1 downto 0);
+			addr_bus : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
+			data_bus_out : out std_logic_vector(DATA_WIDTH-1 downto 0);
+			data_bus_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
 			
 			--BUS out
 			read_data_out  : out std_logic_vector(DATA_WIDTH-1 downto 0)
@@ -87,8 +86,8 @@ STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl)
 		when REQUEST => 
 			--Disconnect from buses
 			mem_op_ctrl   		 <= (others => 'Z');
- 			addr_mem_ctrl 		 <= (others => 'Z'); 
-			data_mem_ctrl 		 <= (others => 'Z'); 			
+ 			addr_bus 		 <= (others => 'Z'); 
+			data_bus_out 		 <= (others => 'Z'); 			
 			
 			case mem_op is
 				when NOP => 
@@ -104,10 +103,10 @@ STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl)
 		when WAIT_FOR_ACK =>
 			if ack_mem_ctrl = '1' then
 				request_bus <= '0';
-				addr_mem_ctrl <= addr; --Got access, put addr on bus
+				addr_bus <= addr; --Got access, put addr on bus
 			   mem_op_ctrl <= mem_op; 
 				if mem_op = WRITE_DATA then 
-					data_mem_ctrl <= store_data; -- If write, put data on data bus
+					data_bus_out <= store_data; -- If write, put data on data bus
 					NEXT_STATE <= PERFORM_OPERATION;
 				else 
 					NEXT_STATE <= WAIT_FOR_MEMORY;
@@ -120,9 +119,11 @@ STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl)
 			if ack_mem_ctrl = '1' then
 				NEXT_STATE <= WAIT_FOR_MEMORY;
 			elsif ack_mem_ctrl = '0' then 
-				read_data_out <= read_data_mem_ctrl;
+				read_data_out <= data_bus_in;
 				halt <= '0';
 				NEXT_STATE <= REQUEST;
+			else 
+				read_data_out <= (others => '0');
 			end if;
 			
 		when PERFORM_OPERATION => 

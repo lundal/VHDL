@@ -6,7 +6,7 @@ use work.constants.all;
 entity MEM_WB is
     Port ( clk              : in  STD_LOGIC;
            reset            : in  STD_LOGIC;
-           halt           : in  STD_LOGIC;
+           halt             : in  STD_LOGIC;
            
            -- PC in
            pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
@@ -56,7 +56,7 @@ GENE_REGISTER : flip_flop
     generic map(N => INST_WIDTH)
     port map (clk => clk, 
               reset => reset, 
-              enable => enable, 
+              enable => halt, 
               data_in => gene_in,
               data_out => gene_out
 );
@@ -66,7 +66,7 @@ RES_REGISTER : flip_flop
     generic map(N => DATA_WIDTH)
     port map (clk => clk, 
               reset => reset, 
-              enable => enable, 
+              enable => halt, 
               data_in => res_in,
               data_out => res_out
 );
@@ -76,7 +76,7 @@ DATA_REGISTER : flip_flop
     generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
-             enable => enable, 
+             enable => halt, 
              data_in => data_in,
              data_out => data_out
 );
@@ -86,7 +86,7 @@ RDA_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
             reset => reset, 
-            enable => enable, 
+            enable => halt, 
             data_in => rda_in,
             data_out => rda_out
 );
@@ -96,7 +96,7 @@ CONTROL_TO_REG : flip_flop
 generic map(N => TO_REG_OP_WIDTH)
     port map(clk => clk, 
             reset => reset, 
-            enable => enable, 
+            enable => halt, 
             data_in => to_reg_op_in,
             data_out => to_reg_op_out
 );
@@ -108,7 +108,7 @@ CONTROL_SIGNALS : process(clk, reset)
             call_out <= '0';
         
         elsif rising_edge(clk) then 
-            if enable = '1' then 
+            if halt = '0' then 
                 call_out <= call_in;
             end if; 
         end if;

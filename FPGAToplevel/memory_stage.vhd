@@ -42,10 +42,7 @@ entity memory_stage is
 	pc_out 					 : out std_logic_vector(DATA_WIDTH-1 downto 0);
 	addr_mem_bus 			 : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
 	data_mem_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	data_pool_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	read_data				 : out std_logic_vector(DATA_WIDTH-1 downto 0)
-	
-	
+	data_pool_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0)
 	);
 end memory_stage;
 
@@ -142,7 +139,7 @@ port map (
 			data_bus_in => data_mem_bus_in, 
 			
 			--BUS out
-			read_data_out => read_data);
+			read_data_out => data_out);
 			
 			
 --Sign extend pc_incremented
