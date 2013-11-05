@@ -20,7 +20,7 @@ begin
         if reset = '1' then 
             data_out <= (others => '0');
         elsif rising_edge(clk) then 
-            if enable = '1' then 
+            if enable = '0' then 				--React on deasserted signal
                 data_out <= data_in;
             end if;
         end if;
