@@ -42,7 +42,7 @@ architecture Behavioral of tri_multiplexor is
 
 begin
 
-TRI_MUX : process(sel)
+TRI_MUX : process(sel, in0, in1, in2)
     begin 
         case sel is 
         when "00" => 

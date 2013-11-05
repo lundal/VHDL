@@ -10,7 +10,7 @@ use WORK.CONSTANTS.ALL;
 entity ID_EX is
     Port ( clk                          : in  STD_LOGIC;
            reset                        : in  STD_LOGIC;
-           halt                       : in  STD_LOGIC;
+           halt                         : in  STD_LOGIC;
            
            -- PC in
            pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
@@ -27,7 +27,8 @@ entity ID_EX is
            gene_op_in                   : in  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
            mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
            to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
-           
+			  store_src_in 					 : in  STD_LOGIC;
+           call_in							 : in  STD_LOGIC;
            
            -- CONTROL SIGNALS out
            alu_src_out                  : out  STD_LOGIC;
@@ -38,20 +39,21 @@ entity ID_EX is
            gene_op_out                  : out  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
            mem_operation_out            : out  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
            to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+           call_out                     : out  STD_LOGIC;
            
-           --DATA in
-           rs_in                     : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+			  --DATA in
+           rs_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            rt_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            imm_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           rsa_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           rsa_in                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
            rta_in                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
            rda_in                     : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
           
            --DATA out
-           rs_out                    : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+           rs_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            rt_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            imm_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           rsa_out                    : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           rsa_out                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
            rta_out                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
            rda_out                    : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
            );
@@ -80,7 +82,7 @@ begin
 
 --DATA IN/OUT mappings 
 RS_REGISTER : flip_flop
-generic map(N => INST_WIDTH)
+generic map(N => DATA_WIDTH)
 port map (clk => clk, 
           reset =>reset, 
           enable => halt,
@@ -180,18 +182,20 @@ port map( clk => clk,
 
 
 
-CONTROL_SIGNALS : process (clk)
+CONTROL_SIGNALS : process (clk, reset, halt)
     begin 
         if reset = '1' then 
             --Reset signals
             alu_src_out <= '0';
             reg_write_out <= '0';
             jump_out <= '0';
+				call_out <= '0';
             
         elsif rising_edge(clk) and halt = '0' then 
 				alu_src_out <= alu_src_in;
             reg_write_out <= reg_write_in;
             jump_out <= jump_in;
+				call_out <= call_in;
         end if;
 end process CONTROL_SIGNALS;
 

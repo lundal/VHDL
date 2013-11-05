@@ -6,7 +6,7 @@ use work.constants.all;
 entity EX_MEM is
     Port ( clk                    : in  STD_LOGIC;
            reset                  : in  STD_LOGIC;
-           enable                 : in  STD_LOGIC;
+           halt                   : in  STD_LOGIC;
            
            -- PC in
            pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
@@ -22,6 +22,7 @@ entity EX_MEM is
            signal to_reg_in       : in  STD_LOGIC_VECTOR (TO_REG_OP_WIDTH-1 downto 0);
            signal call_in         : in  STD_LOGIC;
            signal overflow_in     : in  STD_LOGIC;
+			  signal reg_write_in 	 : in  STD_LOGIC;
            
            --Control signals out 
            signal gene_op_out     : out STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
@@ -31,18 +32,19 @@ entity EX_MEM is
            signal to_reg_out      : out STD_LOGIC_VECTOR (TO_REG_OP_WIDTH-1 downto 0);
            signal call_out        : out STD_LOGIC;
            signal overflow_out    : out STD_LOGIC;
+			  signal reg_write_out   : out STD_LOGIC;
            
            --Data in 
-           signal rs_in        : in  STD_LOGIC_VECTOR  (INST_WIDTH-1 downto 0);
+           signal rs_in        : in  STD_LOGIC_VECTOR  (DATA_WIDTH-1 downto 0);
            signal rt_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            signal res_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal rda_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           signal rda_in        : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
            
            --Data out
-           signal rs_out       : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+           signal rs_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            signal rt_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            signal res_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal rda_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0)
+           signal rda_out       : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
            );
 end EX_MEM;
 
@@ -70,7 +72,7 @@ RS_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
-             enable => enable,
+             enable => halt,
              data_in => rs_in,
              data_out => rs_out
 );
@@ -80,7 +82,7 @@ RT_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
-             enable => enable,
+             enable => halt,
              data_in => rt_in,
              data_out => rt_out
 );
@@ -90,7 +92,7 @@ RES_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 
              reset => reset, 
-             enable => enable, 
+             enable => halt, 
              data_in => res_in,
              data_out => res_out
 );
@@ -100,7 +102,7 @@ RDA_REGISTER : flip_flop
 generic map(N => REG_ADDR_WIDTH)
     port map (clk => clk, 
               reset => reset, 
-              enable => enable, 
+              enable => halt, 
               data_in => rda_in,
               data_out => rda_out
 );
@@ -110,7 +112,7 @@ CONTROL_COND : flip_flop
 generic map(N => COND_WIDTH)
 port map(clk => clk, 
          reset => reset,
-         enable => enable,
+         enable => halt,
          data_in => cond_in, 
          data_out => cond_out);
          
@@ -118,7 +120,7 @@ CONTROL_GENE_OP : flip_flop
 generic map(N => GENE_OP_WIDTH)
 port map(clk => clk,
          reset => reset,
-         enable => enable,
+         enable => halt,
          data_in => gene_op_in, 
          data_out => gene_op_out);
          
@@ -126,20 +128,21 @@ CONTROL_TO_REG : flip_flop
 generic map(N => TO_REG_OP_WIDTH)
 port map(clk => clk, 
          reset => reset, 
-         data_in =>to_reg_in, 
+         enable => halt, 
+   		data_in =>to_reg_in, 
          data_out =>to_reg_out);
          
 CONTROL_MEM_OP : flip_flop
 generic map(N => MEM_OP_WIDTH)
 port map(clk => clk, 
          reset => reset, 
-         enable => enable,
+         enable => halt,
          data_in => mem_op_in, 
          data_out =>mem_op_out);
 
 
 
-CONTROL_SIGNALS : process(clk, reset)
+CONTROL_SIGNALS : process(clk, reset, halt)
     begin
         if reset = '1' then 
            call_out <= '0';

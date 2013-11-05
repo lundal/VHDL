@@ -44,7 +44,7 @@ architecture Behavioral of multiplexor4 is
 begin
 
 
-MULTIPLEXOR4 : process(sel) 
+MULTIPLEXOR4 : process(sel, in0, in1, in2, in3) 
 begin 
 	case sel is 
 	when "00" =>

@@ -9,30 +9,32 @@ entity MEM_WB is
            halt             : in  STD_LOGIC;
            
            -- PC in
-           pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
+           pc_incremented_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
            
            -- PC out
-           pc_incremented_out : out std_logic_vector(INST_WIDTH-1 downto 0);
+           pc_incremented_out : out std_logic_vector(DATA_WIDTH-1 downto 0);
            
            --CONTROL in
            to_reg_op_in     : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_in          : in  STD_LOGIC;
+			  reg_write_in     : in STD_LOGIC; 
            
            --CONTROL out
            to_reg_op_out    : out STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_out         : out STD_LOGIC;
+			  reg_write_out    : out STD_LOGIC; 
            
            --DATA in
            gene_in         : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            res_in         : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            data_in         : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           rda_in         : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			  rda_in         : in  STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
            
            --Data out
            gene_out         : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            res_out         : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            data_out         : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           rda_out         : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0)
+           rda_out         : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0)
        );
 end MEM_WB;
 
@@ -53,7 +55,7 @@ begin
 
 
 GENE_REGISTER : flip_flop
-    generic map(N => INST_WIDTH)
+    generic map(N => DATA_WIDTH)
     port map (clk => clk, 
               reset => reset, 
               enable => halt, 
@@ -83,7 +85,7 @@ DATA_REGISTER : flip_flop
 
 
 RDA_REGISTER : flip_flop
-generic map(N => DATA_WIDTH)
+generic map(N => REG_ADDR_WIDTH)
     port map(clk => clk, 
             reset => reset, 
             enable => halt, 

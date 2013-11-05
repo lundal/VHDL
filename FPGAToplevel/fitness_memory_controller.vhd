@@ -80,7 +80,7 @@ RUN : process(clk, reset)
 		end if;
 	end process; 
 
-STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl) 
+STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl, addr, store_data, data_bus_in) 
 	begin 
 	case CURRENT_STATE is 
 		when REQUEST => 

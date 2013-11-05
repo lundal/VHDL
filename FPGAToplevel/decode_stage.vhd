@@ -21,17 +21,17 @@ entity decode_stage is
           reg_store             : in STD_LOGIC;
           
           --Input signals
-          instruction           : in STD_LOGIC_VECTOR(INST_WIDTH downto 0);
+          instruction           : in STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
           write_data            : in STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
           write_register        : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           
           --Output signals
-          rs            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
-          rt            : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          rs            		  : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
+          rt                    : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
           immediate             : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
-          rsa               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1  downto 0);
-          rt_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          rd_addr               : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rsa                   : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rta                   : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rda                   : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           condition_out         : out STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0));
           
 end decode_stage;
@@ -146,8 +146,8 @@ end process SIGN_EXTEND_IMMEDIATE_ADDRESS;
 --OUTPUT
 condition_out <= condition_internal;
 rsa <= rsa_internal;
-rt_addr <= rt_addr_internal;
-rd_addr <= rd_addr_internal;
+rta <= rt_addr_internal;
+rda <= rd_addr_internal;
 
 
 

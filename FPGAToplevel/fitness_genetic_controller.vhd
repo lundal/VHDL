@@ -56,7 +56,7 @@ RUN : process(clk, reset)
 end process;
 
 
-STATE_MACHINE : process (CURRENT_STATE, gene_op)
+STATE_MACHINE : process (CURRENT_STATE, gene_op, ack_gene_ctrl, fitness_in, gene_in, data_pool_bus_in)
 	begin 
 	case CURRENT_STATE is 
 	when REQUEST => 
@@ -108,8 +108,6 @@ STATE_MACHINE : process (CURRENT_STATE, gene_op)
 		--Finished loading the gene 
 		gene_out <= data_pool_bus_in;
 	
-	when others => 
-		NEXT_STATE <= REQUEST; 
 	
 	end case;
 

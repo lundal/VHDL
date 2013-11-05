@@ -36,6 +36,7 @@ entity execution_stage is
           
           --Control signals out
           overflow            : out STD_LOGIC;
+			 multiplication_halt : out STD_LOGIC; 
           
           -- Signals out 
           write_register_addr : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
@@ -52,7 +53,7 @@ component ALU
 		Y		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
 		R		:	out	STD_LOGIC_VECTOR(N-1 downto 0);
 		FUNC	:	in	STD_LOGIC_VECTOR(3 downto 0);
-		FLAGS	:	out ALU_FLAGS);
+		OVERFLOW	:	out STD_LOGIC);
 end component ALU; 	
 
 component tri_multiplexor
@@ -61,7 +62,7 @@ component tri_multiplexor
            in0 : in  STD_LOGIC_VECTOR (N-1 downto 0);
            in1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
            in2 : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           output  : in  STD_LOGIC_VECTOR (N-1 downto 0));
+           output  : out  STD_LOGIC_VECTOR (N-1 downto 0));
 end component;
 
 component multiplexor
@@ -137,19 +138,20 @@ generic map(N => 64)
 port map( X => tri_mux1_out, 
           Y =>alu_op2, 
           R => alu_result,
-          FUNC => alu_func, 
-          FLAGS.Overflow => overflow);
+          FUNC => alu_func,
+			 OVERFLOW => Overflow
+			 );
      
 
 
 FORWARD_UNIT_MAP : forwarding_unit 
 port map(
-			EX_MEM_reg_write => stage_4_reg_write, 
-			MEM_WB_reg_write =>stage_5_reg_write, 
+			EX_MEM_reg_write => stage4_reg_write, 
+			MEM_WB_reg_write =>stage5_reg_write, 
 			rs_addr => rsa, 
 			rt_addr => rta, 
-			EX_MEM_write_reg_addr => stage4_reg_write, 
-			MEM_WB_write_reg_addr => stage5_reg_write, 
+			EX_MEM_write_reg_addr => stage4_reg_rd, 
+			MEM_WB_write_reg_addr => stage5_reg_rd, 
 			forward_a =>forwardA, 
 			forward_b =>forwardB);
 			
