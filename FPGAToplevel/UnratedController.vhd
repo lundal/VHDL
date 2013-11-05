@@ -28,8 +28,8 @@ end UnratedController;
 
 architecture Behavioral of UnratedController is
     
-    signal request_int : STD_LOGIC_VECTOR(NUM_PROC downto 0);
-    signal ack_int     : STD_LOGIC_VECTOR(NUM_PROC downto 0);
+    signal request_int : STD_LOGIC_VECTOR(NUM_PROC downto 0) := (others => '0');
+    signal ack_int     : STD_LOGIC_VECTOR(NUM_PROC downto 0) := (others => '0');
 	signal has_request : STD_LOGIC := '0';
     
 begin
