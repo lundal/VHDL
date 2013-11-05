@@ -105,6 +105,8 @@ begin
                     -- Fetch new addresses
                     Random_Int <= RANDOM;
                     ADDR <= Random_Int & '0';
+                else
+                    ADDR <= (others => '0');
                 end if;
             
             when Compare =>
@@ -116,6 +118,7 @@ begin
                     StoreFitness <= '0';
                     Done_Int <= '1';
                     
+                    ADDR <= (others => '0');
                 elsif (Counter = (COUNTER_SIZE-1 downto 0 => '0') or Better = '1') then
                     StoreFitness <= '1';
                     Done_Int <= '0';
