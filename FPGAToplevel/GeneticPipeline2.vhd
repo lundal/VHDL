@@ -24,7 +24,8 @@ entity GeneticPipeline2 is
         ACK       : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
         DATA_IN   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         DATA_OUT  : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        CLK	      : in  STD_LOGIC
+        RESET     : in  STD_LOGIC;
+        CLK       : in  STD_LOGIC
     );
     -- Assign clock signal
     attribute CLOCK_SIGNAL : string;
@@ -242,7 +243,7 @@ architecture Behavioral of GeneticPipeline2 is
     signal child_0  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     
-    -- Others
+    -- Random
     signal random           : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
     signal random_selection : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
     
@@ -250,11 +251,22 @@ architecture Behavioral of GeneticPipeline2 is
     signal inc_gene      : STD_LOGIC := '0';
     signal inc_gene_a    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal inc_gene_b    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_rated_ctrl: STD_LOGIC := '0';
     signal inc_rated     : STD_LOGIC := '0';
     signal inc_rated_a   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal inc_rated_b   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal inc_unrated   : STD_LOGIC := '0';
     signal inc_unrated_a : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    
+    -- Mutation signals
+    signal mutator_0_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal mutator_1_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    
+    -- Write signals
+    signal write_rated_0 : STD_LOGIC := '0';
+    signal write_rated_1 : STD_LOGIC := '0';
+    signal write_genetic : STD_LOGIC := '0';
+    
 begin
     
     RATED_POOL : BRAM_TDP_WIDE
@@ -336,7 +348,7 @@ begin
         SEL_0_DONE  => selector_0_done,
         SEL_1_RUN   => selector_1_run,
         SEL_1_DONE  => selector_1_done,
-        STORE       => inc_gene,
+        STORE       => write_genetic,
         ENABLE      => settings_gene_ctrl,
         CLK	        => CLK
     );
@@ -351,9 +363,9 @@ begin
         REQUEST_GENE => request_rated_gene,
         ACK_PROC     => ack_rated_proc,
         ACK_GENE     => ack_rated_gene,
-        INCREMENT    => inc_rated,
-        WRITE_FIT    => rated_a_we,
-        WRITE_GENE   => rated_b_we,
+        INCREMENT    => inc_rated_ctrl,
+        WRITE_FIT    => write_rated_0,
+        WRITE_GENE   => write_rated_1,
         WRITE_SET    => settings_we,
         CLK	         => CLK
     );
@@ -433,7 +445,7 @@ begin
         random_number => random,
         input         => child_0,
         chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
-        output        => unrated_a_in
+        output        => mutator_0_out
     );
     
     MUTATOR_1 : mutation_core
@@ -448,7 +460,7 @@ begin
         random_number => random,
         input         => child_1,
         chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
-        output        => unrated_b_in
+        output        => mutator_1_out
     );
     
     PRNG_UNIT : PRNG
@@ -460,10 +472,14 @@ begin
        CLK    => CLK
     );
     
-    FF_SETTINGS : process(CLK, DATA_IN, settings_we)
+    FF_SETTINGS : process(CLK, RESET, DATA_IN, settings_we)
     begin
-        if rising_edge(CLK) and settings_we = '1' then
-            settings <= DATA_IN(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0);
+        if rising_edge(CLK) then
+            if RESET = '1' then
+                settings <= (others => '0');
+            elsif settings_we = '1' then
+                settings <= DATA_IN(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0);
+            end if;
         end if;
     end process;
     
@@ -482,18 +498,51 @@ begin
     ACK <= ack_rated_proc or ack_unrated_proc;
     
     -- Map unrated write signals
-    unrated_a_we <= inc_gene;
-    unrated_b_we <= inc_gene;
     
     -- Map DATA I/O
-    rated_a_in <= DATA_IN;
-    rated_b_in <= DATA_IN;
     DATA_OUT <= unrated_a_out;
     
     -- Map randoms
     random_selection <= random(ADDR_WIDTH-2 downto 0);
     
-    -- Pool address muxes
+    RESETIFIER : process(RESET, rated_a_we, rated_b_we, unrated_a_we, unrated_b_we)
+    begin
+        if (RESET = '1') then
+            -- Incrementer input
+            inc_rated <= CLK;
+            inc_gene <= CLK;
+            
+            -- Pool write signals
+            rated_a_we <= '1';
+            rated_b_we <= '1';
+            unrated_a_we <= '1';
+            unrated_b_we <= '1';
+            
+            -- Pool data input
+            rated_a_in <= random;
+            rated_b_in <= random;
+            unrated_a_in <= random;
+            unrated_b_in <= random;
+        else
+            -- Incrementer input
+            inc_rated <= inc_rated_ctrl;
+            inc_gene <= write_genetic;
+            
+            -- Pool write signals
+            rated_a_we <= write_rated_0;
+            rated_b_we <= write_rated_0;
+            unrated_a_we <= write_genetic;
+            unrated_b_we <= write_genetic;
+            
+            -- Pool data input
+            rated_a_in <= DATA_IN;
+            rated_b_in <= DATA_IN;
+            unrated_a_in <= mutator_0_out;
+            unrated_b_in <= mutator_1_out;
+        end if;
+    end process;
+    
+    -- Pool address input
     rated_a_addr <= inc_rated_a when rated_a_we = '1' or rated_b_we = '1' else selector_0_addr;
     rated_b_addr <= inc_rated_b when rated_a_we = '1'  or rated_b_we = '1'  else selector_1_addr;
     unrated_a_addr <= inc_gene_a when unrated_a_we = '1'  or unrated_b_we = '1'  else inc_unrated_a;
