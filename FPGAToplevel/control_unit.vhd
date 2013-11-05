@@ -53,8 +53,8 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
-            GENE_OP <= NOP; 
-            MEM_OP <= NOP;
+            GENE_OP <= (others => '0'); 
+            MEM_OP <= (others => '0');
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "001";
@@ -65,8 +65,8 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
-            MEM_OP <= NOP;
+            GENE_OP <= (others => '0'); 
+            MEM_OP <= (others => '0');
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "001";
@@ -77,8 +77,8 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '1';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
-            MEM_OP <= NOP;
+            GENE_OP <= (others => '0'); 
+            MEM_OP <= (others => '0');
             JUMP <= '1';
             CALL <= '1';
             TO_REG <= "010";
@@ -89,11 +89,11 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '1';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
-            MEM_OP <= NOP;
+            GENE_OP <= (others => '0'); 
+            MEM_OP <= (others => '0');
             JUMP <= '1';
             CALL <= '0';
-            TO_REG <= NOP;
+            TO_REG <= (others => '0');
             REG_WRITE <= '0';
         
         when LOAD =>
@@ -101,7 +101,7 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
+            GENE_OP <= (others => '0'); 
             MEM_OP <= LOAD_DATA;
             JUMP <= '0';
             CALL <= '0';
@@ -113,7 +113,7 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
+            GENE_OP <= (others => '0'); 
             MEM_OP <= LOAD_DATA;
             JUMP <= '0';
             CALL <= '0';
@@ -125,11 +125,11 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
+            GENE_OP <= (others => '0'); 
             MEM_OP <= STORE_DATA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= NOP;
+            TO_REG <= (others => '0');
             REG_WRITE <= '0';
         
         when STORE_IMM =>
@@ -137,32 +137,32 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
-            GENE_OP <= NOP; 
+            GENE_OP <= (others => '0'); 
             MEM_OP <= STORE_DATA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= NOP;
+            TO_REG <= (others => '0');
             REG_WRITE <= '1';
         
         when LOAD_GENE =>
-            ALU_FUNC <= NOP;
+            ALU_FUNC <= (others => '0');
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= LOAD_GENE; 
-            MEM_OP <= NOP;
+            MEM_OP <= (others => '0');
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "000";
             REG_WRITE <= '1';
         
         when STORE_GENE =>
-            ALU_FUNC <= NOP;
+            ALU_FUNC <= (others => '0');
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
-            GENE_OP <= NOP; 
-            MEM_OP <= NOP;
+            GENE_OP <= (others =>'0'); 
+            MEM_OP <= (others => '0');
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "000";
@@ -173,15 +173,12 @@ CONTROL_UNIT : process (OP_CODE)
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
-            GENE_OP <= NOP; 
-            MEM_OP <= NOP;
+            GENE_OP <= (others => '0'); 
+            MEM_OP <= (others => '0');
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "001";
             REG_WRITE <= '1';
-        
-        
-            
         end case;
 end process CONTROL_UNIT;
 
