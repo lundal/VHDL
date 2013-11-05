@@ -23,6 +23,7 @@ package CONSTANTS is
     constant MEM_OP_WIDTH    : integer := 2;
     constant TO_REG_OP_WIDTH : integer := 3;
 	 constant MEM_ADDR_WIDTH : integer := 19;
+	 constant SETTINGS_WIDTH : integer := 3;
     
     
     
