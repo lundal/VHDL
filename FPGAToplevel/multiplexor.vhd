@@ -8,9 +8,9 @@ entity multiplexor is
            in0 : in  STD_LOGIC_VECTOR (N-1 downto 0);
            in1 : in  STD_LOGIC_VECTOR (N-1 downto 0);
            output : out  STD_LOGIC_VECTOR (N-1 downto 0));
-end multiplexer;
+end multiplexor;
 
-architecture Behavioral of multiplexer is
+architecture Behavioral of multiplexor is
 
 begin
 
@@ -23,6 +23,6 @@ begin
         output <= in0;
     end if;
     
- end process MULTIPLEXER;
+ end process;
 
 end Behavioral;
