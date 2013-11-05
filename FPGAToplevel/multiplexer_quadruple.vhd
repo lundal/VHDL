@@ -16,7 +16,7 @@ architecture Behavioral of multiplexer_quadruple is
 
 begin
 
-MULTIPLEXER : process (sel, in0, in1, in2) 
+MULTIPLEXER : process (sel, in0, in1, in2, in3) 
 begin 
      if sel = "01" then 
          output <= in1;
