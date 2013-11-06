@@ -66,7 +66,7 @@ begin
     mask1 <= shifted1 xor shifted2;
     mask2 <= not mask1;
     
-    child1 <= (parent1 and mask1) or (parent2 and mask2);
-    child2 <= (parent1 and mask2) or (parent2 and mask1);
+    child1 <= (parent1 and mask2) or (parent2 and mask1);
+    child2 <= (parent1 and mask1) or (parent2 and mask2);
     
 end Behavioral;
