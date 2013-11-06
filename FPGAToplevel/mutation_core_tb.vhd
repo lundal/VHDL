@@ -37,7 +37,6 @@ ARCHITECTURE behavior OF mutation_core_tb IS
  
     COMPONENT mutation_core
     PORT(
-         enabled : IN  std_logic;
 			active : IN std_logic;
          random_number : IN  std_logic_vector(31 downto 0);
          input : IN  std_logic_vector(63 downto 0);
@@ -48,7 +47,6 @@ ARCHITECTURE behavior OF mutation_core_tb IS
     
 
    --Inputs
-   signal enabled : std_logic := '0';
 	signal active : std_logic := '0';
    signal random_number : std_logic_vector(31 downto 0) := (others => '0');
 	signal chance_input : std_logic_vector(5 downto 0) := (others => '0');
@@ -61,7 +59,6 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: mutation_core PORT MAP (
-          enabled => enabled,
 			 active => active,
           random_number => random_number,
 			 chance_input => chance_input,
@@ -87,8 +84,7 @@ BEGIN
 		
 		wait for 40 ns;
 		
-		-- Enabling and activating Mutation should be at bit 0
-		enabled <= '1';
+		-- Activating Mutation, should be at bit 0
 		active <= '1';
 		
 		wait for 40 ns;
@@ -182,31 +178,10 @@ BEGIN
 		
 		wait for 40 ns;
 		
-		-- While not enabled, output should be only 0
-		
-		enabled <= '0';
-		
-		wait for 40 ns;
-		
-		--Changes in input, chance_input or random_number should not affect output when not enabled
-		
-		input <= "0000000000000001111111100000000000000000000000011111111000000000";
-		
-		wait for 40 ns;
-		
-		chance_input <= "111111";
-		
-		wait for 40 ns;
-		
-		random_number <= "11000011110000000111111001000000";
-		
-		wait for 40 ns;
-		
 		--Reseting
 		input <= "1111111111111111000000000000000011111111111111110000000000000000";
 		random_number <= "00000000000000000000000000000000";
 		chance_input <= "000010";
-		enabled <= '1';
 		
 		wait for 40 ns;
 		

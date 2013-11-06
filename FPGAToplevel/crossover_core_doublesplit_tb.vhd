@@ -91,10 +91,6 @@ BEGIN
 		
 		wait for 40 ns;
 		
-		enabled <= '1';
-		
-		wait for 40 ns;
-		
 		-- Change in parents outside crossover field should cause equal non-crossover change in children.
 		parent1 <= "1001111111111111000000000000000011111111111111110000000000011110";
 		parent2 <= "0110000000000000111111111111111100000000000000001111111111100001";
