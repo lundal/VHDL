@@ -159,16 +159,13 @@ architecture Behavioral of GeneticPipeline2 is
     component mutation_core is
         generic (
             N : integer :=64;
-            O : integer :=32;
             P : integer :=6
         );
         port (
-            enabled       : in  STD_LOGIC;
-            active        : in  STD_LOGIC;
-            random_number : in  STD_LOGIC_VECTOR(O-1 downto 0);
-            input         : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            random_number : in  STD_LOGIC_VECTOR(P+26-1 downto 0);
             chance_input  : in  STD_LOGIC_VECTOR(P-1 downto 0);
-            output        : out STD_LOGIC_VECTOR(N-1 downto 0)
+            input  : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            output : out STD_LOGIC_VECTOR(N-1 downto 0)
         );
     end component;
     
@@ -185,7 +182,7 @@ architecture Behavioral of GeneticPipeline2 is
     -- Constants
     constant settings_width_selection : integer := 5;
     constant settings_width_crossover : integer := 3;
-    constant settings_width_mutation  : integer := 7;
+    constant settings_width_mutation  : integer := 6;
     
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
@@ -432,30 +429,24 @@ begin
     MUTATOR_0 : mutation_core
     generic map (
         N => DATA_WIDTH,
-        O => RANDOM_WIDTH,
-        P => settings_width_mutation-1
+        P => settings_width_mutation
     )
     port map (
-        enabled       => '1',
-        active        => settings_mutation(settings_width_mutation-1),
-        random_number => random,
+        random_number => random(settings_width_mutation+26-1 downto 0),
+        chance_input  => settings_mutation,
         input         => child_0,
-        chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
         output        => mutator_0_out
     );
     
     MUTATOR_1 : mutation_core
     generic map (
         N => DATA_WIDTH,
-        O => RANDOM_WIDTH,
-        P => settings_width_mutation-1
+        P => settings_width_mutation
     )
     port map (
-        enabled       => '1',
-        active        => settings_mutation(settings_width_mutation-1),
-        random_number => random,
+        random_number => random(settings_width_mutation+26-1 downto 0),
+        chance_input  => settings_mutation,
         input         => child_1,
-        chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
         output        => mutator_1_out
     );
     
