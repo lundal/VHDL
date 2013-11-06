@@ -68,9 +68,9 @@ ARCHITECTURE behavior OF tb_toplevel IS
 	
 
   -- instructions
-   constant ins0 : std_logic_vector(0 to 31):= "11110100000010000000000000001010";
-	constant ins1 : std_logic_vector(0 to 31):= "11110100000100000000000000001001";
-   constant ins2 : std_logic_vector(0 to 31) := "11111000000110000100000000100000";
+   constant ins0 : std_logic_vector(0 to 31):= "11110100000010000000000000001000";
+	constant ins1 : std_logic_vector(0 to 31):= "11110100000100000000000000001010";
+   constant ins2 : std_logic_vector(0 to 31) := "11110010000110000000000000001010";
  
   
    

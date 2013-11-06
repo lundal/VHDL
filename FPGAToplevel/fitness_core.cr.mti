@@ -58,15 +58,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity prng
 -- Compiling architecture behavioral of prng
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Loading package numeric_std
--- Loading package constants
--- Compiling entity control_unit
--- Compiling architecture behavioral of control_unit
-
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
@@ -117,6 +108,17 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package std_logic_1164
 -- Compiling entity selection_core
 -- Compiling architecture behavioral of selection_core
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/decode_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/decode_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Loading package mips_constant_pkg
+-- Loading package constants
+-- Compiling entity decode_stage
+-- Compiling architecture behavioral of decode_stage
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_bram.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_bram.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010

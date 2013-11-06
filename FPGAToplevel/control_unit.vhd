@@ -56,8 +56,19 @@ begin
 
 CONTROL_UNIT : process (OP_CODE, FUNC)
     begin 
-        case OP_CODE is 
-        when OP_CODE_RRR =>
+        if reset = '1' then
+				ALU_FUNC <= ALU_FUNC_NA;
+            REG_SOURCE <= '0';
+            IMM_SOURCE <= '0';
+            ALU_SOURCE <= '0';
+            GENE_OP <= GENE_OP_NA; 
+            MEM_OP <= MEM_OP_NA;
+            JUMP <= '0';
+            CALL <= '0';
+            TO_REG <= TO_REG_NA;
+            REG_WRITE <= '0';
+				
+		  elsif OP_CODE = OP_CODE_RRR then
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -69,7 +80,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "01";
             REG_WRITE <= '1';
             
-        when OP_CODE_RRI =>
+        elsif OP_CODE = OP_CODE_RRI then
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -81,7 +92,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "01";
             REG_WRITE <= '1';
         
-        when OP_CODE_CALL =>
+        elsif OP_CODE = OP_CODE_CALL then 
             ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '1';
             IMM_SOURCE <= '1';
@@ -93,7 +104,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "10";
             REG_WRITE <= '1';
             
-        when OP_CODE_JMP => 
+        elsif OP_CODE = OP_CODE_JMP then 
             ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '1';
             IMM_SOURCE <= '1';
@@ -105,7 +116,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= TO_REG_NA; 
             REG_WRITE <= '0';
         
-        when OP_CODE_LW =>
+        elsif OP_CODE = OP_CODE_LW and FUNC = ALU_FUNC_ADD then 
             ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -117,7 +128,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "11";
             REG_WRITE <= '1';
         
-        when OP_CODE_LDI =>
+        elsif OP_CODE = OP_CODE_LDI then
             ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
@@ -129,7 +140,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "01";
             REG_WRITE <= '1';
 
-        when OP_CODE_SW =>
+        elsif OP_CODE = OP_CODE_SW then
             ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -141,7 +152,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '0';
         
-        when OP_CODE_STI =>
+        elsif OP_CODE = OP_CODE_STI then
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
@@ -153,7 +164,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '1';
         
-        when OP_CODE_LDG =>
+        elsif OP_CODE = OP_CODE_LDG then 
             ALU_FUNC <= ALU_FUNC_NA;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -165,7 +176,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "00";
             REG_WRITE <= '1';
         
-        when OP_CODE_STG =>
+        elsif OP_CODE = OP_CODE_STG then 
             ALU_FUNC <= ALU_FUNC_NA;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -177,7 +188,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             TO_REG <= "00";
             REG_WRITE <= '1';
         
-        when OP_CODE_SETG =>
+        elsif OP_CODE = OP_CODE_SETG then
             ALU_FUNC <= FUNC;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -188,7 +199,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "01";
             REG_WRITE <= '1';
-        when others => 
+        else  
 				ALU_FUNC <= ALU_FUNC_NA;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -199,7 +210,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '0';
-		  end case;
+		  end if;
 end process CONTROL_UNIT;
 
 
