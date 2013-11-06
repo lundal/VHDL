@@ -517,7 +517,7 @@ begin
     -- Map randoms
     random_selection <= random(ADDR_WIDTH-2 downto 0);
     
-    RESETIFIER : process(RESET, CLK, random_extended, rated_a_we, rated_b_we, unrated_a_we, unrated_b_we)
+    RESETIFIER : process(RESET, CLK, DATA_IN, random_extended, inc_rated_ctrl, write_genetic, write_rated_0, write_rated_1, mutator_0_out, mutator_1_out)
     begin
         if (RESET = '1') then
             -- Incrementer input
@@ -542,7 +542,7 @@ begin
             
             -- Pool write signals
             rated_a_we <= write_rated_0;
-            rated_b_we <= write_rated_0;
+            rated_b_we <= write_rated_1;
             unrated_a_we <= write_genetic;
             unrated_b_we <= write_genetic;
             
@@ -556,9 +556,13 @@ begin
     
     -- Pool address input
     rated_a_addr <= inc_rated_a when rated_a_we = '1' or rated_b_we = '1' else selector_0_addr;
-    rated_b_addr <= inc_rated_b when rated_a_we = '1'  or rated_b_we = '1'  else selector_1_addr;
-    unrated_a_addr <= inc_gene_a when unrated_a_we = '1'  or unrated_b_we = '1'  else inc_unrated_a;
+    rated_b_addr <= inc_rated_b when rated_a_we = '1' or rated_b_we = '1' else selector_1_addr;
+    unrated_a_addr <= inc_gene_a when unrated_a_we = '1' or unrated_b_we = '1' else inc_unrated_a;
     unrated_b_addr <= inc_gene_b;
+    
+    -- Circumvent Crossover
+    --child_0 <= parent_0;
+    --child_1 <= parent_1;
     
 end Behavioral;
 
