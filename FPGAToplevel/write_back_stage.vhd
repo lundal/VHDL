@@ -72,8 +72,8 @@ multiplexor4 : entity work.multiplexor4
 multiplexor : entity work.multiplexor
 	generic map(N => 5)
 	port map( sel =>call, 
-			    in0 => "11111", 
-				 in1 => RDA_in, 
+			    in0 => RDA_in, 
+				 in1 => "11111", 
 				 output => WBA_out_signal
 	);
 

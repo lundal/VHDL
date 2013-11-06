@@ -9,6 +9,7 @@ entity IF_ID is
            clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
            halt : in  STD_LOGIC;
+			  processor_enable : in std_logic; 
            
            -- bus in
            instruction_in  : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
@@ -35,21 +36,57 @@ component flip_flop
     );
 end component flip_flop;
 
-
+type state_type is (STATE_RUNNING, STATE_DISABLED);
+         signal CURRENT_STATE: state_type; 
 begin
 
---Mappings
-INCREMENTED_REGISTER : flip_flop
-generic map(N => INST_WIDTH)
-port map (clk => clk,
-          reset => reset,
-          enable => halt, 
-          data_in => pc_incremented_in, 
-          data_out => pc_incremented_out
-);
 
---The register file works as an flip-flop, no no need to use one more clock cycle here
-instruction_out <= instruction_in;
+  STATE_MACHINE : process(clk, reset, processor_enable, CURRENT_STATE)
+    begin 
+        if reset = '1' then 
+            CURRENT_STATE <= STATE_DISABLED;
+         elsif rising_edge(clk) then 
+            if processor_enable = '1' then 
+                if CURRENT_STATE = STATE_DISABLED then
+                    CURRENT_STATE <= STATE_RUNNING;
+                end if;
+            else
+                CURRENT_STATE <= STATE_DISABLED;
+            end if;
+         end if;
+end process;
+
+
+TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable)
+        begin
+                if reset = '1' then 
+                        pc_incremented_out <= (others => '0');
+                        --output1 <= (others => '0');
+                elsif rising_edge(clk) then 
+                        if halt = '0' then 
+                                pc_incremented_out <= pc_incremented_in;
+                        end if;
+        end if;
+        
+        if reset = '0' and CURRENT_STATE = STATE_RUNNING and halt = '0' then
+            instruction_out <= instruction_in;
+        end if;
+        
+ end process;
+
+
+--Mappings
+--INCREMENTED_REGISTER : flip_flop
+--generic map(N => INST_WIDTH)
+--port map (clk => clk,
+--          reset => reset,
+--          enable => halt, 
+--          data_in => pc_incremented_in, 
+--          data_out => pc_incremented_out
+--);
+--
+----The register file works as an flip-flop, no no need to use one more clock cycle here
+--instruction_out <= instruction_in;
 --
 --INSTRUCTION_REGISTER : flip_flop 
 --generic map(N => INST_WIDTH)

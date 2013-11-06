@@ -171,7 +171,7 @@ architecture Behavioral of fitness_core is
 begin
 
 --Halt if one of them are true
-halt_pipeline_signal <= halt_inst or halt_mem_signal or multiplication_halt_signal;
+halt_pipeline_signal <= halt_inst; --or halt_mem_signal or multiplication_halt_signal; does not work yet
 
 control_unit: entity work.control_unit
 port map (
@@ -195,11 +195,11 @@ port map (
 );
 
 
-PREPARE_OPCODE_AND_FUNC : process(instruction_signal_fetch, processor_enable)
+PREPARE_OPCODE_AND_FUNC : process(instruction_signal_decode, processor_enable)
 	begin 
 		if processor_enable = '1' then
-			op_code_decode <= instruction_signal_fetch(31 downto 28);
-			func_decode <=  instruction_signal_fetch(3 downto 0);
+			op_code_decode <= instruction_signal_decode(27 downto 24);
+			func_decode <=  instruction_signal_decode(3 downto 0);
 		else 
 			op_code_decode <= (others => '0');
 			func_decode <= (others => '0');
@@ -214,7 +214,8 @@ port map (
     clk => clk,
     reset => reset,
     halt => halt_pipeline_signal,
-    instruction_in => instruction_signal_fetch,
+    processor_enable => processor_enable, 
+	 instruction_in => instruction_signal_fetch,
     pc_incremented_in => pc_incremented_signal_fetch,
 
     instruction_out => instruction_signal_decode,
@@ -361,7 +362,7 @@ port map (
 
 
 fetch_stage : entity work.fetch_stage
-port map (  clk => clk, 
+port map ( clk => clk, 
            reset => reset,
            pc_update => processor_enable,
            pc_src  => jump_signal_mem, 
@@ -397,7 +398,7 @@ port map (
     reg_store => store_src_signal_decode,
 
     --Input signals
-    instruction => instruction_signal_fetch,
+    instruction => instruction_signal_decode,
     write_data => WBD_signal_wb,      
     write_register => WBA_signal_wb,
 
@@ -418,8 +419,8 @@ port map (
     reset => reset,
 
     -- Control signals
-    alu_src => alu_src_signal_decode,
-    alu_func => alu_func_signal_decode,
+    alu_src => alu_src_signal_execute,
+    alu_func => alu_func_signal_execute,
 
     --Control signals from other stages
     stage4_reg_write => reg_write_signal_mem,
@@ -430,7 +431,7 @@ port map (
     rt => rt_signal_execute,
     immediate => imm_signal_execute,
     rsa => rsa_signal_execute,
-    rta => rsa_signal_execute,
+    rta => rta_signal_execute,
     rda => rda_signal_execute,
 
     -- From other stages

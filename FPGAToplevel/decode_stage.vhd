@@ -74,6 +74,7 @@ signal reg_op1                          : std_logic_vector (REG_ADDR_WIDTH-1 dow
 signal reg_op2                          : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 
 
+
 begin
 
 REG_SRC_MUX_MAP : multiplexor
@@ -108,14 +109,14 @@ port map (CLK => clk,
           WRITE_DATA => write_data, 
           RS => rs, 
           RT => rt);
-          
-          
+  
+     
 FETCH : process(processor_enable, instruction) 
 begin 
     if processor_enable = '1' then
        rd_addr_internal <= instruction(23 downto 19);
        rsa_internal <= instruction(18 downto 14);
-       rt_addr_internal <= instruction(13 downto 9);
+       rt_addr_internal <= instruction(8 downto 4);
        immediate_value_internal <= instruction(13 downto 4);
        immediate_address_internal <= instruction(18 downto 0);
        condition_internal <= instruction(31 downto 28);

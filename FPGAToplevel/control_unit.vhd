@@ -126,7 +126,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= LOAD_DATA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "11";
+            TO_REG <= "01";
             REG_WRITE <= '1';
 
         when OP_CODE_SW =>

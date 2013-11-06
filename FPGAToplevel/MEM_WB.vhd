@@ -107,11 +107,13 @@ generic map(N => TO_REG_OP_WIDTH)
 CONTROL_SIGNALS : process(clk, reset) 
     begin 
         if reset = '1' then 
-            call_out <= '0';
+            reg_write_out <= '0';
+				call_out <= '0';
         
         elsif rising_edge(clk) then 
             if halt = '0' then 
-                call_out <= call_in;
+                reg_write_out <= reg_write_in; 
+					 call_out <= call_in;
             end if; 
         end if;
         
