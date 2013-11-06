@@ -99,6 +99,7 @@ STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl, addr, store_data, d
 					request_bus <= '1';
 					NEXT_STATE <= WAIT_FOR_ACK; 
 			end case;
+			read_data_out <= (others => '0');
 			
 		when WAIT_FOR_ACK =>
 			if ack_mem_ctrl = '1' then
@@ -114,6 +115,7 @@ STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl, addr, store_data, d
 			else 
 				NEXT_STATE <= WAIT_FOR_ACK;				
 			end if;
+			read_data_out <= (others => '0');
 		
 		when WAIT_FOR_MEMORY => 
 			if ack_mem_ctrl = '1' then
@@ -128,6 +130,7 @@ STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl, addr, store_data, d
 			
 		when PERFORM_OPERATION => 
 			halt <= '0';
+			read_data_out <= (others => '0');
 			NEXT_STATE <= REQUEST;
 			
 	end case;

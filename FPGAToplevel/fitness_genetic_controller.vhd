@@ -78,6 +78,7 @@ STATE_MACHINE : process (CURRENT_STATE, gene_op, ack_gene_ctrl, fitness_in, gene
 				request_bus_unrated <= '0';
 				halt <= '1';
 		end case;
+		gene_out <= (others => '0');
 		NEXT_STATE <= WAIT_FOR_ACK;
 		
 	when WAIT_FOR_ACK => 
@@ -96,20 +97,23 @@ STATE_MACHINE : process (CURRENT_STATE, gene_op, ack_gene_ctrl, fitness_in, gene
 		else 
 			NEXT_STATE <= WAIT_FOR_ACK;
 		end if;
-		
+		gene_out <= (others => '0');
 	
 	when STORE_FITNESS => 
 		data_pool_bus_out <= fitness_in;
+		gene_out <= (others => '0');
 		NEXT_STATE <= STORE_GENE;
 	
 	when STORE_GENE => 
 		data_pool_bus_out <= gene_in;
+		gene_out <= (others => '0');
 		NEXT_STATE <= REQUEST; 
 	
 	when LOAD_GENE =>
 		--Finished loading the gene 
 		gene_out <= data_pool_bus_in;
 	when others => 
+		gene_out <= (others => '0');
 		NEXT_STATE <= REQUEST;
 	
 	end case;
