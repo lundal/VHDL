@@ -144,19 +144,16 @@ architecture Behavioral of GeneticPipeline2 is
     
     component crossover_toplevel is
         generic (
-            N : integer := 64;
-            O : integer := 32
+            N : integer := 64
         );
         port (
-            clk           : in  STD_LOGIC;
-            enabled       : in  STD_LOGIC;
-            control_input : in  STD_LOGIC_VECTOR(2 downto 0);
-            random_number : in  STD_LOGIC_VECTOR(O-1 downto 0);
-            parent1       : in  STD_LOGIC_VECTOR(N-1 downto 0);
-            parent2       : in  STD_LOGIC_VECTOR(N-1 downto 0);
-            child1        : out STD_LOGIC_VECTOR(N-1 downto 0);
-            child2        : out STD_LOGIC_VECTOR(N-1 downto 0)
-        );
+        control_input : in  STD_LOGIC_VECTOR(3-1 downto 0);
+        random_number : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        parent1       : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        parent2       : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        child1        : out STD_LOGIC_VECTOR(N-1 downto 0);
+        child2        : out STD_LOGIC_VECTOR(N-1 downto 0)
+    );
     end component;
     
     component mutation_core is
@@ -421,18 +418,15 @@ begin
     
     CROSSOVER : crossover_toplevel
     generic map (
-        N => DATA_WIDTH,
-        O => RANDOM_WIDTH
+        N => DATA_WIDTH
     )
     port map (
-        enabled       => '1',
         control_input => settings_crossover,
-        random_number => random,
+        random_number => random_extended,
         parent1       => parent_0,
         parent2       => parent_1,
         child1        => child_0,
-        child2        => child_1,
-        clk           => CLK
+        child2        => child_1
     );
     
     MUTATOR_0 : mutation_core
