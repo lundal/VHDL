@@ -4,11 +4,10 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity crossover_core_xor is
     generic (
-        N : integer := 64;
-        R : integer := 64
+        N : integer := 64
     );
     port (
-        random_number : in  STD_LOGIC_VECTOR(R-1 downto 0);
+        random_number : in  STD_LOGIC_VECTOR(N-1 downto 0);
         parent1       : in  STD_LOGIC_VECTOR(N-1 downto 0);
         parent2       : in  STD_LOGIC_VECTOR(N-1 downto 0);
         child1        : out STD_LOGIC_VECTOR(N-1 downto 0);
