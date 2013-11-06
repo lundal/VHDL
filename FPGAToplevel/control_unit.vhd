@@ -66,7 +66,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= MEM_OP_NA; 
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "001";
+            TO_REG <= "01";
             REG_WRITE <= '1';
             
         when OP_CODE_RRI =>
@@ -78,7 +78,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= MEM_OP_NA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "001";
+            TO_REG <= "01";
             REG_WRITE <= '1';
         
         when OP_CODE_CALL =>
@@ -90,7 +90,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= MEM_OP_NA; 
             JUMP <= '1';
             CALL <= '1';
-            TO_REG <= "010";
+            TO_REG <= "10";
             REG_WRITE <= '1';
             
         when OP_CODE_JMP => 
@@ -114,7 +114,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= LOAD_DATA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "011";
+            TO_REG <= "11";
             REG_WRITE <= '1';
         
         when OP_CODE_LDI =>
@@ -126,7 +126,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= LOAD_DATA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "011";
+            TO_REG <= "11";
             REG_WRITE <= '1';
 
         when OP_CODE_SW =>
@@ -162,7 +162,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= GENE_OP_NA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "000";
+            TO_REG <= "00";
             REG_WRITE <= '1';
         
         when OP_CODE_STG =>
@@ -174,7 +174,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= MEM_OP_NA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "000";
+            TO_REG <= "00";
             REG_WRITE <= '1';
         
         when OP_CODE_SETG =>
@@ -186,7 +186,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             MEM_OP <= MEM_OP_NA;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "001";
+            TO_REG <= "01";
             REG_WRITE <= '1';
         when others => 
 				ALU_FUNC <= ALU_FUNC_NA;

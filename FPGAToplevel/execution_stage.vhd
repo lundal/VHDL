@@ -39,7 +39,6 @@ entity execution_stage is
 			 multiplication_halt : out STD_LOGIC; 
           
           -- Signals out 
-          write_register_addr : out STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           alu_result          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end execution_stage;
 
@@ -155,11 +154,7 @@ port map(
 			forward_a =>forwardA, 
 			forward_b =>forwardB);
 			
---Processes
 
-
---Output(s)
-write_register_addr <= rda;
 
 
 end Behavioral;

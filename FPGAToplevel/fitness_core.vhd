@@ -46,9 +46,10 @@ architecture Behavioral of fitness_core is
 --FETCH SIGNALS--
 
 	-- Bus signals
-	signal instruction_signal_fetch : std_logic_vector(INST_WIDTH-1 downto 0);
-	signal pc_incremented_signal_fetch : std_logic_vector(INST_WIDTH-1 downto 0);
-	signal pc_signal_fetch 				: std_logic_vector(INST_WIDTH-1 downto 0);
+	signal instruction_signal_fetch 		: std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_incremented_signal_fetch 	: std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_signal_fetch 					: std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_jump_addr_signal 			: std_logic_vector(INST_WIDTH-1 downto 0);
 
 --DECODE SIGNALS-- 
  
@@ -138,6 +139,7 @@ architecture Behavioral of fitness_core is
 	signal rs_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rt_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal gene_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pc_jump_addr_signal_mem : std_logic_vector(INST_WIDTH-1 downto 0);
 
 
 
@@ -359,14 +361,15 @@ port map (
 
 
 fetch_stage : entity work.fetch_stage
-port map (   
-    clk => clk,
-    reset => reset,
-    pc_update => processor_enable,
-    pc_input => pc_signal_fetch,
-    pc_incremented => pc_incremented_signal_fetch,
-    pc_signal => instruction_signal_fetch -- 
-);
+port map (  clk => clk, 
+           reset => reset,
+           pc_update => processor_enable,
+           pc_src  => jump_signal_mem, 
+			  pc_jump_addr => pc_jump_addr_signal_mem, 
+           pc_incremented 	=> pc_incremented_signal_fetch,
+           pc_signal  => pc_signal_fetch);
+
+
 
 
 FETCH_INSTRUCTION : process(processor_enable, pc_signal_fetch, imem_data_in) 
@@ -374,6 +377,9 @@ begin
 	if processor_enable = '1' then
 		imem_address <= pc_signal_fetch;
 		instruction_signal_fetch <= imem_data_in; 
+	else 
+		imem_address <= (others => '0');
+		instruction_signal_fetch <= (others => '0');
 	end if;
 end process;
 
@@ -420,12 +426,12 @@ port map (
     stage5_reg_write => reg_write_signal_wb,
 
     --Signals in 
-    rs => rs_signal_decode,
-    rt => rt_signal_decode,
-    immediate => imm_signal_decode,
-    rsa => rsa_signal_decode,
-    rta => rsa_signal_decode,
-    rda => rda_signal_decode,
+    rs => rs_signal_execute,
+    rt => rt_signal_execute,
+    immediate => imm_signal_execute,
+    rsa => rsa_signal_execute,
+    rta => rsa_signal_execute,
+    rda => rda_signal_execute,
 
     -- From other stages
     stage4_alu_result => res_signal_mem,
@@ -436,8 +442,8 @@ port map (
 	 --Control signals out
     overflow => overflow_signal_execute,
 	 multiplication_halt => multiplication_halt_signal, 
-    -- Signals out 
-    write_register_addr => rda_signal_execute,
+    
+	 -- Signals out 
     alu_result => res_signal_execute
 );
 
@@ -479,7 +485,8 @@ port map (
 	pc_out => pc_out_signal_mem, 
 	addr_mem_bus => dmem_address, 
 	data_mem_bus_out	=>dmem_data_out, 
-	data_pool_bus_out =>pmem_data_out);
+	data_pool_bus_out =>pmem_data_out,
+	pc_jump_addr => pc_jump_addr_signal_mem);
 			 
 
 write_back_stage : entity work.write_back_stage

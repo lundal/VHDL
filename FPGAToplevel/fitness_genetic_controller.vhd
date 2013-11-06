@@ -92,9 +92,11 @@ STATE_MACHINE : process (CURRENT_STATE, gene_op, ack_gene_ctrl, fitness_in, gene
 					NEXT_STATE <= LOAD_GENE;
 				when others => 
 					NEXT_STATE <= REQUEST;
-			end case;
+				end case;
+		else 
+			NEXT_STATE <= WAIT_FOR_ACK;
 		end if;
-		NEXT_STATE <= WAIT_FOR_ACK;
+		
 	
 	when STORE_FITNESS => 
 		data_pool_bus_out <= fitness_in;
@@ -107,7 +109,8 @@ STATE_MACHINE : process (CURRENT_STATE, gene_op, ack_gene_ctrl, fitness_in, gene
 	when LOAD_GENE =>
 		--Finished loading the gene 
 		gene_out <= data_pool_bus_in;
-	
+	when others => 
+		NEXT_STATE <= REQUEST;
 	
 	end case;
 

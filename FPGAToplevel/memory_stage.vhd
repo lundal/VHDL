@@ -42,7 +42,8 @@ entity memory_stage is
 	pc_out 					 : out std_logic_vector(DATA_WIDTH-1 downto 0);
 	addr_mem_bus 			 : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
 	data_mem_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	data_pool_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0)
+	data_pool_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
+	pc_jump_addr 			 : out std_logic_vector(INST_WIDTH-1 downto 0)
 	);
 end memory_stage;
 
@@ -61,6 +62,7 @@ signal mem_op_ctrl_signal 		  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
 signal mem_addr_signal 			  : std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
 
 signal execute_signal 			  : std_logic;
+signal pc_out_signal 			  : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 begin
 
@@ -109,7 +111,7 @@ generic map(N => 64)
 port map ( sel =>jump_in, 
 			  in0 => pc_incremented_signal, 
 			  in1 =>res_in, 
-			  output => pc_out 
+			  output => pc_out_signal 
 			  );
 
 
@@ -148,17 +150,10 @@ pc_incremented_signal <= SXT(pc_incremented, 64);
 --Split result to fit as memory addr
 mem_addr_signal <= res_in(18 downto 0);
 
---HALT_DECIDER : process(halt_signal_genetic_ctrl, halt_signal_mem_ctrl)
---	begin 
---		if halt_signal_genetic_ctrl = '1' then 
---			halt <= '1';
---		elsif halt_signal_mem_ctrl = '1' then 
---			halt <= '1';
---		else 
---			halt <= '0';
---		end if;
---end process; 
 halt <= halt_signal_genetic_ctrl or halt_signal_mem_ctrl;
+
+pc_jump_addr <= pc_out_signal(31 downto 0);
+pc_out <= pc_out_signal; 
 
 
 end Behavioral;
