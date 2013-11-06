@@ -39,7 +39,9 @@ entity execution_stage is
 			 multiplication_halt : out STD_LOGIC; 
           
           -- Signals out 
-          alu_result          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
+          rs_out 					: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			 rt_out 				   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			 alu_result          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end execution_stage;
 
 architecture Behavioral of execution_stage is
@@ -155,7 +157,8 @@ port map(
 			forward_b =>forwardB);
 			
 
-
+rs_out <= tri_mux1_out;
+rt_out <= tri_mux2_out;
 
 end Behavioral;
 

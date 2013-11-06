@@ -42,21 +42,21 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package std_logic_1164
 -- Compiling package constants
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Loading package numeric_std
--- Loading package constants
--- Compiling entity execution_stage
--- Compiling architecture behavioral of execution_stage
-
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
 -- Compiling entity prng
 -- Compiling architecture behavioral of prng
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package constants
+-- Compiling entity control_unit
+-- Compiling architecture behavioral of control_unit
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -338,28 +338,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
 -- Compiling package mips_constant_pkg
-
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Loading package constants
--- Compiling entity fitness_core
--- Compiling architecture behavioral of fitness_core
--- Loading package numeric_std
--- Loading entity control_unit
--- Loading entity if_id
--- Loading entity id_ex
--- Loading entity ex_mem
--- Loading entity mem_wb
--- Loading entity fetch_stage
--- Loading package std_logic_arith
--- Loading package std_logic_signed
--- Loading package mips_constant_pkg
--- Loading entity decode_stage
--- Loading entity execution_stage
--- Loading entity memory_stage
--- Loading entity write_back_stage
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010

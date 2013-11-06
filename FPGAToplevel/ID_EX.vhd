@@ -27,7 +27,6 @@ entity ID_EX is
            gene_op_in                   : in  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
            mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
            to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
-			  store_src_in 					 : in  STD_LOGIC;
            call_in							 : in  STD_LOGIC;
            
            -- CONTROL SIGNALS out

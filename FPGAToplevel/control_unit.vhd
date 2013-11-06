@@ -27,6 +27,7 @@ use WORK.CONSTANTS.ALL;
 
 entity control_unit is
 	port (
+		  reset 			: in STD_LOGIC; 
 		  OP_CODE		:	in	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0);
 		  FUNC         :  in  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
         ALU_SOURCE 	:	out	STD_LOGIC;
@@ -54,7 +55,7 @@ constant TO_REG_NA  : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0) := (others =>
 
 begin
 
-CONTROL_UNIT : process (OP_CODE, FUNC)
+CONTROL_UNIT : process (OP_CODE, FUNC, reset)
     begin 
         if reset = '1' then
 				ALU_FUNC <= ALU_FUNC_NA;
@@ -67,6 +68,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '0';
+				STORE_SOURCE <= '0';
 				
 		  elsif OP_CODE = OP_CODE_RRR then
             ALU_FUNC <= FUNC;
@@ -79,6 +81,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "01";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
             
         elsif OP_CODE = OP_CODE_RRI then
             ALU_FUNC <= FUNC;
@@ -91,6 +94,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "01";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_CALL then 
             ALU_FUNC <= ALU_FUNC_ADD;
@@ -103,6 +107,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '1';
             TO_REG <= "10";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
             
         elsif OP_CODE = OP_CODE_JMP then 
             ALU_FUNC <= ALU_FUNC_ADD;
@@ -115,6 +120,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= TO_REG_NA; 
             REG_WRITE <= '0';
+				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_LW and FUNC = ALU_FUNC_ADD then 
             ALU_FUNC <= ALU_FUNC_ADD;
@@ -127,6 +133,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "11";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_LDI then
             ALU_FUNC <= ALU_FUNC_ADD;
@@ -139,6 +146,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "01";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
 
         elsif OP_CODE = OP_CODE_SW then
             ALU_FUNC <= ALU_FUNC_ADD;
@@ -151,6 +159,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '0';
+				STORE_SOURCE <= '1';
         
         elsif OP_CODE = OP_CODE_STI then
             ALU_FUNC <= FUNC;
@@ -163,6 +172,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_LDG then 
             ALU_FUNC <= ALU_FUNC_NA;
@@ -175,6 +185,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "00";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_STG then 
             ALU_FUNC <= ALU_FUNC_NA;
@@ -187,6 +198,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "00";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_SETG then
             ALU_FUNC <= FUNC;
@@ -199,6 +211,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= "01";
             REG_WRITE <= '1';
+				STORE_SOURCE <= '0';
         else  
 				ALU_FUNC <= ALU_FUNC_NA;
             REG_SOURCE <= '0';
@@ -210,6 +223,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC)
             CALL <= '0';
             TO_REG <= TO_REG_NA;
             REG_WRITE <= '0';
+				STORE_SOURCE <= '0';
 		  end if;
 end process CONTROL_UNIT;
 

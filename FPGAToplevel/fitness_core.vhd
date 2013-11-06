@@ -177,7 +177,8 @@ control_unit: entity work.control_unit
 port map (
 
     -- in
-    op_code =>	op_code_decode,
+    reset => reset, 
+	 op_code =>	op_code_decode,
     FUNC => func_decode,
 
     -- out
@@ -244,7 +245,6 @@ port map (
     gene_op_in => gene_op_signal_decode,
     mem_operation_in => mem_op_signal_decode,
     to_reg_operation_in => to_reg_signal_decode,
-	 store_src_in => store_src_signal_decode,
 	 call_in => call_signal_decode,
 
     -- CONTROL SIGNALS out
@@ -309,8 +309,8 @@ port map (
 	 reg_write_out => reg_write_signal_mem,
 
     --Data in 
-    rs_in => rs_signal_execute,
-    rt_in => rt_signal_execute,
+    rs_in => rs_out_signal_execute,
+    rt_in => rt_out_signal_execute,
     res_in => res_signal_execute,
     rda_in => rda_signal_execute,
 
@@ -445,7 +445,9 @@ port map (
 	 multiplication_halt => multiplication_halt_signal, 
     
 	 -- Signals out 
-    alu_result => res_signal_execute
+    alu_result => res_signal_execute,
+	 rs_out => rs_out_signal_execute, 
+	 rt_out => rt_out_signal_execute
 );
 
 

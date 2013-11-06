@@ -68,8 +68,8 @@ ARCHITECTURE behavior OF tb_toplevel IS
 	
 
   -- instructions
-   constant ins0 : std_logic_vector(0 to 31):= "11110100000010000000000000001000";
-	constant ins1 : std_logic_vector(0 to 31):= "11110100000100000000000000001010";
+   constant ins0 : std_logic_vector(0 to 31):= "11110100000010000000000000001010";
+	constant ins1 : std_logic_vector(0 to 31):= "11110001000010001000000010000000";
    constant ins2 : std_logic_vector(0 to 31) := "11110010000110000000000000001010";
  
   
@@ -136,16 +136,16 @@ BEGIN
     bus_data_in <= zero;
     wait for clk_period*3;
 
-    -- Add instruction 2
-    command <= CMD_WI;          
-    bus_address_in <= addr2;
-    bus_data_in <= ins2;
-    wait for clk_period*3;
-
-    command <= CMD_IDLE;          
-    bus_address_in <= zero;
-    bus_data_in <= zero;
-    wait for clk_period*3;
+--    -- Add instruction 2
+--    command <= CMD_WI;          
+--    bus_address_in <= addr2;
+--    bus_data_in <= ins2;
+--    wait for clk_period*3;
+--
+--    command <= CMD_IDLE;          
+--    bus_address_in <= zero;
+--    bus_data_in <= zero;
+--    wait for clk_period*3;
 
 --    -- Add instruction 3
 --    command <= CMD_WI;          

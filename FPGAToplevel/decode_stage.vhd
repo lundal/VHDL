@@ -91,6 +91,7 @@ port map(sel => reg_store,
         in1 =>rd_addr_internal, 
         output =>reg_op2);
         
+
 IMM_MUX_MAP : multiplexor 
 generic map(N => DATA_WIDTH)
 port map(sel =>imm_src, 
@@ -146,8 +147,8 @@ end process SIGN_EXTEND_IMMEDIATE_ADDRESS;
 
 --OUTPUT
 condition_out <= condition_internal;
-rsa <= rsa_internal;
-rta <= rt_addr_internal;
+rsa <= reg_op1;
+rta <= reg_op2;
 rda <= rd_addr_internal;
 
 
