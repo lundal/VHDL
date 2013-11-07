@@ -68,6 +68,15 @@ begin
 
 --Signals are represented from top to bottom (see pipeline figure)
 
+
+PC_INCREMENTED : flip_flop 
+generic map(N => INST_WIDTH)
+	port map (clk => clk, 
+			    reset => reset, 
+				 enable => halt, 
+				 data_in => pc_incremented_in, 
+				 data_out => pc_incremented_out);
+
 RS_REGISTER : flip_flop
 generic map(N => DATA_WIDTH)
     port map(clk => clk, 

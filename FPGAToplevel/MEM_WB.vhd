@@ -54,6 +54,14 @@ end component flip_flop;
 begin
 
 
+PC_INCREMENTED : flip_flop 
+	generic map(N => DATA_WIDTH)
+	port map(clk => clk, 
+				reset => reset, 
+				enable => halt, 
+				data_in => pc_incremented_in,
+				data_out => pc_incremented_out);
+
 GENE_REGISTER : flip_flop
     generic map(N => DATA_WIDTH)
     port map (clk => clk, 

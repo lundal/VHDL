@@ -108,6 +108,8 @@ architecture Behavioral of fitness_core is
 	--BUS signals
 	signal rs_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rt_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal rs_out_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal rt_out_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal res_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rda_signal_execute : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 	signal rsa_signal_execute : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
