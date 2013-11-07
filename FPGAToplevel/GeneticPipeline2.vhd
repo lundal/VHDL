@@ -238,10 +238,11 @@ architecture Behavioral of GeneticPipeline2 is
     signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     
     -- Random
-    signal random           : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
-    signal random_prev      : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
-    signal random_extended  : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0);
-    signal random_selection : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
+    signal random             : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0) := (others => '0');
+    signal random_prev        : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0) := (others => '0');
+    signal random_extended    : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0);
+    signal random_selection_0 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
+    signal random_selection_1 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
     
     -- Incrementer signals
     signal inc_gene      : STD_LOGIC := '0';
@@ -387,7 +388,7 @@ begin
     )
     port map (
         ADDR   => selector_0_addr,
-        RANDOM => random_selection,
+        RANDOM => random_selection_0,
         DATA   => rated_a_out,
         BEST   => parent_0,
         NUMBER => settings_selection,
@@ -404,7 +405,7 @@ begin
     )
     port map (
         ADDR   => selector_1_addr,
-        RANDOM => random_selection,
+        RANDOM => random_selection_1,
         DATA   => rated_b_out,
         BEST   => parent_1,
         NUMBER => settings_selection,
@@ -477,8 +478,10 @@ begin
         end if;
     end process;
     
-    -- Extended random
+    -- Map randoms
     random_extended <= random & random_prev;
+    random_selection_0 <= random_extended(ADDR_WIDTH*1-2 downto 0);
+    random_selection_1 <= random_extended(ADDR_WIDTH*2-2 downto ADDR_WIDTH);
     
     -- Decode settings signal
     settings_mutation  <= settings(settings_width_mutation - 1 downto 0);
@@ -499,8 +502,7 @@ begin
     -- Map DATA I/O
     DATA_OUT <= unrated_a_out;
     
-    -- Map randoms
-    random_selection <= random(ADDR_WIDTH-2 downto 0);
+    
     
     RESETIFIER : process(RESET, CLK, DATA_IN, random_extended, inc_rated_ctrl, write_genetic, write_rated_0, write_rated_1, mutator_0_out, mutator_1_out)
     begin

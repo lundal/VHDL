@@ -98,15 +98,16 @@ begin
                 -- Static signals
                 StoreFitness <= '0';
                 StoreGene <= '0';
-                Done_Int <= '0';
                 
                 -- Dynamic signals
                 if (ENABLE = '1') then
                     -- Fetch new addresses
                     Random_Int <= RANDOM;
                     ADDR <= Random_Int & '0';
+                    Done_Int <= '0';
                 else
                     ADDR <= (others => '0');
+                    Done_Int <= '1';
                 end if;
             
             when Compare =>
