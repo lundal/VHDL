@@ -37,17 +37,15 @@ ARCHITECTURE behavior OF mutation_core_tb IS
  
     COMPONENT mutation_core
     PORT(
-			active : IN std_logic;
          random_number : IN  std_logic_vector(31 downto 0);
-         input : IN  std_logic_vector(63 downto 0);
-			chance_input : IN std_logic_vector(5 downto 0);
+		 chance_input : IN std_logic_vector(5 downto 0);
+		 input : IN  std_logic_vector(63 downto 0);
          output : OUT  std_logic_vector(63 downto 0)
         );
     END COMPONENT;
     
 
    --Inputs
-	signal active : std_logic := '0';
    signal random_number : std_logic_vector(31 downto 0) := (others => '0');
 	signal chance_input : std_logic_vector(5 downto 0) := (others => '0');
    signal input : std_logic_vector(63 downto 0) := (others => '0');
@@ -59,9 +57,8 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: mutation_core PORT MAP (
-			 active => active,
           random_number => random_number,
-			 chance_input => chance_input,
+		  chance_input => chance_input,
           input => input,
           output => output
         );
@@ -76,16 +73,11 @@ BEGIN
 		
 		-- Following input bit-string will be used as "Standard" for input.
 		input <= "1111111111111111000000000000000011111111111111110000000000000000";
-		chance_input <= "000010";
+		chance_input <= "000011";
 		
-		-- Setting random_number as all 0, except first 4 bits
+		-- Setting random_number as all 0's, except first 4 bits
 		
 		random_number <= "11110000000000000000000000000000";
-		
-		wait for 40 ns;
-		
-		-- Activating Mutation, should be at bit 0
-		active <= '1';
 		
 		wait for 40 ns;
 		
@@ -95,7 +87,7 @@ BEGIN
 		wait for 40 ns;
 		
 		-- Setting mutation to bit nr. 7 (000111), and allows mutation by setting top 6 bits to 000000,
-		-- allowing signal reduced_random_numberC to be lower than chance_input and thus allowing mutation
+		-- allowing signal random_number_chance to be lower than chance_input and thus allowing mutation
 		random_number <= "00000000000000000000000000000111";
 	
 		wait for 40 ns;
@@ -137,12 +129,12 @@ BEGIN
 		
 		wait for 40 ns;
 		
-		-- Changes in top 6 bits in random_number to values higher than chance_control should deny mutation
+		-- Changes in top 6 bits in random_number to values higher or equal to chance_input should deny mutation
 		random_number <= "10000011111100000001111110010111";
 		
 		wait for 40 ns;
 		
-		-- Changing back to 000000. Mutationt is now allowed:
+		-- Changing back to 000000. Mutation is now allowed:
 		random_number <= "00000011111100000001111110010111";
 		
 		wait for 40 ns;
@@ -178,10 +170,16 @@ BEGIN
 		
 		wait for 40 ns;
 		
-		--Reseting
+		-- Setting chance_input to 000000, equal chance_input and top 6 bits from random_number should deny mutation
+		
+		chance_input <= "000000";
+		
+		wait for 40 ns;
+		
+		--Resetting
 		input <= "1111111111111111000000000000000011111111111111110000000000000000";
 		random_number <= "00000000000000000000000000000000";
-		chance_input <= "000010";
+		chance_input <= "000011";
 		
 		wait for 40 ns;
 		
@@ -218,34 +216,6 @@ BEGIN
 		-- Reducing mutations, removing number 3 and 4: 7 (000111) and 8 (001000), keeping  number 2 and 3: 5 (000101) and 6 (000110)
 		
 		random_number <= "00000001001000000111000110000101";
-		
-		wait for 40 ns;
-		
-		-- Setting active to 0, no mutation should occur, but input should still be passed through:
-		
-		active <='0';
-		
-		wait for 40 ns;
-		
-		-- Change in input should still change output.
-		
-		input <= "0000000000000000111111111111111100000000000000001111111111111111";
-		
-		wait for 40 ns;
-		
-		-- Change in random_number should not matter when not active
-		random_number <= "00110001001000000111000110011111";
-		
-		wait for 40 ns;
-		
-		-- Change in control_input should not matter when not active
-		
-		chance_input <= "111111";
-		
-		wait for 40 ns;
-		
-		-- Resetting active
-		active <= '1';
 		
 		wait for 40 ns;
 		
