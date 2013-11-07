@@ -115,7 +115,7 @@ begin
     );
     
     -- Get some bits for party mode
-    random_ctrl <= random_number(2-1 downto 0);
+    random_ctrl <= random_number(N-1 downto N-2);
     
     CROSSOVER: Process (control_input, random_ctrl, split_child1, split_child2, doublesplit_child1, doublesplit_child2, xor_child1, xor_child2, parent1, parent2)
     begin
