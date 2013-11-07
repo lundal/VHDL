@@ -1,125 +1,91 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use work.CONSTANTS.all;
+use WORK.CONSTANTS.ALL;
 
 entity fitness_genetic_controller is
-	Port ( 
-			clk 						: in std_logic;
-			reset 					: in std_logic;
-			processor_enable	   : in std_logic;
-			
-			-- Control signals in
-			gene_op 				   : in std_logic_vector (GENE_OP_WIDTH-1 downto 0);
-			ack_gene_ctrl 		   : in std_logic;
-		   settings_in          : in std_logic_vector (SETTINGS_WIDTH-1 downto 0);
-
-			-- Control signals out
-			halt 				      : out std_logic;
-			request_bus_rated    : out std_logic_vector (GENE_OP_WIDTH-1 downto 0);
-			request_bus_unrated  : out std_logic;
-			setting_out 		   : out std_logic_vector (SETTINGS_WIDTH-1 downto 0);
-			
-			--BUS in 
-			fitness_in 			   : in std_logic_vector (DATA_WIDTH-1 downto 0);
-			gene_in 				   : in std_logic_vector (DATA_WIDTH-1 downto 0);
-			data_pool_bus_in     : in std_logic_vector (DATA_WIDTH-1 downto 0);
-			
-			--BUS out
-			gene_out 			   : out std_logic_vector (DATA_WIDTH-1 downto 0);
-			data_pool_bus_out    : out std_logic_vector (DATA_WIDTH-1 downto 0)
-			);
+    generic ( 
+        DATA_WIDTH : integer := 64
+    );
+    port ( 
+        -- To/from genetic pipeline
+        REQUEST_0 : out STD_LOGIC;
+        REQUEST_1 : out STD_LOGIC;
+        ACK       : in  STD_LOGIC;
+        DATA_IN   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DATA_OUT  : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        
+        -- To/from processor
+        OP       : in  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
+        FITNESS  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        GENE_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        GENE_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        HALT     : out STD_LOGIC;
+        CLK      : in  STD_LOGIC
+    );
 end fitness_genetic_controller;
 
 architecture Behavioral of fitness_genetic_controller is
-
-type state_type is (REQUEST,WAIT_FOR_ACK ,LOAD_GENE, STORE_FITNESS, STORE_GENE);
-signal CURRENT_STATE, NEXT_STATE : state_type;
-
-constant LOAD 				: std_logic_vector(GENE_OP_WIDTH-1 downto 0) := "01";
-constant STORE 			: std_logic_vector(GENE_OP_WIDTH-1 downto 0) := "10";
-constant NOP 				: std_logic_vector(GENE_OP_WIDTH-1 downto 0) := "00";
-constant SETTINGS 		: std_logic_vector(GENE_OP_WIDTH-1 downto 0) := "11";
-
-
+    
+    type state_type is (Ready, Store);
+    signal state : state_type := Ready;
+    
+    signal request : STD_LOGIC_VECTOR(2-1 downto 0);
+    
 begin
-
-RUN : process(clk, reset) 
-	begin 
-		if reset = '1' then
-			CURRENT_STATE <= REQUEST;
-		elsif rising_edge(clk) then 
-			if processor_enable = '1' then 
-				CURRENT_STATE <= NEXT_STATE;
-			end if;
-		end if;
-			
-end process;
-
-
-STATE_MACHINE : process (CURRENT_STATE, gene_op, ack_gene_ctrl, fitness_in, gene_in, data_pool_bus_in)
-	begin 
-	case CURRENT_STATE is 
-	when REQUEST => 
-		data_pool_bus_out <= (others => 'Z');
-		
-		case gene_op is 
-			when STORE => 
-				request_bus_rated <= gene_op;
-				halt <= '1';
-			when SETTINGS => 
-				request_bus_rated <= gene_op;
-				halt <= '1';
-			when LOAD =>
-				request_bus_unrated <= '1';
-				halt <= '1';
-			when others => 
-				--Request access to the rated pool
-				request_bus_rated <= (others => '0');
-				request_bus_unrated <= '0';
-				halt <= '1';
-		end case;
-		gene_out <= (others => '0');
-		NEXT_STATE <= WAIT_FOR_ACK;
-		
-	when WAIT_FOR_ACK => 
-		if ack_gene_ctrl = '1' then
-			request_bus_rated <= (others => '0');
-			request_bus_unrated <= '0';
-			case gene_op is 
-				when STORE => 
-					NEXT_STATE <= STORE_FITNESS;
-				when LOAD => 
-					--The pool should start laoding the memory here
-					NEXT_STATE <= LOAD_GENE;
-				when others => 
-					NEXT_STATE <= REQUEST;
-				end case;
-		else 
-			NEXT_STATE <= WAIT_FOR_ACK;
-		end if;
-		gene_out <= (others => '0');
-	
-	when STORE_FITNESS => 
-		data_pool_bus_out <= fitness_in;
-		gene_out <= (others => '0');
-		NEXT_STATE <= STORE_GENE;
-	
-	when STORE_GENE => 
-		data_pool_bus_out <= gene_in;
-		gene_out <= (others => '0');
-		NEXT_STATE <= REQUEST; 
-	
-	when LOAD_GENE =>
-		--Finished loading the gene 
-		gene_out <= data_pool_bus_in;
-	when others => 
-		gene_out <= (others => '0');
-		NEXT_STATE <= REQUEST;
-	
-	end case;
-
-end process;
-
-
+    
+    REQUEST_0 <= request(0);
+    REQUEST_1 <= request(1);
+    
+    STATE_CHANGER : process (CLK, state)
+    begin
+        if rising_edge(CLK) then
+            case state is
+                when Ready =>
+                    if (ACK = '1' and OP = GENE_OP_STORE) then
+                        state <= Store;
+                    else
+                        state <= Ready;
+                    end if;
+                when Store =>
+                    state <= Ready;
+            end case;
+        end if;
+    end process;
+    
+    STATE_MACHINE : process (state, request, ACK, OP, FITNESS, GENE_IN)
+    begin
+        case state is
+            when Ready =>
+                -- Send request until ack
+                if (ACK = '0') then
+                    request <= OP;
+                else
+                    request <= GENE_OP_NONE;
+                end if;
+                
+                -- Send halt if access requires additional cycles
+                if (OP = GENE_OP_STORE) then
+                    HALT <= '1';
+                elsif ((OP = GENE_OP_SETTINGS or OP = GENE_OP_LOAD) and ACK = '0') then
+                    HALT <= '1';
+                else
+                    HALT <= '0';
+                end if;
+                
+                -- Send out fitness/settings if writing and has access
+                if ((OP = GENE_OP_STORE or OP = GENE_OP_SETTINGS) and ACK = '1') then
+                    DATA_OUT <= FITNESS;
+                else
+                    DATA_OUT <= (others => 'Z');
+                end if;
+                
+            when Store =>
+                -- Release halt: Data is written at tick
+                HALT <= '0';
+                
+                -- Output gene
+                DATA_OUT <= Gene_IN;
+        end case;
+    end process;
 end Behavioral;
 
