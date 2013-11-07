@@ -19,11 +19,11 @@ package CONSTANTS is
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
     -- TODO - Change these to their correct values
-    constant GENE_OP_WIDTH    : integer := 2;
+    constant GENE_OP_WIDTH   : integer := 2;
     constant MEM_OP_WIDTH    : integer := 2;
     constant TO_REG_OP_WIDTH : integer := 2;
-	 constant MEM_ADDR_WIDTH : integer := 19;
-	 constant SETTINGS_WIDTH : integer := 3;
+	constant MEM_ADDR_WIDTH  : integer := 19;
+	constant SETTINGS_WIDTH  : integer := 3;
     
    --ACTIONS
 	constant LOAD_DATA   : STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0) := "01";
@@ -31,6 +31,11 @@ package CONSTANTS is
 	constant LOAD_GENE 	: STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "01";
 	constant STORE_GENE  : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "10";
     
+    -- Genetic
+    constant GENE_OP_NONE     : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "00";
+    constant GENE_OP_STORE    : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "01";
+    constant GENE_OP_LOAD     : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "10";
+    constant GENE_OP_SETTINGS : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "11";
 	
 	--OPCODES 
 	constant OP_CODE_RRR	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1000";
