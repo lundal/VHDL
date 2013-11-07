@@ -490,9 +490,9 @@ begin
     settings_gene_ctrl <= settings(settings_width_selection + settings_width_crossover + settings_width_mutation);
     
     -- Decode request signals
-    request_unrated_proc <= not REQUEST_0 and     REQUEST_1; -- 01
-    request_rated_proc   <=     REQUEST_0 and not REQUEST_1; -- 10
-    request_rated_set    <=     REQUEST_0 and     REQUEST_1; -- 11
+    request_unrated_proc <= not REQUEST_1 and     REQUEST_0; -- 01
+    request_rated_proc   <=     REQUEST_1 and not REQUEST_0; -- 10
+    request_rated_set    <=     REQUEST_1 and     REQUEST_0; -- 11
     
     -- Combine ack signals
     ACK <= ack_rated_proc or ack_unrated_proc;
