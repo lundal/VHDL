@@ -51,7 +51,7 @@ begin
     mask1 <= shifted(N-2 downto 0) & '0';
     mask2 <= not mask1;
     
-    child1 <= (parent1 and mask2) or (parent2 and mask1);
-    child2 <= (parent1 and mask1) or (parent2 and mask2);
+    child1 <= (parent1 and mask1) or (parent2 and mask2);
+    child2 <= (parent1 and mask2) or (parent2 and mask1);
 	
 end Behavioral;
