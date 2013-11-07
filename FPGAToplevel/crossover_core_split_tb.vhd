@@ -2,14 +2,14 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
  
-ENTITY crossover_core_tb IS
-END crossover_core_tb;
+ENTITY crossover_core_split_tb IS
+END crossover_core_split_tb;
  
-ARCHITECTURE behavior OF crossover_core_tb IS 
+ARCHITECTURE behavior OF crossover_core_split_tb IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
-    COMPONENT crossover_core
+    COMPONENT crossover_core_split
     PORT(
          enabled : IN  std_logic;
          random_number : IN  std_logic_vector(31 downto 0);
@@ -34,7 +34,7 @@ ARCHITECTURE behavior OF crossover_core_tb IS
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: crossover_core PORT MAP (
+   uut: crossover_core_split PORT MAP (
           enabled => enabled,
           random_number => random_number,
           parent1 => parent1,

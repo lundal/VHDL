@@ -47,13 +47,14 @@ entity BRAM_TDP is
 		B_EN	:	in	STD_LOGIC;
 		CLK		:	in	STD_LOGIC
 	);
+end BRAM_TDP;
+
+architecture Behavioral of BRAM_TDP is
 	
 	-- WE signals
 	signal A_WE_EXT : STD_LOGIC_VECTOR(WE_WIDTH-1 downto 0);
 	signal B_WE_EXT : STD_LOGIC_VECTOR(WE_WIDTH-1 downto 0);
-end BRAM_TDP;
-
-architecture Behavioral of BRAM_TDP is
+	
 	component BRAM_TDP_MACRO is
 		generic (
 			BRAM_SIZE : string;

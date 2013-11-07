@@ -33,7 +33,7 @@ entity selection_core_control is
     Port ( clk 						: in  STD_LOGIC;
            reset  					: in  STD_LOGIC;
            selection_core_enable    : in  STD_LOGIC;
-		   crossover_core_enable    : in STD_LOGIC;
+		   crossover_core_enable    : out STD_LOGIC;
            comparator_signal 		: in  STD_LOGIC_VECTOR (1 downto 0);
            update_fitness 			: out STD_LOGIC;
            update_chromosome 		: out STD_LOGIC;
@@ -51,10 +51,12 @@ architecture Behavioral of selection_core_control is
 
 component adder 
         generic(N : natural);
-        port ( A : in std_logic_vector(N-1 downto 0);
+        port ( 
+					A : in std_logic_vector(N-1 downto 0);
                B : in std_logic_vector(N-1 downto 0);
-               res: out std_logic_vector(N-1 downto 0);
-               overflow : out std_logic
+               R: out std_logic_vector(N-1 downto 0);
+               overflow : out std_logic;
+					carry_in : in std_logic
         );
 end component adder;
 
@@ -84,10 +86,10 @@ ADDER_UNIT : Adder
     port map(
             A => "001",
             B => counter,
-            res => counter_res,
-            overflow => ground_signal
+            R => counter_res,
+            overflow => ground_signal,
+				carry_in => '0'
     );
-
 
 RUN : process (clk, reset) 
 begin 
@@ -114,7 +116,7 @@ begin
         if counter_res = TOURNAMENT_END then
             counter <= (others => '0');
             --Enable crossover
-            cross_over_enable <= '1';
+            crossover_core_enable <= '1';
             --Flush
             flush_registers <= '1';
             --Stall one cycle for crossover to finish ?
@@ -125,14 +127,17 @@ begin
     when STATE_COMPARE => 
         --Set appropiate signals
         request_memory <= '0';
-        propagate_data <= '0';
+--        propagate_data <= '0';
         update_chromosome <= '0'; 
         
         case comparator_signal is 
         when GREATER_THAN => 
              -- The new fitness is the best
              update_fitness <= '1'; --Update best fitness register with new best
-             request_memory <= '0';
+				 
+				 fetch_chromosome <='1';
+             
+				 request_memory <= '0';
              NEXT_STATE <= STATE_FETCH_CHROMOSOME;
              
         when LESS_THAN => 
@@ -155,7 +160,8 @@ begin
         propagate_data <= '1';
         update_chromosome <= '1';
         update_fitness <= '0';
-        NEXT_STATE <= STATE_FETCH_FITNESS;
+--        NEXT_STATE <= STATE_FETCH_FITNESS;
+			NEXT_STATE <= STATE_STALL;
     
     
     when STATE_STALL =>

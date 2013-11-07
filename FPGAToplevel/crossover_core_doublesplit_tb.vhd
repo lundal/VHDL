@@ -4,13 +4,13 @@
 --
 -- Create Date:   16:37:01 10/03/2013
 -- Design Name:   
--- Module Name:   C:/Users/torbjlan/VHDL/FPGAToplevel/crossover_core_pro_tb.vhd
+-- Module Name:   C:/Users/torbjlan/VHDL/FPGAToplevel/crossover_core_doublesplit_tb.vhd
 -- Project Name:  FPGAToplevel
 -- Target Device:  
 -- Tool versions:  
 -- Description:   
 -- 
--- VHDL Test Bench Created by ISE for module: crossover_core_pro
+-- VHDL Test Bench Created by ISE for module: crossover_core_doublesplit
 -- 
 -- Dependencies:
 -- 
@@ -32,14 +32,14 @@ USE ieee.std_logic_1164.ALL;
 -- arithmetic functions with Signed or Unsigned values
 --USE ieee.numeric_std.ALL;
  
-ENTITY crossover_core_pro_tb IS
-END crossover_core_pro_tb;
+ENTITY crossover_core_doublesplit_tb IS
+END crossover_core_doublesplit_tb;
  
-ARCHITECTURE behavior OF crossover_core_pro_tb IS 
+ARCHITECTURE behavior OF crossover_core_doublesplit_tb IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
-    COMPONENT crossover_core_pro
+    COMPONENT crossover_core_doublesplit
     PORT(
          enabled : IN  std_logic;
          random_number : IN  std_logic_vector(31 downto 0);
@@ -64,7 +64,7 @@ ARCHITECTURE behavior OF crossover_core_pro_tb IS
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
-   uut: crossover_core_pro PORT MAP (
+   uut: crossover_core_doublesplit PORT MAP (
           enabled => enabled,
           random_number => random_number,
           parent1 => parent1,

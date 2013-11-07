@@ -29,7 +29,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
 library WORK;
-use WORK.ALU_CONSTANTS.ALL;
+use WORK.CONSTANTS.ALL;
  
 ENTITY tb_alu IS
 END tb_alu;
@@ -44,10 +44,19 @@ ARCHITECTURE behavior OF tb_alu IS
 		Y : IN  std_logic_vector(63 downto 0);
 		R : OUT  std_logic_vector(63 downto 0);
 		FUNC : IN  std_logic_vector(3 downto 0);
-		FLAGS : OUT  ALU_FLAGS
+		OVERFLOW : OUT  std_logic
 	);
 	END COMPONENT;
-
+	
+	component ZeroTester is
+		generic (N : integer := 64);
+		port (
+			I		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
+			Pos		:	out	STD_LOGIC;
+			Zero	:	out	STD_LOGIC;
+			Neg		:	out	STD_LOGIC
+		);
+	end component;
 
 	--Inputs
 	signal X : std_logic_vector(63 downto 0) := (others => '0');
@@ -72,7 +81,16 @@ BEGIN
 		Y => Y,
 		R => R,
 		FUNC => FUNC,
-		FLAGS => FLAGS
+		OVERFLOW => FLAGS.Overflow
+	);
+	
+	ALU_RES_TESTER : ZeroTester
+	generic map (N => 64)
+	port map(
+		I		=> R,
+		Pos		=> FLAGS.Positive,
+		Zero	=> FLAGS.Zero,
+		Neg		=> FLAGS.Negative
 	);
 	
 	-- Error tester

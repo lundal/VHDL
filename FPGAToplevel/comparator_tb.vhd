@@ -42,27 +42,27 @@ BEGIN
           signal_out => signal_out
         );
 
-   -- Clock process definitions
---   <clock>_process :process
---   begin
---		<clock> <= '0';
---		wait for <clock>_period/2;
---		<clock> <= '1';
---		wait for <clock>_period/2;
---   end process;
- 
-
    -- Stimulus process
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
       wait for 100 ns;	
 
-      --wait for <clock>_period*10;
-
-      -- insert stimulus here 
+      -- Equal output: 00
       in0 <= "10100";
       in1 <= "10100";
+		
+		wait for 40 ns;
+		
+		-- Less output: 01
+		in0 <= "10010";
+      in1 <= "10100";
+		
+		wait for 40 ns;
+		
+		-- Greater output: 10
+		in0 <= "10100";
+		in1 <= "10010";
 
       wait;
    end process;

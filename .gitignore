@@ -65,6 +65,12 @@ _ngo/
 _xmsgs/
 work/
 
+# ISIM
+isim/
+*isim_beh.*
+isim.cmd
+xilinxsim.ini
+
 # Extra
 wlft*
 transcript

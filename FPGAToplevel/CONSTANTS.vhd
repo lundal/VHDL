@@ -16,8 +16,17 @@ package CONSTANTS is
 	constant OP_CODE_WIDTH	        :	integer :=	4;
 	constant REG_WIDTH		        :	integer :=	64;
 	constant REG_ADDR_WIDTH	        :	integer	:=	5;
+	
+	constant ADDR_WIDTH				:	integer := 19;
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
+	
+    constant STATE_WIDTH            :   integer := 2;
+    constant STATE_PROC             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "00";
+    constant STATE_INST_HI          :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "01";
+    constant STATE_INST_LO          :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "10";
+    constant STATE_DATA             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "11";
+
     -- TODO - Change these to their correct values
     constant GENE_OP_WIDTH   : integer := 2;
     constant MEM_OP_WIDTH    : integer := 2;
@@ -60,6 +69,8 @@ package CONSTANTS is
 	constant ALU_FUNC_XOR	:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"0110";
 	constant ALU_FUNC_SLL	:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"0111";
 	constant ALU_FUNC_SRL	:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"1000";
+	constant ALU_FUNC_A		:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"1001";
+	constant ALU_FUNC_B		:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"1010";
 	constant ALU_FUNC_NA	:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"1111";
 	
 	-- Condition codes
