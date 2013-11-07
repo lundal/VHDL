@@ -182,7 +182,7 @@ architecture Behavioral of GeneticPipeline2 is
     -- Constants
     constant settings_width_selection : integer := 5;
     constant settings_width_crossover : integer := 3;
-    constant settings_width_mutation  : integer := 6;
+    constant settings_width_mutation  : integer := 8;
     
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
@@ -433,7 +433,7 @@ begin
         P => settings_width_mutation
     )
     port map (
-        random_number => random(settings_width_mutation+26-1 downto 0),
+        random_number => random_extended(settings_width_mutation+26-1 downto 0),
         chance_input  => settings_mutation,
         input         => child_0,
         output        => mutator_0_out
@@ -445,7 +445,7 @@ begin
         P => settings_width_mutation
     )
     port map (
-        random_number => random(settings_width_mutation+26-1 downto 0),
+        random_number => random_extended(settings_width_mutation+26-1 downto 0),
         chance_input  => settings_mutation,
         input         => child_1,
         output        => mutator_1_out

@@ -53,7 +53,7 @@ begin
     SHIFTER1 : ShifterVariable
     generic map (
         N => N,
-        M => P
+        M => 6
     )
     port map (
         I     => one,
@@ -66,7 +66,7 @@ begin
     SHIFTER2 : ShifterVariable
     generic map (
         N => N,
-        M => P
+        M => 6
     )
     port map (
         I     => one,
@@ -79,7 +79,7 @@ begin
     SHIFTER3 : ShifterVariable
     generic map (
         N => N,
-        M => P
+        M => 6
     )
     port map (
         I     => one,
@@ -92,7 +92,7 @@ begin
     SHIFTER4 : ShifterVariable
     generic map (
         N => N,
-        M => P
+        M => 6
     )
     port map (
         I     => one,
