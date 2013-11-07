@@ -106,37 +106,41 @@ BEGIN
 		-- Now testing selection of core_xor
 		control_input <="010";
 		
+		wait for 40 ns;
+		
+		-- Now testing OFF-selection. Parents should simply be passed on
+		control_input <="011";
 		
 		wait for 40 ns;
 		
-		-- Not testing selecting random use of cores:
+		-- Now testing selecting random use of cores (also known as "Party Mode"):
 		-- First two most significant bits in random_number is "00", so expected core is core_split
 		
-		control_input <= "011";
+		control_input <= "100";
 		
 		wait for 40 ns;
 		
 		-- Now setting random_number so that core_doublesplit is selected
 		-- First two most significant bits are "01"
-		random_number <= "01000000111100000000010111110001";
+		random_number <= "0100000000000000000000000000000000000000111100000000010111110001";
 		
 		wait for 40 ns;
 		
 		-- Now setting random_number so that core_xor is selected
 		-- First two most significant bits are "10"
-		random_number <= "10000000111100000000010111110001";
+		random_number <= "1000000000000000000000000000000000000000111100000000010111110001";
 		
 		wait for 40 ns;
 		
 		-- Now setting random_number so that no crossover happens, and the parents are simply passed on
 		-- First two significant bits are "11"
-		random_number <= "11000000111100000000010111110001";
+		random_number <= "1100000000000000000000000000000000000000111100000000010111110001";
 		
 		wait for 40 ns;
 		
-		-- Setting control input to any value "1XX" should disable crossover altogether.
-		-- Parents are simply passed on as outputs
-		control_input <= "100";
+		-- Setting control input to any value "1XX" should still enable party mode.
+		-- Using random selection of core_split for these tests
+		random_number <= "0000000000000000000000000000000000000000000000000000010111110001";
 		
 		wait for 10 ns;
 		
@@ -149,8 +153,6 @@ BEGIN
 		wait for 10 ns;
 		
 		control_input <= "111";
-		
-		wait for 10 ns;
 		
       wait;
    end process;
