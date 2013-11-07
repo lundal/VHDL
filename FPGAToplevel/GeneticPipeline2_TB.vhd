@@ -81,6 +81,12 @@ begin
     begin
         wait for clock_period/2;
         
+        RESET <= '1';
+        
+        wait for clock_period*520;
+        
+        RESET <= '0';
+        
         wait for clock_period*4;
         
         REQUEST_0(0) <= '1';
