@@ -63,7 +63,16 @@ begin
         Count => random_number2
     );
     
-    mask1 <= shifted1 xor shifted2;
+    process (random_number1, random_number2, shifted1, shifted2)
+    begin
+        if (random_number1 > random_number2) then
+            mask1 <= (shifted1(N-2 downto 0) & '0') xor shifted2;
+        else
+            mask1 <= shifted1 xor (shifted2(N-2 downto 0) & '0');
+        end if;
+    end process;
+    
+--    mask1 <= shifted1 xor shifted2;
     mask2 <= not mask1;
     
     child1 <= (parent1 and mask2) or (parent2 and mask1);

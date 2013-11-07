@@ -144,34 +144,28 @@ architecture Behavioral of GeneticPipeline2 is
     
     component crossover_toplevel is
         generic (
-            N : integer := 64;
-            O : integer := 32
+            N : integer := 64
         );
         port (
-            clk           : in  STD_LOGIC;
-            enabled       : in  STD_LOGIC;
-            control_input : in  STD_LOGIC_VECTOR(2 downto 0);
-            random_number : in  STD_LOGIC_VECTOR(O-1 downto 0);
-            parent1       : in  STD_LOGIC_VECTOR(N-1 downto 0);
-            parent2       : in  STD_LOGIC_VECTOR(N-1 downto 0);
-            child1        : out STD_LOGIC_VECTOR(N-1 downto 0);
-            child2        : out STD_LOGIC_VECTOR(N-1 downto 0)
-        );
+        control_input : in  STD_LOGIC_VECTOR(3-1 downto 0);
+        random_number : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        parent1       : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        parent2       : in  STD_LOGIC_VECTOR(N-1 downto 0);
+        child1        : out STD_LOGIC_VECTOR(N-1 downto 0);
+        child2        : out STD_LOGIC_VECTOR(N-1 downto 0)
+    );
     end component;
     
     component mutation_core is
         generic (
             N : integer :=64;
-            O : integer :=32;
             P : integer :=6
         );
         port (
-            enabled       : in  STD_LOGIC;
-            active        : in  STD_LOGIC;
-            random_number : in  STD_LOGIC_VECTOR(O-1 downto 0);
-            input         : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            random_number : in  STD_LOGIC_VECTOR(P+26-1 downto 0);
             chance_input  : in  STD_LOGIC_VECTOR(P-1 downto 0);
-            output        : out STD_LOGIC_VECTOR(N-1 downto 0)
+            input  : in  STD_LOGIC_VECTOR(N-1 downto 0);
+            output : out STD_LOGIC_VECTOR(N-1 downto 0)
         );
     end component;
     
@@ -188,7 +182,7 @@ architecture Behavioral of GeneticPipeline2 is
     -- Constants
     constant settings_width_selection : integer := 5;
     constant settings_width_crossover : integer := 3;
-    constant settings_width_mutation  : integer := 7;
+    constant settings_width_mutation  : integer := 8;
     
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
@@ -244,10 +238,11 @@ architecture Behavioral of GeneticPipeline2 is
     signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     
     -- Random
-    signal random           : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
-    signal random_prev      : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0);
-    signal random_extended  : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0);
-    signal random_selection : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
+    signal random             : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0) := (others => '0');
+    signal random_prev        : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0) := (others => '0');
+    signal random_extended    : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0);
+    signal random_selection_0 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
+    signal random_selection_1 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
     
     -- Incrementer signals
     signal inc_gene      : STD_LOGIC := '0';
@@ -393,7 +388,7 @@ begin
     )
     port map (
         ADDR   => selector_0_addr,
-        RANDOM => random_selection,
+        RANDOM => random_selection_0,
         DATA   => rated_a_out,
         BEST   => parent_0,
         NUMBER => settings_selection,
@@ -410,7 +405,7 @@ begin
     )
     port map (
         ADDR   => selector_1_addr,
-        RANDOM => random_selection,
+        RANDOM => random_selection_1,
         DATA   => rated_b_out,
         BEST   => parent_1,
         NUMBER => settings_selection,
@@ -421,47 +416,38 @@ begin
     
     CROSSOVER : crossover_toplevel
     generic map (
-        N => DATA_WIDTH,
-        O => RANDOM_WIDTH
+        N => DATA_WIDTH
     )
     port map (
-        enabled       => '1',
         control_input => settings_crossover,
-        random_number => random,
+        random_number => random_extended,
         parent1       => parent_0,
         parent2       => parent_1,
         child1        => child_0,
-        child2        => child_1,
-        clk           => CLK
+        child2        => child_1
     );
     
     MUTATOR_0 : mutation_core
     generic map (
         N => DATA_WIDTH,
-        O => RANDOM_WIDTH,
-        P => settings_width_mutation-1
+        P => settings_width_mutation
     )
     port map (
-        enabled       => '1',
-        active        => settings_mutation(settings_width_mutation-1),
-        random_number => random,
+        random_number => random_extended(settings_width_mutation+26-1 downto 0),
+        chance_input  => settings_mutation,
         input         => child_0,
-        chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
         output        => mutator_0_out
     );
     
     MUTATOR_1 : mutation_core
     generic map (
         N => DATA_WIDTH,
-        O => RANDOM_WIDTH,
-        P => settings_width_mutation-1
+        P => settings_width_mutation
     )
     port map (
-        enabled       => '1',
-        active        => settings_mutation(settings_width_mutation-1),
-        random_number => random,
+        random_number => random_extended(settings_width_mutation+26-1 downto 0),
+        chance_input  => settings_mutation,
         input         => child_1,
-        chance_input  => settings_mutation(settings_width_mutation-2 downto 0),
         output        => mutator_1_out
     );
     
@@ -492,8 +478,10 @@ begin
         end if;
     end process;
     
-    -- Extended random
+    -- Map randoms
     random_extended <= random & random_prev;
+    random_selection_0 <= random_extended(ADDR_WIDTH*1-2 downto 0);
+    random_selection_1 <= random_extended(ADDR_WIDTH*2-2 downto ADDR_WIDTH);
     
     -- Decode settings signal
     settings_mutation  <= settings(settings_width_mutation - 1 downto 0);
@@ -514,10 +502,9 @@ begin
     -- Map DATA I/O
     DATA_OUT <= unrated_a_out;
     
-    -- Map randoms
-    random_selection <= random(ADDR_WIDTH-2 downto 0);
     
-    RESETIFIER : process(RESET, CLK, random_extended, rated_a_we, rated_b_we, unrated_a_we, unrated_b_we)
+    
+    RESETIFIER : process(RESET, CLK, DATA_IN, random_extended, inc_rated_ctrl, write_genetic, write_rated_0, write_rated_1, mutator_0_out, mutator_1_out)
     begin
         if (RESET = '1') then
             -- Incrementer input
@@ -542,7 +529,7 @@ begin
             
             -- Pool write signals
             rated_a_we <= write_rated_0;
-            rated_b_we <= write_rated_0;
+            rated_b_we <= write_rated_1;
             unrated_a_we <= write_genetic;
             unrated_b_we <= write_genetic;
             
@@ -556,9 +543,13 @@ begin
     
     -- Pool address input
     rated_a_addr <= inc_rated_a when rated_a_we = '1' or rated_b_we = '1' else selector_0_addr;
-    rated_b_addr <= inc_rated_b when rated_a_we = '1'  or rated_b_we = '1'  else selector_1_addr;
-    unrated_a_addr <= inc_gene_a when unrated_a_we = '1'  or unrated_b_we = '1'  else inc_unrated_a;
+    rated_b_addr <= inc_rated_b when rated_a_we = '1' or rated_b_we = '1' else selector_1_addr;
+    unrated_a_addr <= inc_gene_a when unrated_a_we = '1' or unrated_b_we = '1' else inc_unrated_a;
     unrated_b_addr <= inc_gene_b;
+    
+    -- Circumvent Crossover
+    --child_0 <= parent_0;
+    --child_1 <= parent_1;
     
 end Behavioral;
 
