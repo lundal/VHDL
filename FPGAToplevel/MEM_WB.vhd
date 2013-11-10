@@ -112,7 +112,7 @@ generic map(N => TO_REG_OP_WIDTH)
 );
 
 
-CONTROL_SIGNALS : process(clk, reset) 
+CONTROL_SIGNALS : process(clk, reset, reg_write_in, call_in) 
     begin 
         if reset = '1' then 
             reg_write_out <= '0';

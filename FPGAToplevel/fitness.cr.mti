@@ -1,0 +1,634 @@
+C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FakeMem.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FakeMem.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity fakemem
+-- Compiling architecture behavioral of fakemem
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MEM_WB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MEM_WB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity mem_wb
+-- Compiling architecture behavioral of mem_wb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_instruction_controller.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_instruction_controller.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity fitness_instruction_controller
+-- Compiling architecture behavioral of fitness_instruction_controller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_WIDE.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_WIDE.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity bram_tdp_wide
+-- Compiling architecture behavioral of bram_tdp_wide
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/flip_flop.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/flip_flop.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity flip_flop
+-- Compiling architecture behavioral of flip_flop
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package mips_constant_pkg
+-- Compiling entity register_file
+-- Compiling architecture behavioral of register_file
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/RatedController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/RatedController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity ratedcontroller
+-- Compiling architecture behavioral of ratedcontroller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity prng_tb
+-- Compiling architecture behavior of prng_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/CONSTANTS.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/CONSTANTS.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling package constants
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity instructioncontroller
+-- Compiling architecture behavioral of instructioncontroller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity prng
+-- Compiling architecture behavioral of prng
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package constants
+-- Compiling entity execution_stage
+-- Compiling architecture behavioral of execution_stage
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package constants
+-- Compiling entity control_unit
+-- Compiling architecture behavioral of control_unit
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity distributor_tb
+-- Compiling architecture behavioral of distributor_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity mutation_core
+-- Compiling architecture behavioral of mutation_core
+** Warning: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd(106): (vcom-1074) Non-locally static OTHERS choice is allowed only if it is the only choice of the only association.
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier2.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier2.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Compiling entity multiplier2
+-- Compiling architecture behavioral of multiplier2
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity crossover_core_doublesplit_tb
+-- Compiling architecture behavior of crossover_core_doublesplit_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxA.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxA.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity memmuxa
+-- Compiling architecture behavioral of memmuxa
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity crossover_core_xor_tb
+-- Compiling architecture behavior of crossover_core_xor_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Incrementer.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Incrementer.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity incrementer
+-- Compiling architecture behavioral of incrementer
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_quadruple.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_quadruple.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiplexer_quadruple
+-- Compiling architecture behavioral of multiplexer_quadruple
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity write_back_stage
+-- Compiling architecture behavioral of write_back_stage
+-- Loading entity multiplexor4
+-- Loading entity multiplexor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/decode_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/decode_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Loading package mips_constant_pkg
+-- Loading package constants
+-- Compiling entity decode_stage
+-- Compiling architecture behavioral of decode_stage
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_bram.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_bram.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity tb_bram
+-- Compiling architecture behavior of tb_bram
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_alu.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_alu.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity tb_alu
+-- Compiling architecture behavior of tb_alu
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Compiling entity multiplier
+-- Compiling architecture behavioral of multiplier
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder_tbbb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder_tbbb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity adder_tbbb
+-- Compiling architecture behavior of adder_tbbb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMux.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMux.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity memmux
+-- Compiling architecture behavioral of memmux
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/forwarding_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/forwarding_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity forwarding_unit
+-- Compiling architecture behavioral of forwarding_unit
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity crossover_core_doublesplit
+-- Compiling architecture behavioral of crossover_core_doublesplit
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity geneticpipeline2_tb
+-- Compiling architecture behavioral of geneticpipeline2_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity toplevel_genetic_pipeline
+-- Compiling architecture behavioral of toplevel_genetic_pipeline
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity selectioncore2_tb
+-- Compiling architecture behavior of selectioncore2_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core_control.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core_control.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity selection_core_control
+-- Compiling architecture behavioral of selection_core_control
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/com.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/com.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_unsigned
+-- Compiling entity com
+-- Compiling architecture behavioral of com
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity geneticpipeline2
+-- Compiling architecture behavioral of geneticpipeline2
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity crossover_toplevel
+-- Compiling architecture behavioral of crossover_toplevel
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity memory
+-- Compiling architecture behavioral of memory
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor4.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor4.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity multiplexor4
+-- Compiling architecture behavioral of multiplexor4
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/conditional_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/conditional_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity conditional_unit
+-- Compiling architecture behavioral of conditional_unit
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ShifterVariable.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ShifterVariable.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity shiftervariable
+-- Compiling architecture behavioral of shiftervariable
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity geneticcontroller
+-- Compiling architecture behavioral of geneticcontroller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Loading package constants
+-- Compiling entity memory_stage
+-- Compiling architecture behavioral of memory_stage
+-- Loading entity conditional_unit
+-- Loading entity multiplexor
+-- Loading entity fitness_memory_controller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_genetic_controller.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_genetic_controller.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity fitness_genetic_controller
+-- Compiling architecture behavioral of fitness_genetic_controller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionCache.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionCache.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity instructioncache
+-- Compiling architecture behavioral of instructioncache
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IncrementerDouble.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IncrementerDouble.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity incrementerdouble
+-- Compiling architecture behavioral of incrementerdouble
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity comparator
+-- Compiling architecture behavioral of comparator
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ALU.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ALU.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package constants
+-- Compiling entity alu
+-- Compiling architecture behavioral of alu
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiplexer_triple
+-- Compiling architecture behavioral of multiplexer_triple
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/EX_MEM.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/EX_MEM.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity ex_mem
+-- Compiling architecture behavioral of ex_mem
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity crossover_core_split_tb
+-- Compiling architecture behavior of crossover_core_split_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity crossover_core_xor
+-- Compiling architecture behavioral of crossover_core_xor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity fitness_memory_controller
+-- Compiling architecture behavioral of fitness_memory_controller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/sign_extend.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/sign_extend.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Compiling entity sign_extend
+-- Compiling architecture behavioral of sign_extend
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity selectioncore2
+-- Compiling architecture behavioral of selectioncore2
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity distributor
+-- Compiling architecture behavioral of distributor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity memmuxb
+-- Compiling architecture behavioral of memmuxb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling package mips_constant_pkg
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity fitness_core
+-- Compiling architecture behavioral of fitness_core
+-- Loading package numeric_std
+-- Loading entity control_unit
+-- Loading entity if_id
+-- Loading entity id_ex
+-- Loading entity ex_mem
+-- Loading entity mem_wb
+-- Loading entity fetch_stage
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Loading package mips_constant_pkg
+-- Loading entity decode_stage
+-- Loading entity execution_stage
+-- Loading entity memory_stage
+-- Loading entity write_back_stage
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity shifter
+-- Compiling architecture behavioral of shifter
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity crossover_toplevel_tb
+-- Compiling architecture behavior of crossover_toplevel_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiplexor
+-- Compiling architecture behavioral of multiplexor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_toplevel.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_toplevel.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity tb_toplevel
+-- Compiling architecture behavior of tb_toplevel
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ID_EX.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ID_EX.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package constants
+-- Compiling entity id_ex
+-- Compiling architecture behavioral of id_ex
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tri_multiplexor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tri_multiplexor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity tri_multiplexor
+-- Compiling architecture behavioral of tri_multiplexor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity pc
+-- Compiling architecture behavioral of pc
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity if_id
+-- Compiling architecture behavioral of if_id
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/genetic_pipeline.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/genetic_pipeline.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity genetic_pipeline
+-- Compiling architecture behavioral of genetic_pipeline
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiply_tb
+-- Compiling architecture behavior of multiply_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity comparator_tb
+-- Compiling architecture behavior of comparator_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity mutation_core_tb
+-- Compiling architecture behavior of mutation_core_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity zerotester
+-- Compiling architecture behavioral of zerotester
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/UnratedController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/UnratedController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity unratedcontroller
+-- Compiling architecture behavioral of unratedcontroller
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Compiling entity adder
+-- Compiling architecture behavioral of adder
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity geneticcontroller_tb
+-- Compiling architecture behavioral of geneticcontroller_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Compiling entity crossover_core_split
+-- Compiling architecture behavioral of crossover_core_split
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity toplevel_genetic_pipeline_tb
+-- Compiling architecture behavior of toplevel_genetic_pipeline_tb
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Toplevel.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Toplevel.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package numeric_std
+-- Loading package mips_constant_pkg
+-- Loading package constants
+-- Compiling entity toplevel
+-- Compiling architecture behavioral of toplevel
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fetch_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fetch_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity fetch_stage
+-- Compiling architecture behavioral of fetch_stage
+-- Loading entity multiplexor
+-- Loading entity pc
+
+} {} {}}

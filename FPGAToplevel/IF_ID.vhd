@@ -61,7 +61,7 @@ TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable)
         begin
                 if reset = '1' then 
                         pc_incremented_out <= (others => '0');
-                        --output1 <= (others => '0');
+                        instruction_out <= (others => '0');
                 elsif rising_edge(clk) then 
                         if halt = '0' then 
                            pc_incremented_out <= pc_incremented_in;

@@ -173,7 +173,7 @@ architecture Behavioral of fitness_core is
 begin
 
 --Halt if one of them are true
-halt_pipeline_signal <= halt_inst; --or halt_mem_signal or multiplication_halt_signal; does not work yet
+halt_pipeline_signal <= '0'; --halt_inst --or halt_mem_signal or multiplication_halt_signal; does not work yet
 
 control_unit: entity work.control_unit
 port map (
@@ -394,7 +394,7 @@ port map (
     processor_enable => processor_enable,
 
     --Control signals
-    reg_write => reg_write_signal_decode,
+    reg_write => reg_write_signal_wb,
     imm_src => imm_src_signal_decode,
     reg_src => reg_src_signal_decode,
     reg_store => store_src_signal_decode,
