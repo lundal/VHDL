@@ -21,15 +21,16 @@ entity memory_stage is
 	ack_mem_ctrl 			 : in std_logic;
 	ack_gene_ctrl 			 : in std_logic;
 	gen_pipeline_settings : in std_logic_vector(SETTINGS_WIDTH-1 downto 0);
-	
 	reg_write_in			 : in std_logic;
-
+	call_in 					 : in std_logic;
+	
 	--Control signals out
 	halt 					 	 : out std_logic;
 	request_bus_rated  	 : out std_logic_vector(GENE_OP_WIDTH-1 downto 0);
 	request_bus_unrated 	 : out std_logic;
 	request_bus_data	 	 : out std_logic;
 	reg_write_out 			 : out std_logic;
+	call_out 				 : out std_logic;
 	
 	--Bus signals in 
 	fitness_in 				 : in std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -76,13 +77,6 @@ signal flush 						  : std_logic;
 signal reg_write_signal 		  : std_logic;
 signal mem_op_signal 			  : std_logic_vector(MEM_OP_WIDTH-1 downto 0);
 signal gene_op_signal 			  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);	
-
---Remove this signal later
-signal jippi						  : std_logic_vector(DATA_WIDTH-1 downto 0);
-
-type state_type is (NOT_TAKEN, TAKEN);
-signal CURRENT_STATE, NEXT_STATE: state_type;
-
 
 
 begin
@@ -146,9 +140,8 @@ flip_flop : entity work.flip_flop
 				data_out => res_signal);
 				
 
-
-
-RUN : process(clk, reset, flush_counter, execute_signal, jump_in, flush, cond_op_in, condition_signal, reg_write_in)
+--This will also react as an flip_flop for reg_write
+FLUSH_PIPELINE : process(clk, reset, flush_counter, execute_signal, jump_in, cond_op_in, condition_signal, reg_write_in, flush)
 begin 
 	if reset = '1' then 
 		flush_counter <= "00";
@@ -158,6 +151,7 @@ begin
 			flush_counter <= flush_counter + "01";
 			condition_signal <= "0000";
 			reg_write_out <= '0';
+			call_out <= '0';
 			if flush_counter = "11" then 
 				flush <= '0';
 			end if;
@@ -166,12 +160,32 @@ begin
 			flush_counter <= "01";
 			condition_signal <= "0000";
 			reg_write_out <= '0';
+			call_out <= '0';
+		
+		elsif execute_signal <= '0' then
+			reg_write_out <= '0';
+			call_out <= '0';
+			flush_counter <= "00";
+			flush <= '0';
+			condition_signal <= "0000";
 		else 
+			flush_counter <= "00";
+			flush <= '0';
 			condition_signal <= cond_op_in; 
-			reg_write_out <= reg_write_in; 
+			reg_write_out <= reg_write_in;
+			call_out <= call_in;
 		end if;
 	end if;
 end process;
+
+--FLUSH_INSTRUCTION : process(execute_signal)
+--begin 
+--	if execute_signal = '0' then 
+--		reg_write_out <= '0';
+--	else 
+--		reg_write_out <= reg_write_in;
+--	end if;
+--end process; 
 
 jump_signal <= jump_in and execute_signal;
 

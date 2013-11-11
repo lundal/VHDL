@@ -68,10 +68,13 @@ signal immediate_address_internal       : std_logic_vector(18 downto 0);
 signal immediate_value_out_internal     : std_logic_vector(DATA_WIDTH -1 downto 0);
 signal immediate_address_out_internal   : std_logic_vector(DATA_WIDTH-1 downto 0);
 signal condition_internal               : std_logic_vector(3 downto 0);
+signal rs_signal 								 : std_logic_vector(DATA_WIDTH-1 downto 0);
+signal rt_signal 								 : std_logic_vector(DATA_WIDTH-1 downto 0); 
 
 --Output from multiplexors
 signal reg_op1                          : std_logic_vector (REG_ADDR_WIDTH-1 downto 0);
 signal reg_op2                          : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+
 
 
 
@@ -108,11 +111,36 @@ port map (CLK => clk,
           RT_ADDR => reg_op2, 
           RD_ADDR => write_register, 
           WRITE_DATA => write_data, 
-          RS => rs, 
-          RT => rt);
-  
+          RS => rs_signal, 
+          RT => rt_signal);
+ 
+FORWARDING_RS : process(reg_op1, rs_signal, write_register, reg_write, write_data) 
+begin 
+	if reg_op1 = write_register
+		and reg_write = '1' 
+		and write_register /= "00000" then 
+		rs <= write_data; 
+	else
+		rs <= rs_signal;
+	end if; 
+end process;
+
+
+FORWARDING_RT : process(reg_op2, rt_signal, write_register, reg_write, write_data) 
+begin
+	if reg_op2 = write_register 
+		and reg_write = '1' 
+		and write_register /= "00000" then 
+		rt <= write_data; 
+	else 
+		rt <= rt_signal;
+	end if; 
+
+end process; 
+
+
      
-FETCH : process(processor_enable, instruction) 
+SPLIT_INSTRUCTION : process(processor_enable, instruction) 
 begin 
     if processor_enable = '1' then
        rd_addr_internal <= instruction(23 downto 19);
@@ -130,7 +158,7 @@ begin
         immediate_address_internal <= (others => '0');
         condition_internal <= (others => '0');
      end if;
-end process FETCH;
+end process;
 
 
 SIGN_EXTEND_IMMEDIATE_VALUE : process(immediate_value_internal) 

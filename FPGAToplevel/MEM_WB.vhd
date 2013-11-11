@@ -120,10 +120,12 @@ CONTROL_SIGNALS : process(clk, reset, reg_write_in, call_in)
         
         elsif rising_edge(clk) then 
             if halt = '0' then 
-                reg_write_out <= reg_write_in; 
-					 call_out <= call_in;
+                --reg_write_out <= reg_write_in; 
+					 --call_out <= call_in;
             end if; 
         end if;
+		  reg_write_out <= reg_write_in; 
+		  call_out <= call_in; 
         
 end process CONTROL_SIGNALS;
 
