@@ -28,7 +28,7 @@ entity ALU is
 	
 	generic(
 		N : integer := 64;
-		MULTIPLIER : integer := 1
+		MULTIPLIER : integer := 0
 	);
 	
 	port(

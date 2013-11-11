@@ -34,14 +34,12 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity flip_flop
 -- Compiling architecture behavioral of flip_flop
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Loading package numeric_std
--- Loading package mips_constant_pkg
--- Compiling entity register_file
--- Compiling architecture behavioral of register_file
+-- Compiling entity prng_tb
+-- Compiling architecture behavior of prng_tb
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/RatedController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/RatedController.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -51,12 +49,14 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity ratedcontroller
 -- Compiling architecture behavioral of ratedcontroller
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Compiling entity prng_tb
--- Compiling architecture behavior of prng_tb
+-- Loading package numeric_std
+-- Loading package mips_constant_pkg
+-- Compiling entity register_file
+-- Compiling architecture behavioral of register_file
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/CONSTANTS.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/CONSTANTS.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -71,13 +71,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity instructioncontroller
 -- Compiling architecture behavioral of instructioncontroller
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity prng
--- Compiling architecture behavioral of prng
-
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
@@ -87,16 +80,14 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity execution_stage
 -- Compiling architecture behavioral of execution_stage
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
-** Error: (vcom-11) Could not find work.alu_constants.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd(32): (vcom-1195) Cannot find expanded name "work.alu_constants".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd(32): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_ShifterVariable.vhd(34): VHDL Compiler exiting
+-- Compiling entity prng
+-- Compiling architecture behavioral of prng
 
-} {5.0 9.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
@@ -113,15 +104,7 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity distributor_tb
 -- Compiling architecture behavioral of distributor_tb
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP.vhd(23): Library unisim not found.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP.vhd(24): (vcom-1136) Unknown identifier "unisim".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP.vhd(29): VHDL Compiler exiting
-
-} {5.0 8.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
@@ -175,47 +158,7 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity multiplexer_quadruple
 -- Compiling architecture behavioral of multiplexer_quadruple
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity selection_core
--- Compiling architecture behavioral of selection_core
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(182): Illegal expanded name prefix ("random_address_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(182): (vcom-1195) Cannot find expanded name "random_address_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(182): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(182): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(183): Illegal expanded name prefix ("incomming_data_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(183): (vcom-1195) Cannot find expanded name "incomming_data_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(183): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(183): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(184): Illegal expanded name prefix ("best_chromosome_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(184): (vcom-1195) Cannot find expanded name "best_chromosome_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(184): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(184): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(185): Illegal expanded name prefix ("best_fitness_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(185): (vcom-1195) Cannot find expanded name "best_fitness_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(185): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(185): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(187): Illegal expanded name prefix ("random_address_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(187): (vcom-1195) Cannot find expanded name "random_address_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(187): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(187): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(188): Illegal expanded name prefix ("incomming_data_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(188): (vcom-1195) Cannot find expanded name "incomming_data_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(188): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(188): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(189): Illegal expanded name prefix ("best_chromosome_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(189): (vcom-1195) Cannot find expanded name "best_chromosome_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(189): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(189): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(190): Illegal expanded name prefix ("best_fitness_storage" is not label of block, process, generate, or (for) loop statement).
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(190): (vcom-1195) Cannot find expanded name "best_fitness_storage.reset".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(190): Illegal target for signal assignment.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(190): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core.vhd(196): VHDL Compiler exiting
-
-} {7.0 40.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
@@ -299,34 +242,7 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity geneticpipeline2_tb
 -- Compiling architecture behavioral of geneticpipeline2_tb
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity fitness_core_write_back
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(6): (vcom-1136) Unknown identifier "x".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(6): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(8): (vcom-1136) Unknown identifier "data_width".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(8): Bad expression in left bound of range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(8): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(9): (vcom-1136) Unknown identifier "data_width".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(9): Bad expression in left bound of range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(9): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(10): (vcom-1136) Unknown identifier "inst_width".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(10): Bad expression in left bound of range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(10): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(11): (vcom-1136) Unknown identifier "data_width".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(11): Bad expression in left bound of range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(11): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(13): (vcom-1136) Unknown identifier "data_width".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(13): Bad expression in left bound of range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(13): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(14): (vcom-1136) Unknown identifier "reg_addr_width".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(14): Bad expression in left bound of range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(14): Type error in range expression.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core_write_back.vhd(15): near ")": expecting "IDENTIFIER"
-
-} {6.0 27.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
@@ -387,25 +303,14 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity multiplexor4
 -- Compiling architecture behavioral of multiplexor4
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_Shifter.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_Shifter.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
-** Error: (vcom-11) Could not find work.alu_constants.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_Shifter.vhd(32): (vcom-1195) Cannot find expanded name "work.alu_constants".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_Shifter.vhd(32): Unknown expanded name.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_Shifter.vhd(34): VHDL Compiler exiting
+-- Compiling entity geneticcontroller
+-- Compiling architecture behavioral of geneticcontroller
 
-} {5.0 9.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_MACRO.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_MACRO.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_MACRO.vhd(24): Library unisim not found.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_MACRO.vhd(25): (vcom-1136) Unknown identifier "unisim".
--- Loading package textio
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_MACRO.vhd(30): VHDL Compiler exiting
-
-} {5.0 7.0 8.0 9.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Branching_unit.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Branching_unit.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Branching_unit.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Branching_unit.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
@@ -427,13 +332,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package std_logic_1164
 -- Compiling entity shiftervariable
 -- Compiling architecture behavioral of shiftervariable
-
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity geneticcontroller
--- Compiling architecture behavioral of geneticcontroller
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory_stage.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -471,21 +369,19 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity incrementerdouble
 -- Compiling architecture behavioral of incrementerdouble
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FitnessMemCtrl.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FitnessMemCtrl.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Loading package constants
--- Compiling entity fitnessmemctrl
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FitnessMemCtrl.vhd(28): (vcom-1136) Unknown identifier "mem_op".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FitnessMemCtrl.vhd(38): VHDL Compiler exiting
-
-} {7.0 9.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
 -- Compiling entity comparator
 -- Compiling architecture behavioral of comparator
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiplexer_triple
+-- Compiling architecture behavioral of multiplexer_triple
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ALU.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ALU.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -496,13 +392,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity alu
 -- Compiling architecture behavioral of alu
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity multiplexer_triple
--- Compiling architecture behavioral of multiplexer_triple
-
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/EX_MEM.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/EX_MEM.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
@@ -511,22 +400,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity ex_mem
 -- Compiling architecture behavioral of ex_mem
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller_tb.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity fitness_memory_controller_tb
--- Compiling architecture behavior of fitness_memory_controller_tb
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller_tb.vhd(89): (vcom-1136) Unknown identifier "procssor_enable".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller_tb.vhd(155): VHDL Compiler exiting
-
-} {7.0 9.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity crossover_core_split_tb
--- Compiling architecture behavior of crossover_core_split_tb
-
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
@@ -534,6 +407,13 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package numeric_std
 -- Compiling entity crossover_core_xor
 -- Compiling architecture behavioral of crossover_core_xor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity crossover_core_split_tb
+-- Compiling architecture behavior of crossover_core_split_tb
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -560,13 +440,11 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity selectioncore2
 -- Compiling architecture behavioral of selectioncore2
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Loading package numeric_std
--- Compiling entity distributor
--- Compiling architecture behavioral of distributor
+-- Compiling package mips_constant_pkg
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxB.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -575,19 +453,42 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity memmuxb
 -- Compiling architecture behavioral of memmuxb
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling package mips_constant_pkg
-
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
 -- Loading package numeric_std
--- Compiling entity shifter
--- Compiling architecture behavioral of shifter
+-- Compiling entity distributor
+-- Compiling architecture behavioral of distributor
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package constants
+-- Compiling entity fitness_core
+-- Compiling architecture behavioral of fitness_core
+-- Loading package numeric_std
+-- Loading entity control_unit
+-- Loading entity if_id
+-- Loading entity id_ex
+-- Loading entity ex_mem
+-- Loading entity mem_wb
+-- Loading entity fetch_stage
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Loading package mips_constant_pkg
+-- Loading entity decode_stage
+-- Loading entity execution_stage
+-- Loading entity memory_stage
+-- Loading entity write_back_stage
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiplexor
+-- Compiling architecture behavioral of multiplexor
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -596,12 +497,13 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity crossover_toplevel_tb
 -- Compiling architecture behavior of crossover_toplevel_tb
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Compiling entity multiplexor
--- Compiling architecture behavioral of multiplexor
+-- Loading package numeric_std
+-- Compiling entity shifter
+-- Compiling architecture behavioral of shifter
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_toplevel.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_toplevel.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -619,13 +521,12 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity id_ex
 -- Compiling architecture behavioral of id_ex
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Loading package constants
--- Compiling entity if_id
--- Compiling architecture behavioral of if_id
+-- Compiling entity pc
+-- Compiling architecture behavioral of pc
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tri_multiplexor.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tri_multiplexor.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -634,12 +535,13 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity tri_multiplexor
 -- Compiling architecture behavioral of tri_multiplexor
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Compiling entity pc
--- Compiling architecture behavioral of pc
+-- Loading package constants
+-- Compiling entity if_id
+-- Compiling architecture behavioral of if_id
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/genetic_pipeline.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/genetic_pipeline.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -649,13 +551,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity genetic_pipeline
 -- Compiling architecture behavioral of genetic_pipeline
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity multiply_tb
--- Compiling architecture behavior of multiply_tb
-
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator_tb.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
@@ -663,20 +558,19 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity comparator_tb
 -- Compiling architecture behavior of comparator_tb
 
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity multiply_tb
+-- Compiling architecture behavior of multiply_tb
+
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core_tb.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
 -- Compiling entity mutation_core_tb
 -- Compiling architecture behavior of mutation_core_tb
-
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Loading package constants
--- Compiling entity zerotester
--- Compiling architecture behavioral of zerotester
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/UnratedController.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/UnratedController.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -686,25 +580,13 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity unratedcontroller
 -- Compiling architecture behavioral of unratedcontroller
 
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/shift_left.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/shift_left.vhd
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
 -- Loading package std_logic_1164
--- Loading package numeric_std
--- Compiling entity shift_left
--- Compiling architecture behavioral of shift_left
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/shift_left.vhd(43): No feasible entries for infix operator "sll".
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/shift_left.vhd(43): Type error resolving infix expression "sll" as type ieee.std_logic_1164.std_logic_vector.
-** Error: C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/shift_left.vhd(45): VHDL Compiler exiting
-
-} {8.0 11.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Loading package std_logic_arith
--- Loading package std_logic_signed
--- Compiling entity adder
--- Compiling architecture behavioral of adder
+-- Loading package constants
+-- Compiling entity zerotester
+-- Compiling architecture behavioral of zerotester
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController_TB.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController_TB.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -714,6 +596,15 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Compiling entity geneticcontroller_tb
 -- Compiling architecture behavioral of geneticcontroller_tb
 
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Loading package std_logic_arith
+-- Loading package std_logic_signed
+-- Compiling entity adder
+-- Compiling architecture behavioral of adder
+
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package standard
@@ -721,13 +612,6 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package numeric_std
 -- Compiling entity crossover_core_split
 -- Compiling architecture behavioral of crossover_core_split
-
-} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd
-Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
--- Loading package standard
--- Loading package std_logic_1164
--- Compiling entity toplevel_genetic_pipeline_tb
--- Compiling architecture behavior of toplevel_genetic_pipeline_tb
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Toplevel.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Toplevel.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
@@ -738,6 +622,13 @@ Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
 -- Loading package constants
 -- Compiling entity toplevel
 -- Compiling architecture behavioral of toplevel
+
+} {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+-- Loading package standard
+-- Loading package std_logic_1164
+-- Compiling entity toplevel_genetic_pipeline_tb
+-- Compiling architecture behavior of toplevel_genetic_pipeline_tb
 
 } {} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fetch_stage.vhd {1 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fetch_stage.vhd
 Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010

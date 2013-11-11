@@ -66,13 +66,21 @@ ARCHITECTURE behavior OF tb_toplevel IS
 	constant addr2 : std_logic_vector(0 to 31) := "00000000000000000000000000000010";
 	constant addr3 : std_logic_vector(0 to 31) := "00000000000000000000000000000011";
 	constant addr4 : std_logic_vector(0 to 31) := "00000000000000000000000000000100";
-
+	constant addr5 : std_logic_vector(0 to 31) := "00000000000000000000000000000101";
+	constant addr6 : std_logic_vector(0 to 31) := "00000000000000000000000000000110";
+	constant addr7 : std_logic_vector(0 to 31) := "00000000000000000000000000000111";
+  
+  
   -- instructions
    constant ins0 : std_logic_vector(0 to 31):= "11110100000010000000000000001010";
-	constant ins1 : std_logic_vector(0 to 31):= "11110100000100000000000000001011";
-   constant ins2 : std_logic_vector(0 to 31) := "11110100000110000000000000001100";
-	constant ins3 : std_logic_vector(0 to 31) := "11111000000000000100000000100001";
-	constant ins4 : std_logic_vector(0 to 31) := "11110010001000000000000001100100";
+	constant ins1 : std_logic_vector(0 to 31):= "11110100000100000000000000001010";
+   constant ins2 : std_logic_vector(0 to 31) := "11111000000000000100000000100001";
+	constant ins3 : std_logic_vector(0 to 31) := "00010010000000000000000001100100";
+	constant ins4 : std_logic_vector(0 to 31):= "11110100000110000000000000001001";
+	constant ins5 : std_logic_vector(0 to 31):= "11110100001000000000000000001010";
+	constant ins6 : std_logic_vector(0 to 31):= "11110100001010000000000000001011"; 
+	
+	--constant ins4 : std_logic_vector(0 to 31) := "00010010    00000  0000000000001100100";
  
   
    
@@ -171,28 +179,28 @@ BEGIN
     bus_data_in <= zero;
     wait for clk_period*3;
 
---    -- Add instruction 5
---    command <= CMD_WI;          
---    bus_address_in <= addr5;
---    bus_data_in <= ins5;
---    wait for clk_period*3;
---
---    command <= CMD_IDLE;          
---    bus_address_in <= zero;
---    bus_data_in <= zero;
---    wait for clk_period*3;
---
---    -- Add instruction 6
---    command <= CMD_WI;          
---    bus_address_in <= addr6;
---    bus_data_in <= ins6;
---    wait for clk_period*3;
---
---    command <= CMD_IDLE;          
---    bus_address_in <= zero;
---    bus_data_in <= zero;
---    wait for clk_period*3;
---
+    -- Add instruction 5
+    command <= CMD_WI;          
+    bus_address_in <= addr5;
+    bus_data_in <= ins5;
+    wait for clk_period*3;
+
+    command <= CMD_IDLE;          
+    bus_address_in <= zero;
+    bus_data_in <= zero;
+    wait for clk_period*3;
+
+    -- Add instruction 6
+    command <= CMD_WI;          
+    bus_address_in <= addr6;
+    bus_data_in <= ins6;
+    wait for clk_period*3;
+
+    command <= CMD_IDLE;          
+    bus_address_in <= zero;
+    bus_data_in <= zero;
+    wait for clk_period*3;
+
 --    -- Add instruction 7
 --    command <= CMD_WI;          
 --    bus_address_in <= addr7;

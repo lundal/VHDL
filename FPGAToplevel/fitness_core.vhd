@@ -128,6 +128,7 @@ architecture Behavioral of fitness_core is
  
 	-- Passing signals
 	signal reg_write_signal_mem : std_logic;
+	signal reg_write_signal_mem_out : std_logic;
 	signal call_signal_mem : std_logic;
 	signal to_reg_signal_mem :  std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
 
@@ -339,7 +340,7 @@ port map (
     --CONTROL in
     to_reg_op_in => to_reg_signal_mem,
     call_in => call_signal_mem,
-	 reg_write_in => reg_write_signal_mem,
+	 reg_write_in => reg_write_signal_mem_out,
 
     --CONTROL out
     to_reg_op_out => to_reg_signal_wb,
@@ -469,12 +470,14 @@ port map (
 	ack_mem_ctrl => ack_mem_ctrl, 
 	ack_gene_ctrl => ack_gene_ctrl, 
 	gen_pipeline_settings => gen_pipeline_settings, 
+	reg_write_in => reg_write_signal_mem,
 
 	--Control signals out
 	halt => halt_mem_signal,
 	request_bus_rated => request_bus_rated,
 	request_bus_unrated => request_bus_unrated, 
 	request_bus_data  => request_bus_data, 
+	reg_write_out => reg_write_signal_mem_out,
 	
 	--Bus signals in 
 	fitness_in => rs_signal_mem, 

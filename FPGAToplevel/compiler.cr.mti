@@ -1,0 +1,396 @@
+C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FakeMem.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/FakeMem.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MEM_WB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MEM_WB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_instruction_controller.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_instruction_controller.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_WIDE.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/BRAM_TDP_WIDE.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/flip_flop.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/flip_flop.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/register_file.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/RatedController.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/RatedController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/CONSTANTS.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/CONSTANTS.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionController.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/PRNG.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/execution_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/control_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor_TB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier2.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier2.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxA.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxA.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Incrementer.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Incrementer.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_quadruple.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_quadruple.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/write_back_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/decode_stage.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/decode_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_bram.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_bram.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_alu.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_alu.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiplier.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder_tbbb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder_tbbb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMux.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMux.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/forwarding_unit.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/forwarding_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_doublesplit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2_TB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2_TB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core_control.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/selection_core_control.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/com.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/com.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticPipeline2.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor4.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor4.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/conditional_unit.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/conditional_unit.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ShifterVariable.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ShifterVariable.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory_stage.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/memory_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_genetic_controller.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_genetic_controller.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionCache.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/InstructionCache.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IncrementerDouble.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IncrementerDouble.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ALU.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ALU.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexer_triple.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/EX_MEM.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/EX_MEM.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_xor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_memory_controller.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/sign_extend.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/sign_extend.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/SelectionCore2.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Distributor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/MemMuxB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mips_constant_pkg.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fitness_core.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Shifter.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/multiplexor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_toplevel.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tb_toplevel.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ID_EX.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ID_EX.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tri_multiplexor.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/tri_multiplexor.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/pc.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/IF_ID.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/genetic_pipeline.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/genetic_pipeline.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Multiply_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/comparator_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/mutation_core_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/ZeroTester.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/UnratedController.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/UnratedController.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Adder.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController_TB.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/GeneticController_TB.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/crossover_core_split.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/toplevel_genetic_pipeline_tb.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Toplevel.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/Toplevel.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}} C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fetch_stage.vhd {0 {vcom -work work -2002 -explicit -vopt C:/Users/batunges/Documents/TDT4295/VHDL/FPGAToplevel/fetch_stage.vhd
+Model Technology ModelSim SE vcom 6.6d Compiler 2010.11 Nov  1 2010
+** Error: (vcom-19) Failed to access library 'work' at "work".
+No such file or directory. (errno = ENOENT)
+
+} {3.0 4.0} {}}
