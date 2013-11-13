@@ -15,101 +15,412 @@
   <version xil_pn:ise_version="12.4" xil_pn:schema_version="2"/>
 
   <files>
-    <file xil_pn:name="hardware/Adder.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/Adder_tbbb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/ALU.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/BRAM_TDP.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/BRAM_TDP_MACRO.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/comparator.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/comparator_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/conditional_unit.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/CONSTANTS.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/control_unit.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/decode_stage.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/EX_MEM.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/execution_stage.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/fetch_stage.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/fitness_core.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/flip_flop.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/forwarding_unit.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/ID_EX.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/IF_ID.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/MEM_WB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/memory_stage.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/mips_constant_pkg.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/multiplexor.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/Multiplier.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/Multiplier2.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/Multiply_TB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/mutation_core.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/mutation_core_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/pc.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/PRNG.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/PRNG_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/register_file.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/selection_core.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/selection_core_control.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/shift_left.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/Shifter.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/ShifterVariable.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/sign_extend.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_alu.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_bram.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_Shifter.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_ShifterVariable.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/Toplevel.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="hardware/Adder.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="hardware/toplevel_genetic_pipeline.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/toplevel_genetic_pipeline_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/tri_multiplexor.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/write_back_stage.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/ZeroTester.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/fitness_memory_controller.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/fitness_memory_controller_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/fitness_genetic_controller.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/multiplexor4.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/com.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/memory.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_toplevel.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/FitnessMemCtrl.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/crossover_core_doublesplit.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/crossover_core_doublesplit_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/crossover_core_split.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/crossover_core_split_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/crossover_core_xor.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/crossover_core_xor_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/crossover_toplevel.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/crossover_toplevel_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/multiplexer_quadruple.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/BRAM_TDP_WIDE.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/Distributor.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/Distributor_TB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/FakeMem.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/fitness_core_write_back.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/fitness_instruction_controller.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/genetic_pipeline.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/GeneticController.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/GeneticController_TB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/GeneticPipeline2.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/GeneticPipeline2_TB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/Incrementer.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/IncrementerDouble.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/InstructionCache.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/InstructionCache_tb.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/InstructionController.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/MemMux.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/MemMuxA.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/MemMuxB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/multiplexer_triple.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/RatedController.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/SelectionCore2.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/SelectionCore2_TB.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/UnratedController.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_toplevel_assembly_runner.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_top.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="tests/tb_fitness_core.vhd" xil_pn:type="FILE_VHDL"/>
-    <file xil_pn:name="hardware/test_utils.vhd" xil_pn:type="FILE_VHDL"/>
+    <file xil_pn:name="tests/tb_adder.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/ALU.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/BRAM_TDP.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/BRAM_TDP_MACRO.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/comparator.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_comparator.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/conditional_unit.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/CONSTANTS.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/control_unit.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/decode_stage.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/EX_MEM.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/execution_stage.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/fetch_stage.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/fitness_core.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/flip_flop.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/forwarding_unit.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/ID_EX.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/IF_ID.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/MEM_WB.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/memory_stage.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/mips_constant_pkg.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/multiplexor.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/Multiplier.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_Multiply.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/mutation_core.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_mutation_core.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/pc.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/PRNG.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_PRNG.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/register_file.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/selection_core.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/selection_core_control.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/shift_left.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/Shifter.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/ShifterVariable.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/sign_extend.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_alu.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="tests/tb_bram.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="tests/tb_Shifter.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="tests/tb_ShifterVariable.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/Toplevel.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/toplevel_genetic_pipeline.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_toplevel_genetic_pipeline.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/tri_multiplexor.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/write_back_stage.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/ZeroTester.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/fitness_memory_controller.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_fitness_memory_controller.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/fitness_genetic_controller.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/multiplexor4.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/com.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/memory.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_toplevel.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/FitnessMemCtrl.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/crossover_core_doublesplit.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_crossover_core_doublesplit.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/crossover_core_split.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_crossover_core_split.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/crossover_core_xor.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_crossover_core_xor.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/crossover_toplevel.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_crossover_toplevel.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/multiplexer_quadruple.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/BRAM_TDP_WIDE.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/Distributor.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_Distributor.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/FakeMem.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/fitness_core_write_back.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/fitness_instruction_controller.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/genetic_pipeline.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/GeneticController.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_GeneticController.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/GeneticPipeline2.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_GeneticPipeline.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/Incrementer.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/IncrementerDouble.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/InstructionCache.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_InstructionCache.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/InstructionController.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/MemMux.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/MemMuxA.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/MemMuxB.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/multiplexer_triple.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/RatedController.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="hardware/SelectionCore2.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_SelectionCore.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/UnratedController.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="tests/tb_fitness_core.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
+    <file xil_pn:name="hardware/test_utils.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
   </files>
 
   <properties>
@@ -358,8 +669,8 @@
     <property xil_pn:name="Run for Specified Time Translate" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Safe Implementation" xil_pn:value="No" xil_pn:valueState="default"/>
     <property xil_pn:name="Security" xil_pn:value="Enable Readback and Reconfiguration" xil_pn:valueState="default"/>
-    <property xil_pn:name="Selected Module Instance Name" xil_pn:value="/GeneticPipeline2_TB" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Selected Simulation Root Source Node Behavioral" xil_pn:value="work.GeneticPipeline2_TB" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Selected Module Instance Name" xil_pn:value="/tb_top" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Selected Simulation Root Source Node Behavioral" xil_pn:value="work.tb_top" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Selected Simulation Root Source Node Post-Map" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Selected Simulation Root Source Node Post-Route" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Selected Simulation Root Source Node Post-Translate" xil_pn:value="" xil_pn:valueState="default"/>
@@ -381,7 +692,7 @@
     <property xil_pn:name="Slice Utilization Ratio" xil_pn:value="100" xil_pn:valueState="default"/>
     <property xil_pn:name="Source window" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify 'define Macro Name and Value" xil_pn:value="" xil_pn:valueState="default"/>
-    <property xil_pn:name="Specify Top Level Instance Names Behavioral" xil_pn:value="work.GeneticPipeline2_TB" xil_pn:valueState="default"/>
+    <property xil_pn:name="Specify Top Level Instance Names Behavioral" xil_pn:value="work.tb_top" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify Top Level Instance Names Post-Map" xil_pn:value="Default" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify Top Level Instance Names Post-Route" xil_pn:value="Default" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify Top Level Instance Names Post-Translate" xil_pn:value="Default" xil_pn:valueState="default"/>
@@ -441,7 +752,7 @@
     <!--                                                                                  -->
     <!-- The following properties are for internal use only. These should not be modified.-->
     <!--                                                                                  -->
-    <property xil_pn:name="PROP_BehavioralSimTop" xil_pn:value="Architecture|tb_fitness_core|behavior" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_BehavioralSimTop" xil_pn:value="Architecture|tb_Multiply|behavior" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_DesignName" xil_pn:value="FPGAToplevel" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_DevFamilyPMName" xil_pn:value="spartan6" xil_pn:valueState="default"/>
     <property xil_pn:name="PROP_FPGAConfiguration" xil_pn:value="FPGAConfiguration" xil_pn:valueState="default"/>

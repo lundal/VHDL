@@ -70,6 +70,7 @@ isim/
 *isim_beh.*
 isim.cmd
 xilinxsim.ini
+*.wdb
 
 # Extra
 wlft*

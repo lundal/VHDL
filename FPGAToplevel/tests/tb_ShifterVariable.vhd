@@ -1,42 +1,13 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   15:13:11 09/26/2013
--- Design Name:   
--- Module Name:   C:/Users/perthol/VHDL/FPGAToplevel/tb_ShifterVariable.vhd
--- Project Name:  FPGAToplevel
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: ShifterVariable
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use work.test_utils.all;
  
 library WORK;
-use WORK.ALU_CONSTANTS.ALL;
  
 ENTITY tb_ShifterVariable IS
 END tb_ShifterVariable;
  
 ARCHITECTURE behavior OF tb_ShifterVariable IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT ShifterVariable
 	generic (
@@ -64,7 +35,6 @@ ARCHITECTURE behavior OF tb_ShifterVariable IS
  
 BEGIN
  
-	-- Instantiate the Unit Under Test (UUT)
    uut: ShifterVariable PORT MAP (
           I => I,
           O => O,
@@ -73,55 +43,56 @@ BEGIN
           Count => Count
         );
  
-   -- Stimulus process
    stim_proc: process
    begin		
-		-- hold reset state for 100 ns.
 		wait for 100 ns;
 
-		I <= ONE32 & "00000000000000000000000000010000";
+		I <= "1111111111111111111111111111111100000000000000000000000000010000";
 		Left <= '1';
 		Arith <= '1';
 		Count <= "000100";
-
 		wait for 10 ns;
+        test("slav 4", "negative input", o, "1111111111111111111111111111000000000000000000000000000100000000"); 
 		
-		I <= ONE32 & "00000000000000000000000000010000";
+        
+		I <= "1111111111111111111111111111111100000000000000000000000000010000";
 		Left <= '0';
 		Arith <= '1';
 		Count <= "000100";
-
-		wait for 10 ns;
-
-		I <= ZERO32 & "00000000000000000000000000010000";
-		Left <= '1';
-		Arith <= '0';
-		Count <= "000001";
-
-		wait for 10 ns;
-
-		I <= ZERO32 & "00000000000000000000000000010000";
-		Left <= '0';
-		Arith <= '0';
-		Count <= "000001";
-
-		wait for 10 ns;
-
-		I <= ZERO32 & "00000000000000000000000000010000";
-		Left <= '1';
-		Arith <= '1';
-		Count <= "000011";
-
-		wait for 10 ns;
-
-		I <= ZERO32 & "00000000000000000000000000010000";
-		Left <= '0';
-		Arith <= '1';
-
-		wait for 10 ns;
-		Count <= "000011";
-
+        wait for 10 ns;
+        test("srav 4", "negative input", o, "1111111111111111111111111111111111110000000000000000000000000001");
 		
+        
+		I <= "0000000000000000000000000000000000000000000000000000000000010000";
+		Left <= '1';
+		Arith <= '0';
+		Count <= "000001";
+        wait for 10 ns;
+        test("sllv 1", "positive input", o, "0000000000000000000000000000000000000000000000000000000000100000");
+
+
+		I <= "0000000000000000000000000000000000000000000000000000000000010000";
+		Left <= '0';
+		Arith <= '0';
+		Count <= "000001";
+		wait for 10 ns;
+        test("srlv 1", "positive input", o, "0000000000000000000000000000000000000000000000000000000000001000");
+        
+
+		I <= "0000000000000000000000000000000000000000000000000000000000010000";
+		Left <= '1';
+		Arith <= '1';
+		Count <= "000011";
+		wait for 10 ns;
+        test("slav 3", "positive input", o, "0000000000000000000000000000000000000000000000000000000010000000");
+        
+
+		I <= "0000000000000000000000000000000000000000000000000000000000010000";
+		Left <= '0';
+		Arith <= '1';
+		Count <= "000011";
+        wait for 10 ns;
+        test("srav 3", "positive input", o, "0000000000000000000000000000000000000000000000000000000000000010");
 
 		wait;
    end process;

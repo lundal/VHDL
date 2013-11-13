@@ -1,5 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use work.test_utils.all;
  
  
 ENTITY tb_comparator IS
@@ -35,27 +36,27 @@ BEGIN
           signal_out => signal_out
         );
 
-   -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
+        wait for 100 ns;	
 
-      -- Equal output: 00
-      in0 <= "10100";
-      in1 <= "10100";
+        in0 <= "10100";
+        in1 <= "10100";
+		wait for 10 ns;
+        test("equal", "", signal_out, "00");
 		
-		wait for 40 ns;
-		
-		-- Less output: 01
+        
 		in0 <= "10010";
-      in1 <= "10100";
+        in1 <= "10100";
+		wait for 10 ns;
+        test("less",  "", signal_out, "01");
 		
-		wait for 40 ns;
-		
-		-- Greater output: 10
+
 		in0 <= "10100";
 		in1 <= "10010";
+        wait for 10 ns;
+        test("greater", "", signal_out, "10");
+
 
       wait;
    end process;

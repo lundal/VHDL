@@ -1,5 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use work.test_utils.all;
  
 ENTITY tb_crossover_core_doublesplit IS
 END tb_crossover_core_doublesplit;
@@ -41,10 +42,8 @@ BEGIN
 
  
 
-   -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
       wait for 100 ns;	
 		
 		-- INFORMATION: When setting crossover values/bits, 

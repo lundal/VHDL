@@ -9,33 +9,17 @@ entity Multiplier is
     port (
 		A			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
 		B			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-		Result		:	out	STD_LOGIC_VECTOR(N-1 downto 0);
-		Overflow	:	out	STD_LOGIC
+		Result		:	out	STD_LOGIC_VECTOR(2*N-1 downto 0)
 	);
 end Multiplier;
 	
 architecture Behavioral of Multiplier is
-
-	signal Res		:	STD_LOGIC_VECTOR (2*N-1 downto 0);
-	
 begin
 
-	Multiply: process(A, B, Res) begin
-		Res <= A * B;
-		
-		-- Check for overflow
-		-- All extra bits should be equal to sign
-		if Res(2*N-1 downto N-1) = (N downto 0 => '0') then
-			Overflow <= '0';
-		elsif Res(2*N-1 downto N-1) = (N downto 0 => '1') then
-			Overflow <= '0';
-		else
-			Overflow <= '1';
-		end if;
-		
-		Result <= Res(N-1 downto 0);
-		
-	end process Multiply;
+    process (A, B)
+    begin
+        Result <= A * B;
+    end process;
 
 end Behavioral;
 

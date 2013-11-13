@@ -1,13 +1,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
- 
 ENTITY tb_PRNG IS
 END tb_PRNG;
  
 ARCHITECTURE behavior OF tb_PRNG IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
  
     COMPONENT PRNG
     generic (
@@ -31,7 +28,6 @@ ARCHITECTURE behavior OF tb_PRNG IS
  
 BEGIN
 
-    -- Instantiate the Unit Under Test (UUT)
     uut: PRNG PORT MAP (
         random => random,
         clk => clk

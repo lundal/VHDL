@@ -11,6 +11,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use work.test_utils.all;
 
 entity tb_GeneticController is
 end tb_GeneticController;
@@ -87,7 +88,7 @@ begin
         
         -- Wait for rated access
         wait for clock_period*3;
-        
+
         -- Give access
         RATED_ACK <= '1';
         wait for clock_period;

@@ -1,6 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
+use work.test_utils.all;
  
 ENTITY tb_adder IS
 END tb_adder;
@@ -11,7 +11,8 @@ ARCHITECTURE behavior OF tb_adder IS
     PORT(
          A : IN  std_logic_vector(63 downto 0);
          B : IN  std_logic_vector(63 downto 0);
-         res : OUT  std_logic_vector(63 downto 0);
+         carry_in : std_logic;
+         r : OUT  std_logic_vector(63 downto 0);
          overflow : OUT  std_logic
         );
     END COMPONENT;
@@ -19,9 +20,10 @@ ARCHITECTURE behavior OF tb_adder IS
    --Inputs
    signal A : std_logic_vector(63 downto 0) := (others => '0');
    signal B : std_logic_vector(63 downto 0) := (others => '0');
+   signal carry_in : std_logic;
 
  	--Outputs
-   signal res : std_logic_vector(63 downto 0);
+   signal r : std_logic_vector(63 downto 0);
    signal overflow : std_logic;
  
 BEGIN
@@ -29,7 +31,8 @@ BEGIN
    uut: Adder PORT MAP (
           A => A,
           B => B,
-          res => res,
+          r => r,
+          carry_in => carry_in,
           overflow => overflow
         );
         
@@ -37,115 +40,50 @@ BEGIN
    stim_proc: process
    begin		
       wait for 100 ns;	
+      
+        carry_in <= '0';
+        -- todo: test carry_in operation
 
-
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
-		
-		--1: 1 + 1 = 2 (= ..10)
-		A(0) <= '1';
-		B(0) <= '1';
-		
-		wait for 20 ns;
-		
-		--2: Reset
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
-		
-		wait for 20 ns;
-		
-		--3: 16 + (16 + 32) = 64 ( ..01000000)
-		A(4) <= '1';
-		B(4) <= '1';
-		B(5) <= '1';
+        A <= X"0000000000000001";
+        B <= X"0000000000000005";
+		wait for 10 ns;
+        test("positive plus positive", "no overflow", r, X"6");
+        test("positive plus positive", "no overflow flag", overflow, '0');
 		
 		
-		wait for 20 ns;
+        A <= X"FFFFFFFFFFFFFFFF";
+        B <= X"FFFFFFFFFFFFFFFE";
+        wait for 10 ns;
+        test("negative plus negative", "no overflow", r, X"FFFFFFFFFFFFFFFD");
+        test("negative plus negative", "no overflow flag", overflow, '0');
 		
-		--4: (-1) + (-1) = -2 (1...11110)
-		A <= (63 downto 0 => '1');
-		B <= (63 downto 0 => '1');
+        
+		A <= X"0000000000000000";
+        B <= X"FFFFFFFFFFFFFFFF";
+		wait for 10 ns;
+		test("negative plus zero", "no overflow", r, X"FFFFFFFFFFFFFFFF");
+        test("negative plus zero", "no overflow flag", overflow, '0');
+        
 		
-		wait for 20 ns;
-		
-		--5: 0 + (-1) = -1 (1....111)
-		A <= (63 downto 0 => '0');
-		
-		wait for 20 ns;
-		
-		--6: (-12) + (-15) = -27 (1...1101111)
-		A <= (63 downto 0 => '1');
-		B <= (63 downto 0 => '1');
-		
-		A(0)<= '0';
-		A(2)<= '0';
-		A(3)<= '0';
-		
-		B(1)<= '0';
-		B(2)<= '0';
-		B(3)<= '0';
+		A <= X"FFFFFFFFFFFFFFFB";
+		B <= X"0000000000000008"; 
+		wait for 10 ns;
+        test("negative plus positive", "no overflow", r, X"3");
+        test("negative plus positive", "no overflow fpag", overflow, '0');
 		
 		
-		wait for 20 ns;
+		A <= X"7FFFFFFFFFFFFFFF";
+		B <= X"7FFFFFFFFFFFFFFF";
+		wait for 10 ns;
+        test("positive plus positive", "overflow", r, X"FFFFFFFFFFFFFFFE");
+        test("positive plus positive", "overflow flag", overflow, '1');
 		
-		--7: Reset
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
 		
-		wait for 20 ns;
-		
-		--8: (-5) + 8 = 3 (00...0011)
-		A <= (63 downto 0 => '1');
-		A(2) <= '0';
-		B(3) <='1'; 
-		
-		wait for 20 ns;
-		
-		--9: Reset
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
-		
-		wait for 20 ns;
-		
-		--10: 5 + (-12) = -7 (11...1001)
-		A(0) <='1'; 
-		A(2) <='1';
-		B <= (63 downto 0 => '1');
-		B(0) <= '0';
-		B(1) <= '0';
-		B(3) <= '0';
-		
-		wait for 20 ns;
-		
-		--11: Reset
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
-		
-		wait for 20 ns;
-		
-		--12: Causing positive overflow: 1 (010... -> 100...)
-		A <= (63 downto 0 => '1');
-		B <= (63 downto 0 => '1');
-		A(63) <='0';
-		B(63) <='0';
-		
-		wait for 20 ns;
-		
-		--13: Reset
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
-		
-		wait for 20 ns;
-		
-		--14: Causing negative overflow: 1 (1000.... -> 000...)
-		A(63) <='1';
-		B(63) <='1';
-
-		wait for 20 ns;
-		
-		--15: Reset and end
-		A <= (63 downto 0 => '0');
-		B <= (63 downto 0 => '0');
+		A <= X"8000000000000000";
+		B <= X"8000000000000000";
+		wait for 10 ns;
+		test("negative plus negative", "overflow", r, X"0");
+        test("negative plus negative", "overflow flag", overflow, '1');
 
       wait;
    end process;
