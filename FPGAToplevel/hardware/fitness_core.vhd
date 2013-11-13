@@ -9,31 +9,35 @@ entity fitness_core is
           reset 				 		: in  STD_LOGIC;
           processor_enable  		: in  STD_LOGIC;
           
-			 --Control signals
+			 --Control signals related to the instruction cache
 			 halt_inst 					: in  STD_LOGIC; 
 			 
 			 --Bus signals related to instruction cache
 			 imem_address 		 		: out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
 			 imem_data_in 		 		: in  STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
           
+			 --Control signals related to the data memory
+			 request_data_bus 		: out STD_LOGIC;
+			 ack_mem_ctrl 				: in STD_LOGIC; 
+			 
+			 
+			 
 			 --Bus signals related to data memory
-			 request_bus_data 		: out STD_LOGIC;
-			 ack_mem_ctrl 	    		: in  STD_LOGIC;
-			 dmem_data_in 		 		: in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          dmem_address 		 		: out STD_LOGIC_VECTOR(MEM_ADDR_WIDTH-1 downto 0);
-          dmem_address_wr 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			 data_mem_bus_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          data_mem_addr_bus		 		: out STD_LOGIC_VECTOR(MEM_ADDR_WIDTH-1 downto 0);
+          data_mem_bus_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           dmem_data_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          dmem_write_enable 		: out STD_LOGIC;
+          
 			 
 			 --Bus signals related to genetic storage
-			 pmem_data_out 			: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-			 pmem_data_in 				: in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			 genetic_data_out 	   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			 genetic_data_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 			 pipeline_settings_out 	: out STD_LOGIC_VECTOR(SETTINGS_WIDTH-1 downto 0);
-			 request_bus_rated 		: out STD_LOGIC_vector(GENE_OP_WIDTH-1 downto 0);
-			 ack_gene_ctrl 	  		: in  STD_LOGIC;
-		 	 request_bus_unrated  	: out STD_LOGIC;
 			 
-			 gen_pipeline_settings  : in STD_LOGIC_VECTOR(SETTINGS_WIDTH-1 downto 0)
+			 --Control signals related to genetic storage
+			 ack_genetic_ctrl 		: in STD_LOGIC; 
+			 genetic_request_0 		: out STD_LOGIC; 
+			 genetic_request_1 	  	: out STD_LOGIC 
 			 
 			 );
 
@@ -64,6 +68,7 @@ architecture Behavioral of fitness_core is
 	signal reg_write_signal_decode : std_logic;
 	signal call_signal_decode : std_logic;
 	signal jump_signal_decode : std_logic;
+	signal multiplication_signal_decode : std_logic; 
 	signal alu_func_signal_decode : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
 	signal gene_op_signal_decode : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
 	signal mem_op_signal_decode : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
@@ -93,6 +98,8 @@ architecture Behavioral of fitness_core is
 	--Internally used signals 
 	signal alu_src_signal_execute  : std_logic;
 	signal alu_func_signal_execute : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
+	signal multiplication_halt : std_logic;
+	signal multiplication_signal_execute : std_logic; 
 
 	--Passing signals 
 	signal jump_signal_execute : std_logic;
@@ -212,6 +219,18 @@ PREPARE_OPCODE_AND_FUNC : process(instruction_signal_decode, processor_enable)
 end process;
 
 
+MULTIPLICATION_UNIT : process(func_decode)
+begin 
+	if func_decode = "" then 
+		multiplication_signal_decode <= '1'; 
+	else 
+		multiplication_signal_decode <= '0';
+	end if;
+
+end process;
+	
+
+
 
 -- STAGE DIVIDERS--
 if_id : entity work.IF_ID
@@ -250,6 +269,7 @@ port map (
     mem_operation_in => mem_op_signal_decode,
     to_reg_operation_in => to_reg_signal_decode,
 	 call_in => call_signal_decode,
+	 multiplication_in => multiplication_signal_decode,  
 
     -- CONTROL SIGNALS out
     alu_src_out => alu_src_signal_execute,
@@ -261,6 +281,7 @@ port map (
     mem_operation_out => mem_op_signal_execute,
     to_reg_operation_out => to_reg_signal_execute,
 	 call_out => call_signal_execute,
+	 multiplication_out => multiplication_signal_execute, 
 
     --DATA in
     rs_in => rs_signal_decode,
@@ -422,9 +443,13 @@ port map (
     clk => clk,
     reset => reset,
 
-    -- Control signals
+    -- Control signals in
     alu_src => alu_src_signal_execute,
     alu_func => alu_func_signal_execute,
+	 multiplication => multiplication_signal_execute, 
+	 
+	 --Control signals out 
+	 halt => multiplication_halt, 
 
     --Control signals from other stages
     stage4_reg_write => reg_write_signal_mem,
@@ -446,7 +471,6 @@ port map (
     
 	 --Control signals out
     overflow => overflow_signal_execute,
-	 multiplication_halt => multiplication_halt_signal, 
     
 	 -- Signals out 
     alu_result => res_signal_execute,
@@ -455,50 +479,77 @@ port map (
 );
 
 
-memory_stage : entity work.memory_stage
-port map (
-	--Bit signals
-	clk => clk,
-	reset => reset,
-	processor_enable => processor_enable, 
-	
-	--Control signals in
-	overflow_in => overflow_signal_mem,
-	jump_in => jump_signal_mem, 
-	gene_op_in => gene_op_signal_mem,
-	cond_op_in => cond_signal_mem, 
-	mem_op_in => mem_op_signal_mem, 
-	ack_mem_ctrl => ack_mem_ctrl, 
-	ack_gene_ctrl => ack_gene_ctrl, 
-	gen_pipeline_settings => gen_pipeline_settings, 
-	reg_write_in => reg_write_signal_mem,
-	call_in => call_signal_mem, 
 
-	--Control signals out
-	halt => halt_mem_signal,
-	request_bus_rated => request_bus_rated,
-	request_bus_unrated => request_bus_unrated, 
-	request_bus_data  => request_bus_data, 
-	reg_write_out => reg_write_signal_mem_out,
-	call_out => call_signal_mem_out,
+
+--TODO: RE-MAP this component
+
+memory_stage : entity work.memory_stage
+	Port map (
+	--Bit signals
+	clk => clk, 
+	reset => reset, 
+	processor_enable => processor_enable, 
+   halt => halt_mem_signal, 
 	
-	--Bus signals in 
+	--Processor related control signals in
+	overflow_in => overflow_signal_mem, 
+	jump_in  => jump_signal_mem, 
+	gene_op_in 	=> gene_op_signal_mem, 
+	cond_op_in => cond_signal_mem, 
+	mem_op_in  => mem_op_signal_mem, 
+	
+	reg_write_in => reg_write_signal_mem, 
+	call_in => call_signal_mem, 
+	
+	--Processor related control signals out
+	reg_write_out => reg_write_signal_mem_out, 
+	call_out => call_signal_mem_out, 
+	
+	--Genetic pipeline related control signals in 
+	ack_genetic_ctrl => ack_genetic_ctrl, 
+	
+	--Genetic pipeline related control signals out 
+	genetic_request_0 => genetic_request_0, 
+	genetic_request_1 => genetic_request_1, 
+	
+	--Memory related control signals in 
+	ack_mem_ctrl => ack_mem_ctrl, 
+	
+	--Memory related control signals out 
+	request_data_bus => request_data_bus, 
+	
+	--Processor related bus signals in 
 	fitness_in => rs_signal_mem, 
-	gene_in => rt_signal_mem,
+	gene_in => rt_signal_mem, 
 	res_in => res_signal_mem, 
 	pc_incremented => pc_incremented_signal_mem, 
-	data_mem_bus_in => dmem_data_in, 
-	data_pool_bus_in	=> pmem_data_in, 
 	
-	--Bus signals out
+	--Processor related bus signals out 
 	gene_out => gene_signal_mem, 
-	data_out => data_out_signal_mem,
+	data_out => data_out_signal_mem, 
 	pc_out => pc_out_signal_mem, 
-	addr_mem_bus => dmem_address, 
-	data_mem_bus_out	=>dmem_data_out, 
-	data_pool_bus_out =>pmem_data_out,
-	pc_jump_addr => pc_jump_addr_signal_mem);
-			 
+	pc_jump_addr => pc_jump_addr_signal_mem, 
+	
+	-- Genetic related bus signals in 
+	genetic_data_in  => genetic_data_in, 
+	
+	--Genetic related bus signals out 
+	genetic_data_out => genetic_data_out, 
+	
+	--Data memory related bus signals in 
+	data_mem_bus_in => data_mem_bus_in, 
+	
+	
+	--Data memory related bus signals out 
+	data_mem_bus_out	=> data_mem_bus_out, 
+	data_mem_addr_bus => data_mem_addr_bus
+	);
+
+
+
+
+
+
 
 write_back_stage : entity work.write_back_stage
 port map( 

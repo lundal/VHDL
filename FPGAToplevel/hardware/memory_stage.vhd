@@ -8,47 +8,63 @@ use work.constants.all;
 entity memory_stage is
 	Port(
 	--Bit signals
-	clk  					    : in std_logic;
-	reset 				    : in std_logic;
-	processor_enable 	    : in std_logic; 
+	clk  					    : in STD_LOGIC;
+	reset 				    : in STD_LOGIC;
+	processor_enable 	    : in STD_LOGIC;
+   halt                  : out STD_LOGIC; 
 	
-	--Control signals in
-	overflow_in 			 : in std_logic;
-	jump_in 					 : in std_logic;
-	gene_op_in 				 : in std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	cond_op_in 				 : in std_logic_vector(COND_WIDTH-1 downto 0); 
-	mem_op_in 				 : in std_logic_vector(MEM_OP_WIDTH-1 downto 0);
-	ack_mem_ctrl 			 : in std_logic;
-	ack_genetic_ctrl 			 : in std_logic;
-	gen_pipeline_settings : in std_logic_vector(SETTINGS_WIDTH-1 downto 0);
-	reg_write_in			 : in std_logic;
-	call_in 					 : in std_logic;
+	--Processor related control signals in
+	overflow_in 			 : in STD_LOGIC;
+	jump_in 					 : in STD_LOGIC;
+	gene_op_in 				 : in STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
+	cond_op_in 				 : in STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0); 
+	mem_op_in 				 : in STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
 	
-	--Control signals out
-	halt 					 	 : out std_logic;
-	genetic_request_0     : out std_logic;
-	genetic_request_1     : out std_logic;
-	request_bus_data	 	 : out std_logic;
-	reg_write_out 			 : out std_logic;
-	call_out 				 : out std_logic;
+	reg_write_in			 : in STD_LOGIC;
+	call_in 					 : in STD_LOGIC;
+	
+	--Processor related control signals out
+	reg_write_out 			 : out STD_LOGIC;
+	call_out 				 : out STD_LOGIC;
+	
+	--Genetic pipeline related control signals in 
+	ack_genetic_ctrl 		 : in STD_LOGIC;
+	
+	--Genetic pipeline related control signals out 
+	genetic_request_0     : out STD_LOGIC;
+	genetic_request_1     : out STD_LOGIC;
+	
+	--Memory related control signals in 
+	ack_mem_ctrl 			 : in STD_LOGIC; 
+	
+	--Memory related control signals out 
+	request_data_bus 		 : out STD_LOGIC; 
+	
+	--Processor related bus signals in 
+	fitness_in 				 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	gene_in 					 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	res_in 					 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	pc_incremented 		 : in STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+	
+	--Processor related bus signals out 
+	gene_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	data_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTh-1 downto 0);
+	pc_out 					 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	pc_jump_addr 			 : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+	
+	-- Genetic related bus signals in 
+	genetic_data_in 		: in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	
+	--Genetic related bus signals out 
+	genetic_data_out 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	
+	--Data memory related bus signals in 
+	data_mem_bus_in		 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	
 	
-	--Bus signals in 
-	fitness_in 				 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-	gene_in 					 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-	res_in 					 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-	pc_incremented 		 : in std_logic_vector(INST_WIDTH-1 downto 0);
-	data_mem_bus_in		 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-	genetic_data_in		 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-	
-	--Bus signals out
-	gene_out 				 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	data_out 				 : out std_logic_vector(DATA_WIDTh-1 downto 0);
-	pc_out 					 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	addr_mem_bus 			 : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
-	data_mem_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	genetic_data_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	pc_jump_addr 			 : out std_logic_vector(INST_WIDTH-1 downto 0)
+	--Data memory related bus signals out 
+	data_mem_bus_out		 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+	data_mem_addr_bus 	 : out STD_LOGIC_VECTOR(MEM_ADDR_WIDTH-1 downto 0)
 	);
 end memory_stage;
 
@@ -183,14 +199,15 @@ pc_incremented_signal <= SXT(pc_incremented, 64);
 --Split result to fit as memory addr
 mem_addr_signal <= res_in(18 downto 0);
 
-halt <= halt_signal_genetic_ctrl or halt_signal_mem_ctrl;
+halt <= genetic_halt_signal or mem_halt_signal;
+
 
 pc_jump_addr <= pc_out_signal(31 downto 0);
 pc_out <= pc_out_signal; 
 
 
 --TODO: Remove later 
-gene_out <= (others => '0');
+
 data_out <= (others => '0');
 
 end Behavioral;

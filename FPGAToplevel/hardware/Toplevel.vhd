@@ -207,15 +207,15 @@ port map(
     fitness_core_2 : entity work.fitness_core;
     fitness_core_3 : entity work.fitness_core;
 
-    fitness_genetic_controller_0 : entity work.fitness_genetic_controller;
-    fitness_genetic_controller_1 : entity work.fitness_genetic_controller;
-    fitness_genetic_controller_2 : entity work.fitness_genetic_controller;
-    fitness_genetic_controller_3 : entity work.fitness_genetic_controller;
-    
-    fitness_memory_controller_0 : entity work.fitness_memory_controller;
-    fitness_memory_controller_1 : entity work.fitness_memory_controller;
-    fitness_memory_controller_2 : entity work.fitness_memory_controller;
-    fitness_memory_controller_3 : entity work.fitness_memory_controller;
+--    fitness_genetic_controller_0 : entity work.fitness_genetic_controller;
+--    fitness_genetic_controller_1 : entity work.fitness_genetic_controller;
+--    fitness_genetic_controller_2 : entity work.fitness_genetic_controller;
+--    fitness_genetic_controller_3 : entity work.fitness_genetic_controller;
+--    
+--    fitness_memory_controller_0 : entity work.fitness_memory_controller;
+--    fitness_memory_controller_1 : entity work.fitness_memory_controller;
+--    fitness_memory_controller_2 : entity work.fitness_memory_controller;
+--    fitness_memory_controller_3 : entity work.fitness_memory_controller;
     
     instruction_cache_0_1 : entity work.instructionCache;
     instruction_cache_2_3 : entity work.instructionCache;

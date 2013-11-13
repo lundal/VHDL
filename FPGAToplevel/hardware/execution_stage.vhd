@@ -11,9 +11,13 @@ entity execution_stage is
     port (clk                 : in STD_LOGIC;
           reset               : in STD_LOGIC;
           
-          -- Control signals
+          -- Control signals in
           alu_src             : in STD_LOGIC;
           alu_func            : in STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
+			 multiplication		: in STD_LOGIC;
+			 
+			 --Control signals out 
+			 halt 					: out STD_LOGIC;
           
           
           --Control signals from other stages
@@ -21,12 +25,12 @@ entity execution_stage is
           stage5_reg_write    : in STD_LOGIC;
           
           --Signals in 
-          rs          : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          rt          : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          rs                  : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          rt                  : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           immediate           : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          rsa             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          rta             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          rda             : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rsa                 : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rta                 : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          rda                 : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           
           -- From other stages
           stage4_alu_result   : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -35,8 +39,7 @@ entity execution_stage is
           stage5_reg_rd       : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           
           --Control signals out
-          overflow            : out STD_LOGIC;
-			 multiplication_halt : out STD_LOGIC; 
+          overflow            : out STD_LOGIC; 
           
           -- Signals out 
           rs_out 					: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -76,7 +79,7 @@ end component;
 
 
 component forwarding_unit 
-    Port ( EX_MEM_reg_write        : in  STD_LOGIC;
+    Port ( EX_MEM_reg_write     : in  STD_LOGIC;
 		  MEM_WB_reg_write        : in  STD_LOGIC;
 		  rs_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
 		  rt_addr                 : in  STD_LOGIC_VECTOR (4 downto 0);
@@ -98,15 +101,20 @@ signal alu_op2                     : STD_LOGIC_VECTOR(63 downto 0);
 --Control signals
 signal forwardA                    : STD_LOGIC_VECTOR(1 downto 0);
 signal forwardB                    : STD_LOGIC_VECTOR(1 downto 0); 
+signal multiplication_signal 		  : STD_LOGIC; 
+
 
 --Ground (Will be ignored)
 signal ground_signal               : STD_LOGIC;                          
+
+type state_type is (READY, WAITING);
+signal CURRENT_STATE, NEXT_STATE: state_type; 
+
 
 
 begin
 
 -- Mappings
-
 
 TRI_MUX1_MAP : tri_multiplexor
 generic map(N => 64)
@@ -157,6 +165,33 @@ port map(
 			forward_b =>forwardB);
 			
 
+RUN : process(clk, reset, CURRENT_STATE)
+begin 
+	if reset = '1' then 
+		CURRENT_STATE <= READY;
+	elsif rising_edge(clk) then
+		CURRENT_STATE <= NEXT_STATE; 
+	end if;
+end process; 
+
+
+HANDLE_MULTIPLICATION : process(CURRENT_STATE, multiplication)
+begin 
+	if CURRENT_STATE = READY and multiplication = '1' then
+		NEXT_STATE <= WAITING;
+		halt <= '1';
+	else 
+		NEXT_STATE <= READY; 
+		halt <= '0';
+	end if; 
+	
+
+
+end process; 
+
+
+
+--Output
 rs_out <= tri_mux1_out;
 rt_out <= tri_mux2_out;
 

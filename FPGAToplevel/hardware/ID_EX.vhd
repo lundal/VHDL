@@ -28,6 +28,7 @@ entity ID_EX is
            mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
            to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_in							 : in  STD_LOGIC;
+			  multiplication_in 				 : in  STD_LOGIC; 
            
            -- CONTROL SIGNALS out
            alu_src_out                  : out  STD_LOGIC;
@@ -39,6 +40,7 @@ entity ID_EX is
            mem_operation_out            : out  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
            to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_out                     : out  STD_LOGIC;
+			  multiplication_out 			 : out  STD_LOGIC;
            
 			  --DATA in
            rs_in                     : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);

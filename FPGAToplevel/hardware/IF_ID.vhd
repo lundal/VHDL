@@ -70,7 +70,9 @@ TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable)
         
         if reset = '0' and CURRENT_STATE = STATE_RUNNING and halt = '0' then
             instruction_out <= instruction_in;
-        end if;
+        else 
+				instruction_out <= (others => '0');
+		  end if;
         
  end process;
 
