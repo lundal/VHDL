@@ -12,10 +12,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity GeneticPipeline2_TB is
-end GeneticPipeline2_TB;
+entity tb_GeneticPipeline2 is
+end tb_GeneticPipeline2;
 
-architecture Behavioral of GeneticPipeline2_TB is
+architecture Behavioral of tb_GeneticPipeline2 is
     
     component GeneticPipeline2 is
         generic (

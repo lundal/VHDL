@@ -12,10 +12,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity GeneticController_TB is
-end GeneticController_TB;
+entity tb_GeneticController is
+end tb_GeneticController;
 
-architecture Behavioral of GeneticController_TB is
+architecture Behavioral of tb_GeneticController is
     
     component GeneticController is
         port (

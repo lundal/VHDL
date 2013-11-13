@@ -2,10 +2,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
-ENTITY InstructionCache_tb IS
-END InstructionCache_tb;
+ENTITY tb_InstructionCache IS
+END tb_InstructionCache;
  
-ARCHITECTURE behavior OF InstructionCache_tb IS 
+ARCHITECTURE behavior OF tb_InstructionCache IS 
  
     COMPONENT InstructionCache
     PORT(

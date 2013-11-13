@@ -1,39 +1,10 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   16:21:32 09/27/2013
--- Design Name:   
--- Module Name:   C:/Users/torbjlan/VHDL/FPGAToplevel/mutation_core_tb.vhd
--- Project Name:  FPGAToplevel
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: mutation_core
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
--------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
-ENTITY mutation_core_tb IS
-END mutation_core_tb;
+ENTITY tb_mutation_core IS
+END tb_mutation_core;
  
-ARCHITECTURE behavior OF mutation_core_tb IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
+ARCHITECTURE behavior OF tb_mutation_core IS 
  
     COMPONENT mutation_core
     PORT(
@@ -59,7 +30,6 @@ ARCHITECTURE behavior OF mutation_core_tb IS
  
 BEGIN
  
-	-- Instantiate the Unit Under Test (UUT)
    uut: mutation_core PORT MAP (
           enabled => enabled,
 			 active => active,
@@ -70,7 +40,6 @@ BEGIN
         );
  
 
-   -- Stimulus process
    stim_proc: process
    begin		
 	

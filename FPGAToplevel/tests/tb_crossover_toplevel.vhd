@@ -1,41 +1,10 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   19:06:17 11/02/2013
--- Design Name:   
--- Module Name:   C:/Users/torbjlan/VHDL/FPGAToplevel/crossover_toplevel_tb.vhd
--- Project Name:  FPGAToplevel
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: crossover_toplevel
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
+ENTITY tb_crossover_toplevel IS
+END tb_crossover_toplevel;
  
-ENTITY crossover_toplevel_tb IS
-END crossover_toplevel_tb;
- 
-ARCHITECTURE behavior OF crossover_toplevel_tb IS 
+ARCHITECTURE behavior OF tb_crossover_toplevel IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  

@@ -1,43 +1,10 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   16:37:01 10/03/2013
--- Design Name:   
--- Module Name:   C:/Users/torbjlan/VHDL/FPGAToplevel/crossover_core_doublesplit_tb.vhd
--- Project Name:  FPGAToplevel
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: crossover_core_doublesplit
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
+ENTITY tb_crossover_core_doublesplit IS
+END tb_crossover_core_doublesplit;
  
-ENTITY crossover_core_doublesplit_tb IS
-END crossover_core_doublesplit_tb;
- 
-ARCHITECTURE behavior OF crossover_core_doublesplit_tb IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
+ARCHITECTURE behavior OF tb_crossover_core_doublesplit IS 
  
     COMPONENT crossover_core_doublesplit
     PORT(
@@ -62,8 +29,7 @@ ARCHITECTURE behavior OF crossover_core_doublesplit_tb IS
    signal child2 : std_logic_vector(63 downto 0);
  
 BEGIN
- 
-	-- Instantiate the Unit Under Test (UUT)
+
    uut: crossover_core_doublesplit PORT MAP (
           enabled => enabled,
           random_number => random_number,

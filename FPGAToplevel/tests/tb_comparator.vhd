@@ -2,13 +2,11 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
  
-ENTITY comparator_tb IS
-END comparator_tb;
+ENTITY tb_comparator IS
+END tb_comparator;
 
  
-ARCHITECTURE behavior OF comparator_tb IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
+ARCHITECTURE behavior OF tb_comparator IS 
  
     COMPONENT comparator
     generic(N: NATURAL);
@@ -26,14 +24,9 @@ ARCHITECTURE behavior OF comparator_tb IS
 
  	--Outputs
    signal signal_out : std_logic_vector(1 downto 0);
-   -- No clocks detected in port list. Replace <clock> below with 
-   -- appropriate port name 
- 
-  -- constant <clock>_period : time := 10 ns;
  
 BEGIN
  
-	-- Instantiate the Unit Under Test (UUT)
    uut: comparator 
    generic map(N => 5)
    PORT MAP (

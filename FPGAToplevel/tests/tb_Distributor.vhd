@@ -12,10 +12,10 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity Distributor_TB is
-end Distributor_TB;
+entity tb_distributor is
+end tb_istributor;
 
-architecture Behavioral of Distributor_TB is
+architecture Behavioral of tb_distributor is
     
     component Distributor is
         generic (

@@ -2,10 +2,10 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
  
-ENTITY Multiply_TB IS
-END Multiply_TB;
+ENTITY tb_Multiply IS
+END tb_Multiply;
  
-ARCHITECTURE behavior OF Multiply_TB IS 
+ARCHITECTURE behavior OF tb_Multiply IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  

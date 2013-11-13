@@ -1,12 +1,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
-ENTITY SelectionCore2_TB IS
-END SelectionCore2_TB;
+ENTITY tb_SelectionCore2 IS
+END tb_SelectionCore2;
  
-ARCHITECTURE behavior OF SelectionCore2_TB IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
+ARCHITECTURE behavior OF tb_SelectionCore2 IS 
  
     COMPONENT SelectionCore2
         generic(
@@ -78,7 +76,6 @@ ARCHITECTURE behavior OF SelectionCore2_TB IS
 
 BEGIN
  
-	-- Instantiate the Unit Under Test (UUT)
     uut: SelectionCore2
     generic map(
         ADDR_SIZE    => 9,
@@ -118,7 +115,6 @@ BEGIN
         CLK    => CLK
     );
 
-    -- Clock process definitions
     CLK_process : process
     begin
         CLK <= '0';
@@ -131,10 +127,8 @@ BEGIN
     DATA <= b_out;
     NUMBER <= "0100";
 
-    -- Stimulus process
     stim_proc : process
         begin		
-        -- Hold reset state for 10 cycles
         wait for CLK_period*10;
         
         -- Enable BRAM

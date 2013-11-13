@@ -2,66 +2,42 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
  
-ENTITY Adder_tbbb IS
-END Adder_tbbb;
+ENTITY tb_adder IS
+END tb_adder;
  
-ARCHITECTURE behavior OF Adder_tbbb IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
+ARCHITECTURE behavior OF tb_adder IS 
  
     COMPONENT Adder
     PORT(
-    --     clk : IN  std_logic;
          A : IN  std_logic_vector(63 downto 0);
          B : IN  std_logic_vector(63 downto 0);
          res : OUT  std_logic_vector(63 downto 0);
          overflow : OUT  std_logic
         );
     END COMPONENT;
-    
 
    --Inputs
-   --signal clk : std_logic := '0';
    signal A : std_logic_vector(63 downto 0) := (others => '0');
    signal B : std_logic_vector(63 downto 0) := (others => '0');
 
  	--Outputs
    signal res : std_logic_vector(63 downto 0);
    signal overflow : std_logic;
-
-   -- Clock period definitions
-   --constant clk_period : time := 10 ns;
  
 BEGIN
  
-	-- Instantiate the Unit Under Test (UUT)
    uut: Adder PORT MAP (
-   --       clk => clk,
           A => A,
           B => B,
           res => res,
           overflow => overflow
         );
+        
 
-   -- Clock process definitions
-   --clk_process :process
-   --begin
-	--	clk <= '0';
-	--	wait for clk_period/2;
-	--	clk <= '1';
-	--	wait for clk_period/2;
-   --end process;
- 
-
-   -- Stimulus process
    stim_proc: process
    begin		
-      -- hold reset state for 100 ns.
       wait for 100 ns;	
 
-      --wait for clk_period*10;
-
-      -- insert stimulus here 
 
 		A <= (63 downto 0 => '0');
 		B <= (63 downto 0 => '0');

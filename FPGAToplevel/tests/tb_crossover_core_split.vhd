@@ -2,10 +2,10 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
  
-ENTITY crossover_core_split_tb IS
-END crossover_core_split_tb;
+ENTITY tb_crossover_core_split IS
+END tb_crossover_core_split;
  
-ARCHITECTURE behavior OF crossover_core_split_tb IS 
+ARCHITECTURE behavior OF tb_crossover_core_split IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  

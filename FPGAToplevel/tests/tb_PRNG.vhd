@@ -2,10 +2,10 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
  
-ENTITY PRNG_tb IS
-END PRNG_tb;
+ENTITY tb_PRNG IS
+END tb_PRNG;
  
-ARCHITECTURE behavior OF PRNG_tb IS 
+ARCHITECTURE behavior OF tb_PRNG IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
