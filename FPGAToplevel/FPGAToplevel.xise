@@ -37,12 +37,7 @@
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="tests/tb_comparator.vhd" xil_pn:type="FILE_VHDL">
-      <association xil_pn:name="BehavioralSimulation"/>
-      <association xil_pn:name="PostMapSimulation"/>
-      <association xil_pn:name="PostRouteSimulation"/>
-      <association xil_pn:name="PostTranslateSimulation"/>
-    </file>
+    <file xil_pn:name="tests/tb_comparator.vhd" xil_pn:type="FILE_VHDL"/>
     <file xil_pn:name="hardware/conditional_unit.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -271,19 +266,13 @@
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="tests/tb_Distributor.vhd" xil_pn:type="FILE_VHDL">
-      <association xil_pn:name="BehavioralSimulation"/>
-      <association xil_pn:name="PostMapSimulation"/>
-      <association xil_pn:name="PostRouteSimulation"/>
-      <association xil_pn:name="PostTranslateSimulation"/>
-    </file>
+    <file xil_pn:name="tests/tb_Distributor.vhd" xil_pn:type="FILE_VHDL"/>
     <file xil_pn:name="hardware/FakeMem.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="PostMapSimulation"/>
       <association xil_pn:name="PostRouteSimulation"/>
       <association xil_pn:name="PostTranslateSimulation"/>
     </file>
-    <file xil_pn:name="hardware/fitness_instruction_controller.vhd" xil_pn:type="FILE_VHDL"/>
     <file xil_pn:name="hardware/genetic_pipeline.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -298,7 +287,12 @@
       <association xil_pn:name="PostRouteSimulation"/>
       <association xil_pn:name="PostTranslateSimulation"/>
     </file>
-    <file xil_pn:name="tests/tb_genetic_pipeline.vhd" xil_pn:type="FILE_VHDL"/>
+    <file xil_pn:name="tests/tb_genetic_pipeline.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
     <file xil_pn:name="hardware/Incrementer.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -310,12 +304,6 @@
     <file xil_pn:name="hardware/InstructionCache.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
-    </file>
-    <file xil_pn:name="tests/tb_InstructionCache.vhd" xil_pn:type="FILE_VHDL">
-      <association xil_pn:name="BehavioralSimulation"/>
-      <association xil_pn:name="PostMapSimulation"/>
-      <association xil_pn:name="PostRouteSimulation"/>
-      <association xil_pn:name="PostTranslateSimulation"/>
     </file>
     <file xil_pn:name="hardware/InstructionController.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
@@ -337,7 +325,7 @@
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="tests/tb_SelectionCore.vhd" xil_pn:type="FILE_VHDL">
+    <file xil_pn:name="tests/tb_selection_core.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="PostMapSimulation"/>
       <association xil_pn:name="PostRouteSimulation"/>
@@ -607,8 +595,8 @@
     <property xil_pn:name="Run for Specified Time Translate" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Safe Implementation" xil_pn:value="No" xil_pn:valueState="default"/>
     <property xil_pn:name="Security" xil_pn:value="Enable Readback and Reconfiguration" xil_pn:valueState="default"/>
-    <property xil_pn:name="Selected Module Instance Name" xil_pn:value="/tb_InstructionCache" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Selected Simulation Root Source Node Behavioral" xil_pn:value="work.tb_InstructionCache" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Selected Module Instance Name" xil_pn:value="/tb_fitness_memory_controller" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Selected Simulation Root Source Node Behavioral" xil_pn:value="work.tb_fitness_memory_controller" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Selected Simulation Root Source Node Post-Map" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Selected Simulation Root Source Node Post-Route" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Selected Simulation Root Source Node Post-Translate" xil_pn:value="" xil_pn:valueState="default"/>
@@ -630,7 +618,7 @@
     <property xil_pn:name="Slice Utilization Ratio" xil_pn:value="100" xil_pn:valueState="default"/>
     <property xil_pn:name="Source window" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify 'define Macro Name and Value" xil_pn:value="" xil_pn:valueState="default"/>
-    <property xil_pn:name="Specify Top Level Instance Names Behavioral" xil_pn:value="work.tb_InstructionCache" xil_pn:valueState="default"/>
+    <property xil_pn:name="Specify Top Level Instance Names Behavioral" xil_pn:value="work.tb_fitness_memory_controller" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify Top Level Instance Names Post-Map" xil_pn:value="Default" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify Top Level Instance Names Post-Route" xil_pn:value="Default" xil_pn:valueState="default"/>
     <property xil_pn:name="Specify Top Level Instance Names Post-Translate" xil_pn:value="Default" xil_pn:valueState="default"/>
@@ -690,7 +678,7 @@
     <!--                                                                                  -->
     <!-- The following properties are for internal use only. These should not be modified.-->
     <!--                                                                                  -->
-    <property xil_pn:name="PROP_BehavioralSimTop" xil_pn:value="Architecture|tb_GeneticController|Behavioral" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="PROP_BehavioralSimTop" xil_pn:value="Architecture|tb_fitness_memory_controller|behavior" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_DesignName" xil_pn:value="FPGAToplevel" xil_pn:valueState="non-default"/>
     <property xil_pn:name="PROP_DevFamilyPMName" xil_pn:value="spartan6" xil_pn:valueState="default"/>
     <property xil_pn:name="PROP_FPGAConfiguration" xil_pn:value="FPGAConfiguration" xil_pn:valueState="default"/>

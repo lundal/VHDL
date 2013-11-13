@@ -1,13 +1,3 @@
-----------------------------------------------------------------------------------
--- Engineer: Per Thomas Lundal
--- Project:  Galapagos
--- Created:  2013-11-04 13:42
--- Tested:   NA
---
--- Description:
--- Test bench for GeneticController
-----------------------------------------------------------------------------------
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -88,11 +78,16 @@ begin
         
         -- Wait for rated access
         wait for clock_period*3;
+        test("", "rated request", rated_rq, '1');
 
         -- Give access
         RATED_ACK <= '1';
-        wait for clock_period;
+        wait for clock_period/2;
+        test("", "sel 0 run", sel_0_run, '1');
+        test("", "sel 1 run", sel_1_run, '1');
+        wait for clock_period/2;
         RATED_ACK <= '0';
+        
         
         -- Prevent controller from restarting
         ENABLE <= '0';
@@ -104,13 +99,18 @@ begin
         SEL_0_DONE <= '1';
         SEL_1_DONE <= '1';
         
+        
         -- Wait for unrated access
         wait for clock_period*3;
         
+        test("", "unrated rq", unrated_rq, '1');
         -- Give access
         UNRATED_ACK <= '1';
-        wait for clock_period;
+        wait for clock_period/2;
+        test("", "store high", store, '1');
+        wait for clock_period/2;
         UNRATED_ACK <= '0';
+        test("", "store low", store, '0');
         
         wait;
     end process;

@@ -1,12 +1,12 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
-ENTITY tb_SelectionCore2 IS
-END tb_SelectionCore2;
+ENTITY tb_selection_core IS
+END tb_selection_core;
  
-ARCHITECTURE behavior OF tb_SelectionCore2 IS 
+ARCHITECTURE behavior OF tb_selection_core IS 
  
-    COMPONENT SelectionCore2
+    COMPONENT selection_core
         generic(
             ADDR_SIZE    : natural := 9;
             DATA_SIZE    : natural := 64;
@@ -76,7 +76,7 @@ ARCHITECTURE behavior OF tb_SelectionCore2 IS
 
 BEGIN
  
-    uut: SelectionCore2
+    uut: selection_core
     generic map(
         ADDR_SIZE    => 9,
         DATA_SIZE    => 32,
