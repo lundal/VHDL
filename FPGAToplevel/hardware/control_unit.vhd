@@ -122,7 +122,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             REG_WRITE <= '0';
 				STORE_SOURCE <= '0';
         
-        elsif OP_CODE = OP_CODE_LW and FUNC = ALU_FUNC_ADD then 
+        elsif OP_CODE = OP_CODE_LW then 
             ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
@@ -171,7 +171,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= TO_REG_NA;
-            REG_WRITE <= '1';
+            REG_WRITE <= '0';
 				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_LDG then 
@@ -197,7 +197,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "00";
-            REG_WRITE <= '1';
+            REG_WRITE <= '0';
 				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_SETG then
