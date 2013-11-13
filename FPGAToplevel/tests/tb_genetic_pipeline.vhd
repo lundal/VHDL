@@ -12,12 +12,12 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity tb_GeneticPipeline2 is
-end tb_GeneticPipeline2;
+entity tb_genetic_pipeline is
+end tb_genetic_pipeline;
 
-architecture Behavioral of tb_GeneticPipeline2 is
+architecture Behavioral of tb_genetic_pipeline is
     
-    component GeneticPipeline2 is
+    component genetic_pipeline is
         generic (
             NUM_PROC     : natural := 4;
             ADDR_WIDTH   : natural := 9;
@@ -52,7 +52,7 @@ architecture Behavioral of tb_GeneticPipeline2 is
     
 begin
     
-    UUT : GeneticPipeline2
+    UUT : genetic_pipeline
     generic map (
         NUM_PROC => 1,
         ADDR_WIDTH => 9,

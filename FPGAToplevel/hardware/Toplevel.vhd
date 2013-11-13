@@ -202,41 +202,20 @@ port map(
         Clock   => Clock
         );
 
-fitness_core_0 : entity work.fitness_core
-port map(
-        clk => clock,
-        reset => reset,
-        processor_enable => processor_enable,
-
-        --Control signals
-        halt_inst => halt,
-
-        --Bus signals related to instruction cache
-        imem_address => imem_address_from_fitness_core_0,
-        imem_data_in => imem_data_in,
-
-        --Bus signals related to data memory
-        request_bus_data => request_bus_data,
-        ack_mem_ctrl => ack_mem_ctrl,
-        dmem_data_in => dmem_data_in,
-        dmem_address => dmem_address,
-        dmem_address_wr => dmem_address_wr,
-        dmem_data_out => dmem_data_out,
-        dmem_write_enable => dmem_write_enable,
-
-        --Bus signals related to genetic storage
-        pmem_data_out => pmem_data_out,
-        pmem_data_in => pmem_data_in,
-        pipeline_settings_out => pipeline_settings_out,
-        request_bus_rated => request_bus_rated,
-        ack_gene_ctrl => ack_gene_ctrl,
-        request_bus_unrated => request_bus_unrated,
-
-        gen_pipeline_settings => gen_pipeline_settings
-        );
+    fitness_core_0 : entity work.fitness_core;
+    fitness_core_1 : entity work.fitness_core;
+    fitness_core_2 : entity work.fitness_core;
+    fitness_core_3 : entity work.fitness_core;
 
     fitness_genetic_controller_0 : entity work.fitness_genetic_controller;
+    fitness_genetic_controller_1 : entity work.fitness_genetic_controller;
+    fitness_genetic_controller_2 : entity work.fitness_genetic_controller;
+    fitness_genetic_controller_3 : entity work.fitness_genetic_controller;
+    
     fitness_memory_controller_0 : entity work.fitness_memory_controller;
+    fitness_memory_controller_1 : entity work.fitness_memory_controller;
+    fitness_memory_controller_2 : entity work.fitness_memory_controller;
+    fitness_memory_controller_3 : entity work.fitness_memory_controller;
     
     instruction_cache_0_1 : entity work.instructionCache;
     instruction_cache_2_3 : entity work.instructionCache;
