@@ -19,18 +19,19 @@ entity memory_stage is
 	cond_op_in 				 : in std_logic_vector(COND_WIDTH-1 downto 0); 
 	mem_op_in 				 : in std_logic_vector(MEM_OP_WIDTH-1 downto 0);
 	ack_mem_ctrl 			 : in std_logic;
-	ack_gene_ctrl 			 : in std_logic;
+	ack_genetic_ctrl 			 : in std_logic;
 	gen_pipeline_settings : in std_logic_vector(SETTINGS_WIDTH-1 downto 0);
 	reg_write_in			 : in std_logic;
 	call_in 					 : in std_logic;
 	
 	--Control signals out
 	halt 					 	 : out std_logic;
-	request_bus_rated  	 : out std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	request_bus_unrated 	 : out std_logic;
+	genetic_request_0     : out std_logic;
+	genetic_request_1     : out std_logic;
 	request_bus_data	 	 : out std_logic;
 	reg_write_out 			 : out std_logic;
 	call_out 				 : out std_logic;
+	
 	
 	--Bus signals in 
 	fitness_in 				 : in std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -38,7 +39,7 @@ entity memory_stage is
 	res_in 					 : in std_logic_vector(DATA_WIDTH-1 downto 0);
 	pc_incremented 		 : in std_logic_vector(INST_WIDTH-1 downto 0);
 	data_mem_bus_in		 : in std_logic_vector(DATA_WIDTH-1 downto 0);
-	data_pool_bus_in		 : in std_logic_vector(DATA_WIDTH-1 downto 0);
+	genetic_data_in		 : in std_logic_vector(DATA_WIDTH-1 downto 0);
 	
 	--Bus signals out
 	gene_out 				 : out std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -46,15 +47,15 @@ entity memory_stage is
 	pc_out 					 : out std_logic_vector(DATA_WIDTH-1 downto 0);
 	addr_mem_bus 			 : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
 	data_mem_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
-	data_pool_bus_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
+	genetic_data_out		 : out std_logic_vector(DATA_WIDTH-1 downto 0);
 	pc_jump_addr 			 : out std_logic_vector(INST_WIDTH-1 downto 0)
 	);
 end memory_stage;
 
 architecture Behavioral of memory_stage is
 
-signal halt_signal_genetic_ctrl : std_logic;
-signal halt_signal_mem_ctrl 	  : std_logic;
+signal genetic_halt_signal : std_logic;
+signal mem_halt_signal  	: std_logic;
 
 signal data_bus_in              : std_logic_vector(DATA_WIDTH-1 downto 0);
 signal data_bus_out 				  : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -81,32 +82,25 @@ signal gene_op_signal 			  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
 
 begin
 
---fitness_genetic_controller : entity work.fitness_genetic_controller
---port map( 
---			--Bit signals
---			clk => clk,
---			
---			-- Control signals in
---			gene_op => gene_op_in, 
---			ack_gene_ctrl => ack_gene_ctrl,
---		   settings_in => gen_pipeline_settings,
---
---			-- Control signals out
---			halt => halt_signal_genetic_ctrl,
---			request_bus_rated => request_bus_rated,
---			request_bus_unrated => request_bus_unrated,
---			setting_out => settings_gen_signal_out,
---			
---			--BUS in 
---			fitness_in => fitness_in,
---			gene_in => gene_in,
---			data_pool_bus_in =>data_pool_bus_in,
---			
---			--BUS out
---			gene_out => gene_out_signal,
---			data_pool_bus_out => data_pool_bus_out);
---
 
+fitness_genetic_controller : entity work.fitness_genetic_controller
+port map ( 
+        -- To/from genetic pipeline
+        REQUEST_0 => genetic_request_0,
+        REQUEST_1 => genetic_request_1,
+        
+		  ACK      => ack_genetic_ctrl,
+        DATA_IN  => genetic_data_in,
+        DATA_OUT => genetic_data_out, 
+        
+        -- To/from processor
+        OP       => gene_op_in,
+        FITNESS  => fitness_in,
+        GENE_IN  => gene_in,
+        GENE_OUT => gene_out,
+        HALT     => genetic_halt_signal,
+        CLK      => clk
+    );
 
 
 
@@ -178,70 +172,10 @@ begin
 	end if;
 end process;
 
---FLUSH_INSTRUCTION : process(execute_signal)
---begin 
---	if execute_signal = '0' then 
---		reg_write_out <= '0';
---	else 
---		reg_write_out <= reg_write_in;
---	end if;
---end process; 
+
 
 jump_signal <= jump_in and execute_signal;
 
---THE_DECIDER : process(jump_in, execute_signal, execute_signal, CURRENT_STATE, cond_op_in)
---begin
---		
---		if jump_signal = '1'  and CURRENT_STATE = NOT_TAKEN then
---			NEXT_STATE <= TAKEN;
---			flush_counter <= (others => '0');
---		elsif CURRENT_STATE <= TAKEN then
---			if flush_counter /= "11" then 
---					flush_counter <= flush_counter + "01";
---					condition_signal <= "0000";
---			else 
---				NEXT_STATE <= NOT_TAKEN; 
---			end if;
---		else 
---			condition_signal <= cond_op_in; 
---			NEXT_STATE <= NOT_TAKEN;
---		end if;
---	
---
---end process;
-
-
-
-
-
---fitness_memory_controller : entity work.fitness_memory_controller 
---port map (
---			Bit signals
---			clk => clk,
---			reset => reset,
---			processor_enable => processor_enable, 
---			
---			Control signals in
---			mem_op => mem_op_in,
---			ack_mem_ctrl => ack_mem_ctrl, 
---			
---			Control signals out
---			mem_op_ctrl => mem_op_ctrl_signal, 
---			request_bus => request_bus_data,
---			halt 			=> halt_signal_mem_ctrl,
---			
---			BUS in
---			addr => mem_addr_signal, 
---			store_data => gene_in,
---			
---			Memory bus controller
---			addr_bus => addr_mem_bus, 
---			data_bus_out => data_mem_bus_out, 
---			data_bus_in => data_mem_bus_in, 
---			
---			BUS out
---			read_data_out => data_out);
-			
 			
 --Sign extend pc_incremented
 pc_incremented_signal <= SXT(pc_incremented, 64);
