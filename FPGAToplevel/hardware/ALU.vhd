@@ -9,7 +9,7 @@ entity ALU is
 	
 	generic(
 		N : integer := 64;
-		MULTIPLIER : integer := 0
+		INCMULT : integer := 0
 	);
 	
 	port(
@@ -107,7 +107,7 @@ begin
 		Count => Y(6-1 downto 0)
 	);
 	
-	GEN_MULT : if MULTIPLIER = 1 generate
+	GEN_MULT : if INCMULT = 1 generate
 		MULTIPLY : Multiplier
 		generic map (
 			N => N/2
@@ -119,7 +119,7 @@ begin
 		);
 	end generate;
 	
-	GEN_MULT_RES : if MULTIPLIER /= 1 generate
+	GEN_MULT_RES : if INCMULT /= 1 generate
 		r_mul <= (others => '0');
 	end generate;
 	
