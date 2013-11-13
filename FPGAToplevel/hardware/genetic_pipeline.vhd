@@ -30,7 +30,7 @@ entity genetic_pipeline is
     -- Assign clock signal
     attribute CLOCK_SIGNAL : string;
     attribute CLOCK_SIGNAL of CLK : signal is "yes";
-end GeneticPipeline2;
+end genetic_pipeline;
 
 architecture Behavioral of genetic_pipeline is
     
