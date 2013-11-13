@@ -201,12 +201,14 @@ CONTROL_SIGNALS : process (clk, reset, halt)
             reg_write_out <= '0';
             jump_out <= '0';
 				call_out <= '0';
+				multiplication_out <= '0';
             
         elsif rising_edge(clk) and halt = '0' then 
 				alu_src_out <= alu_src_in;
             reg_write_out <= reg_write_in;
             jump_out <= jump_in;
 				call_out <= call_in;
+				multiplication_out <= multiplication_in; 
         end if;
 end process CONTROL_SIGNALS;
 
