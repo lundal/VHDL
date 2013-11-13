@@ -70,10 +70,15 @@ isim/
 *isim_beh.*
 isim.cmd
 xilinxsim.ini
+*.wdb
 
 # Extra
 wlft*
 transcript
-*.swp
+
+# linux toolchain garbage
 *.o
-work-obj93.cf
+*.cf
+
+# vim swap files
+*.swp
