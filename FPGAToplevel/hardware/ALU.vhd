@@ -1,22 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    16:08:41 09/21/2013 
--- Design Name: 
--- Module Name:    ALU - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -68,7 +49,7 @@ architecture Behavioral of ALU is
 		);
 	end component;
 	
-	component Multiplier2 is
+	component Multiplier is
 		generic (
 			N : natural := 32
 		);
@@ -127,7 +108,7 @@ begin
 	);
 	
 	GEN_MULT : if MULTIPLIER = 1 generate
-		MULTIPLY : Multiplier2
+		MULTIPLY : Multiplier
 		generic map (
 			N => N/2
 		)

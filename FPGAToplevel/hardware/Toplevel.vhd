@@ -15,13 +15,13 @@ library WORK;
 use WORK.CONSTANTS.ALL;
 
 entity Toplevel is
-    generic(
-		NUM_PROC_PAIRS : natural := 4;
+generic(
+        NUM_PROC_PAIRS : natural := 4;
         ADDR_WIDTH     : natural := 19;
-		INST_WIDTH     : natural := 32;
+        INST_WIDTH     : natural := 32;
         DATA_WIDTH     : natural := 16
-    );
-    port(
+       );
+port(
         SCU_ENABLE  : in    STD_LOGIC;
         
         SCU_STATE   : in    STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0);
@@ -42,111 +42,111 @@ entity Toplevel is
         IMEM_LBUB       : out   STD_LOGIC;
         
         DMEM_CE     : out   STD_LOGIC;
-        DMEM_WE     : out   STD_LOGIC;
-        DMEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        DMEM_ADDR   : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-        DMEM_LBUB   : out   STD_LOGIC;
+DMEM_WE     : out   STD_LOGIC;
+DMEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+DMEM_ADDR   : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+DMEM_LBUB   : out   STD_LOGIC;
 
-        Clock       : in    STD_LOGIC
-    );
+Clock       : in    STD_LOGIC
+);
 end Toplevel;
 
 architecture Behavioral of Toplevel is
-	
-    component MemMux is
-        generic(
-            DATA_WIDTH : natural := 16;
-            ADDR_WIDTH : natural := 19
-        );
-        port(
-            SCU_STATE   : in    STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0);
-            
-            SCU_CE      : in    STD_LOGIC;
-            SCU_WE      : in    STD_LOGIC;
-            SCU_DATA    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            SCU_ADDR    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            SCU_LBUB    : in    STD_LOGIC;
-            
-            ICTRL_CE    : in    STD_LOGIC;
-            ICTRL_WE    : in    STD_LOGIC;
-            ICTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            ICTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            ICTRL_LBUB  : in    STD_LOGIC;
-            
-            DCTRL_CE    : in    STD_LOGIC;
-            DCTRL_WE    : in    STD_LOGIC;
-            DCTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            DCTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            DCTRL_LBUB  : in    STD_LOGIC;
-            
-            IMEM_CE_HI      : out   STD_LOGIC;
-            IMEM_CE_LO      : out   STD_LOGIC;
-            IMEM_WE_HI      : out   STD_LOGIC;
-            IMEM_WE_LO      : out   STD_LOGIC;
-            IMEM_DATA_HI    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            IMEM_DATA_LO    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            IMEM_ADDR       : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            IMEM_LBUB       : out   STD_LOGIC;
-            
-            DMEM_CE     : out   STD_LOGIC;
-            DMEM_WE     : out   STD_LOGIC;
-            DMEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            DMEM_ADDR   : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            DMEM_LBUB   : out   STD_LOGIC
-        );
-    end component;
-	
-    component InstructionController is
-        generic(
-            NUM_CACHES : natural := 2;
-            ADDR_WIDTH : natural := 19;
-            INST_WIDTH : natural := 32
-        );
-        port(
-            MemCE   : out   STD_LOGIC;
-            MemWE   : out   STD_LOGIC;
-            MemLBUB : out   STD_LOGIC;
-            MemAddr	: out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            MemData : inout STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
-            Request : in    STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
-            Ack     : out   STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
-            Addr    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            Data    : out   STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
-            Enabled : in    STD_LOGIC;
-            Clock   : in    STD_LOGIC
-        );
-    end component;
-	
-	-- Instruction controller signals
-	signal InstCE   : STD_LOGIC;
-	signal InstWE   : STD_LOGIC;
-	signal InstLBUB : STD_LOGIC;
-	signal InstAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-	signal InstData : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
-	signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
-	signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
-	signal InstAddrBus : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0); -- To processors
-	signal InstDataBus : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0); -- To processors
-	
-	-- Data controller signals
-	signal DataCE   : STD_LOGIC;
-	signal DataWE   : STD_LOGIC;
-	signal DataLBUB : STD_LOGIC;
-	signal DataAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-	signal DataData : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-	signal DataRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-	signal DataAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-	signal DataAddrBus : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0); -- To processors
-	signal DataDataBus : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0); -- To processors
-	
+
+component MemMux is
+generic(
+        DATA_WIDTH : natural := 16;
+        ADDR_WIDTH : natural := 19
+       );
+port(
+        SCU_STATE   : in    STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0);
+        
+        SCU_CE      : in    STD_LOGIC;
+        SCU_WE      : in    STD_LOGIC;
+        SCU_DATA    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        SCU_ADDR    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        SCU_LBUB    : in    STD_LOGIC;
+        
+        ICTRL_CE    : in    STD_LOGIC;
+        ICTRL_WE    : in    STD_LOGIC;
+        ICTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        ICTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        ICTRL_LBUB  : in    STD_LOGIC;
+        
+        DCTRL_CE    : in    STD_LOGIC;
+        DCTRL_WE    : in    STD_LOGIC;
+        DCTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DCTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        DCTRL_LBUB  : in    STD_LOGIC;
+        
+IMEM_CE_HI      : out   STD_LOGIC;
+IMEM_CE_LO      : out   STD_LOGIC;
+IMEM_WE_HI      : out   STD_LOGIC;
+IMEM_WE_LO      : out   STD_LOGIC;
+IMEM_DATA_HI    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+IMEM_DATA_LO    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+IMEM_ADDR       : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+IMEM_LBUB       : out   STD_LOGIC;
+
+DMEM_CE     : out   STD_LOGIC;
+DMEM_WE     : out   STD_LOGIC;
+DMEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+DMEM_ADDR   : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+DMEM_LBUB   : out   STD_LOGIC
+);
+end component;
+
+component InstructionController is
+generic(
+        NUM_CACHES : natural := 2;
+        ADDR_WIDTH : natural := 19;
+        INST_WIDTH : natural := 32
+       );
+port(
+        MemCE   : out   STD_LOGIC;
+        MemWE   : out   STD_LOGIC;
+        MemLBUB : out   STD_LOGIC;
+        MemAddr : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        MemData : inout STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+        Request : in    STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
+        Ack     : out   STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
+        Addr    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        Data    : out   STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+        Enabled : in    STD_LOGIC;
+        Clock   : in    STD_LOGIC
+    );
+end component;
+
+-- Instruction controller signals
+signal InstCE   : STD_LOGIC;
+signal InstWE   : STD_LOGIC;
+signal InstLBUB : STD_LOGIC;
+signal InstAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+signal InstData : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
+signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
+signal InstAddrBus : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0); -- To processors
+signal InstDataBus : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0); -- To processors
+
+-- Data controller signals
+signal DataCE   : STD_LOGIC;
+signal DataWE   : STD_LOGIC;
+signal DataLBUB : STD_LOGIC;
+signal DataAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+signal DataData : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+signal DataRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
+signal DataAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
+signal DataAddrBus : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0); -- To processors
+signal DataDataBus : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0); -- To processors
+
 begin
-	
-    MegaMux : MemMux
-    generic map(
+
+MegaMux : MemMux
+generic map(
         DATA_WIDTH => DATA_WIDTH,
         ADDR_WIDTH => ADDR_WIDTH
-    )
-    port map(
+        )
+port map(
         SCU_STATE   => SCU_STATE,
         
         SCU_CE      => SCU_CE,
@@ -167,40 +167,81 @@ begin
         DCTRL_ADDR  => DataAddr,
         DCTRL_LBUB  => DataLBUB,
         
-        IMEM_CE_HI      => IMEM_CE_HI,
-        IMEM_CE_LO      => IMEM_CE_LO,
-        IMEM_WE_HI      => IMEM_WE_HI,
-        IMEM_WE_LO      => IMEM_WE_LO,
-        IMEM_DATA_HI    => IMEM_DATA_HI,
-        IMEM_DATA_LO    => IMEM_DATA_LO,
-        IMEM_ADDR       => IMEM_ADDR,
-        IMEM_LBUB       => IMEM_LBUB,
-        
-        DMEM_CE     => DMEM_CE,
-        DMEM_WE     => DMEM_WE,
-        DMEM_DATA   => DMEM_DATA,
-        DMEM_ADDR   => DMEM_ADDR,
-        DMEM_LBUB   => DMEM_LBUB
-    );
-    
-	InstCtrl : InstructionController
-	generic map(
-		NUM_CACHES => NUM_PROC_PAIRS,
+IMEM_CE_HI      => IMEM_CE_HI,
+IMEM_CE_LO      => IMEM_CE_LO,
+IMEM_WE_HI      => IMEM_WE_HI,
+IMEM_WE_LO      => IMEM_WE_LO,
+IMEM_DATA_HI    => IMEM_DATA_HI,
+IMEM_DATA_LO    => IMEM_DATA_LO,
+IMEM_ADDR       => IMEM_ADDR,
+IMEM_LBUB       => IMEM_LBUB,
+
+DMEM_CE     => DMEM_CE,
+DMEM_WE     => DMEM_WE,
+DMEM_DATA   => DMEM_DATA,
+DMEM_ADDR   => DMEM_ADDR,
+DMEM_LBUB   => DMEM_LBUB
+);
+
+InstCtrl : InstructionController
+generic map(
+        NUM_CACHES => NUM_PROC_PAIRS,
         ADDR_WIDTH => ADDR_WIDTH,
         INST_WIDTH => INST_WIDTH
-	)
-	port map(
-		MemCE   => InstCE,
-		MemWE   => InstWE,
-		MemAddr	=> InstAddr,
-		MemData => InstData,
-		Request => InstRq,
-		Ack     => InstAck,
-		Addr    => InstAddrBus,
-		Data    => InstDataBus,
-		Enabled => SCU_Enable,
-		Clock   => Clock
-	);
-	
-end Behavioral;
+        )
+port map(
+        MemCE   => InstCE,
+        MemWE   => InstWE,
+        MemAddr => InstAddr,
+        MemData => InstData,
+        Request => InstRq,
+        Ack     => InstAck,
+        Addr    => InstAddrBus,
+        Data    => InstDataBus,
+        Enabled => SCU_Enable,
+        Clock   => Clock
+        );
 
+fitness_core_0 : entity work.fitness_core
+port map(
+        clk => clock,
+        reset => reset,
+        processor_enable => processor_enable,
+
+        --Control signals
+        halt_inst => halt,
+
+        --Bus signals related to instruction cache
+        imem_address => imem_address_from_fitness_core_0,
+        imem_data_in => imem_data_in,
+
+        --Bus signals related to data memory
+        request_bus_data => request_bus_data,
+        ack_mem_ctrl => ack_mem_ctrl,
+        dmem_data_in => dmem_data_in,
+        dmem_address => dmem_address,
+        dmem_address_wr => dmem_address_wr,
+        dmem_data_out => dmem_data_out,
+        dmem_write_enable => dmem_write_enable,
+
+        --Bus signals related to genetic storage
+        pmem_data_out => pmem_data_out,
+        pmem_data_in => pmem_data_in,
+        pipeline_settings_out => pipeline_settings_out,
+        request_bus_rated => request_bus_rated,
+        ack_gene_ctrl => ack_gene_ctrl,
+        request_bus_unrated => request_bus_unrated,
+
+        gen_pipeline_settings => gen_pipeline_settings
+        );
+
+    fitness_genetic_controller_0 : entity work.fitness_genetic_controller;
+    fitness_memory_controller_0 : entity work.fitness_memory_controller;
+    
+    instruction_cache_0_1 : entity work.instructionCache;
+    instruction_cache_2_3 : entity work.instructionCache;
+    
+    genetic_pipeline : entity work.genetic_pipeline;
+        
+end Behavioral;
+        
