@@ -5,8 +5,7 @@
 -- Tested:   Never
 --
 -- Description:
--- A cache for 2 CPUs with room for 512 instructions
--- Address 0 is reserved for cache fault
+-- A cache for 2 CPUs with room for 512 instructions.
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -31,6 +30,7 @@ entity InstructionCache is
         
         Halt    : out STD_LOGIC;
         
+        Reset   : in  STD_LOGIC;
 		Clock   : in  STD_LOGIC
 	);
 end InstructionCache;
@@ -72,6 +72,8 @@ architecture Behavioral of InstructionCache is
     signal CacheAddrB : STD_LOGIC_VECTOR(9-1 downto 0);
 	signal WriteA     : STD_LOGIC := '0';
 	signal WriteB     : STD_LOGIC := '0';
+    
+    signal Stale : boolean(2**ADDR_WIDTH-1 downto 0);
 	
 begin
     
@@ -123,8 +125,8 @@ begin
         CLK    => Clock
     );
     
-    FaultA <= '1' when InstAddrA /= PCA or InstAddrA = (ADDR_WIDTH-1 downto 0 => '0') else '0';
-    FaultB <= '1' when InstAddrB /= PCB or InstAddrB = (ADDR_WIDTH-1 downto 0 => '0') else '0';
+    FaultA <= '1' when Stale(PCA) or InstAddrA /= PCA else '0';
+    FaultB <= '1' when Stale(PCB) or InstAddrB /= PCB else '0';
     
     CacheAddrA <= PCA(9-1 downto 0);
     CacheAddrB <= PCB(9-1 downto 0);
@@ -175,13 +177,22 @@ begin
                 MemAddr <= PCA;
                 WriteA <= '1';
                 WriteB <= '0';
+                Stale(PCA) <= false;
             else
                 MemAddr <= PCB;
                 WriteA <= '0';
                 WriteB <= '1';
+                Stale(PCB) <= false;
             end if;
 		end if;
 	end process;
+    
+    process (Reset)
+    begin
+        if Reset = '1' then
+            Stale <= (others => true);
+        end if;
+    end process;
 	
 end Behavioral;
 
