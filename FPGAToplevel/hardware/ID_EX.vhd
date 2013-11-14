@@ -25,7 +25,7 @@ entity ID_EX is
            alu_func_in                  : in  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
            cond_in                      : in  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
            gene_op_in                   : in  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
-           mem_operation_in             : in  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
+           mem_operation_in             : in  MEM_OP_TYPE;
            to_reg_operation_in          : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_in							 : in  STD_LOGIC;
 			  multiplication_in 				 : in  STD_LOGIC; 
@@ -37,7 +37,7 @@ entity ID_EX is
            alu_func_out                 : out  STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
            cond_out                     : out  STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
            gene_op_out                  : out  STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
-           mem_operation_out            : out  STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
+           mem_operation_out            : out  MEM_OP_TYPE;
            to_reg_operation_out         : out  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
            call_out                     : out  STD_LOGIC;
 			  multiplication_out 			 : out  STD_LOGIC;
@@ -174,13 +174,13 @@ port map( clk => clk,
           data_in => gene_op_in,
           data_out => gene_op_out);
           
-CONTROL_MEM_OPERATION : flip_flop 
-generic map(N => MEM_OP_WIDTH)
-port map( clk => clk, 
-          reset => reset, 
-          enable => halt,
-          data_in => mem_operation_in,
-          data_out => mem_operation_out);
+--CONTROL_MEM_OPERATION : flip_flop 
+--generic map(N => MEM_OP_WIDTH)
+--port map( clk => clk, 
+--          reset => reset, 
+--          enable => halt,
+--          data_in => mem_operation_in,
+--          data_out => mem_operation_out);
           
           
 CONTROL_TO_REG_OPERATION : flip_flop 
@@ -202,6 +202,7 @@ CONTROL_SIGNALS : process (clk, reset, halt)
             jump_out <= '0';
 				call_out <= '0';
 				multiplication_out <= '0';
+				mem_operation_out <= MEM_NOP;
             
         elsif rising_edge(clk) and halt = '0' then 
 				alu_src_out <= alu_src_in;
@@ -209,6 +210,7 @@ CONTROL_SIGNALS : process (clk, reset, halt)
             jump_out <= jump_in;
 				call_out <= call_in;
 				multiplication_out <= multiplication_in; 
+				mem_operation_out <= mem_operation_in; 
         end if;
 end process CONTROL_SIGNALS;
 

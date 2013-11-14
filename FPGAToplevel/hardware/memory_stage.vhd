@@ -18,7 +18,7 @@ entity memory_stage is
 	jump_in 					 : in STD_LOGIC;
 	gene_op_in 				 : in STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
 	cond_op_in 				 : in STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0); 
-	mem_op_in 				 : in STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
+	mem_op_in 				 : in MEM_OP_TYPE;
 	
 	reg_write_in			 : in STD_LOGIC;
 	call_in 					 : in STD_LOGIC;
@@ -38,7 +38,8 @@ entity memory_stage is
 	ack_mem_ctrl 			 : in STD_LOGIC; 
 	
 	--Memory related control signals out 
-	request_data_bus 		 : out STD_LOGIC; 
+	data_request_0 		 : out STD_LOGIC;
+   data_request_1 		 : out STD_LOGIC; 
 	
 	--Processor related bus signals in 
 	fitness_in 				 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -96,6 +97,7 @@ signal mem_op_signal 			  : std_logic_vector(MEM_OP_WIDTH-1 downto 0);
 signal gene_op_signal 			  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);	
 
 
+
 begin
 
 
@@ -118,6 +120,28 @@ port map (
         CLK      => clk
     );
 
+
+fitness_memory_controller : entity work.fitness_memory_controller
+port map (
+        -- Control signals
+        REQUEST_0 => data_request_0,
+        REQUEST_1 => data_request_1, 
+        ACK       => ack_mem_ctrl, 
+        
+        -- Processor
+        ADDR_IN  => res_in(ADDR_WIDTH-1 downto 0),
+        DATA_IN  => gene_in,
+        DATA_OUT => data_out,
+        
+        -- Memory
+        MEM_ADDR  => data_mem_addr_bus, 
+        MEM_DATA_IN  => data_mem_bus_in, 
+        MEM_DATA_OUT => data_mem_bus_out, 
+        
+        OP   => mem_op_in, 
+        HALT => mem_halt_signal, 
+        CLK  => clk 
+    );
 
 
 conditional_unit : entity work.conditional_unit 
@@ -189,6 +213,7 @@ begin
 end process;
 
 
+mem_addr_signal <= res_in(ADDR_WIDTH-1 downto 0);
 
 jump_signal <= jump_in and execute_signal;
 

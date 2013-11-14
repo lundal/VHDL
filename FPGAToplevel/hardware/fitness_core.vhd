@@ -17,7 +17,8 @@ entity fitness_core is
 			 imem_data_in 		 		: in  STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
           
 			 --Control signals related to the data memory
-			 request_data_bus 		: out STD_LOGIC;
+			 data_request_0 			: out STD_LOGIC; 
+			 data_request_1 			: out STD_LOGIC; 
 			 ack_mem_ctrl 				: in STD_LOGIC; 
 			 
 			 
@@ -71,7 +72,7 @@ architecture Behavioral of fitness_core is
 	signal multiplication_signal_decode : std_logic; 
 	signal alu_func_signal_decode : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
 	signal gene_op_signal_decode : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	signal mem_op_signal_decode : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+	signal mem_op_signal_decode : MEM_OP_TYPE;
 	signal to_reg_signal_decode : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
 	signal cond_signal_decode : std_logic_vector(COND_WIDTH-1 downto 0);
 
@@ -107,7 +108,7 @@ architecture Behavioral of fitness_core is
 	signal reg_write_signal_execute : std_logic;
 	signal call_signal_execute : std_logic;
 	signal gene_op_signal_execute : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	signal mem_op_signal_execute : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+	signal mem_op_signal_execute : MEM_OP_TYPE;
 	signal to_reg_signal_execute : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
 	signal pc_incremented_signal_execute : std_logic_vector(19-1 downto 0);
 	signal overflow_signal_execute : std_logic;
@@ -128,7 +129,7 @@ architecture Behavioral of fitness_core is
 
 	--Internally used
 	signal gene_op_signal_mem : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	signal mem_op_signal_mem : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
+	signal mem_op_signal_mem : MEM_OP_TYPE;
 	signal cond_signal_mem 	: std_logic_vector(COND_WIDTH-1 downto 0);
 	signal overflow_signal_mem : std_logic; 
 	signal jump_signal_mem     : std_logic;
@@ -516,7 +517,8 @@ memory_stage : entity work.memory_stage
 	ack_mem_ctrl => ack_mem_ctrl, 
 	
 	--Memory related control signals out 
-	request_data_bus => request_data_bus, 
+	data_request_0 		 => data_request_0, 
+   data_request_1 		 => data_request_1, 
 	
 	--Processor related bus signals in 
 	fitness_in => rs_signal_mem, 

@@ -38,7 +38,7 @@ entity control_unit is
         JUMP         :  out STD_LOGIC;
         ALU_FUNC     :  out STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
         GENE_OP      :  out STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0);
-        MEM_OP       :  out STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0);
+        MEM_OP       :  out MEM_OP_TYPE;
         TO_REG       :  out STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
 		  STORE_SOURCE :  out STD_LOGIC
 	);
@@ -63,7 +63,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= MEM_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= TO_REG_NA;
@@ -76,7 +76,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= GENE_OP_NA;
-            MEM_OP <= MEM_OP_NA; 
+            MEM_OP <= MEM_NOP; 
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "01";
@@ -89,7 +89,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= MEM_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "01";
@@ -102,7 +102,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA;  
-            MEM_OP <= MEM_OP_NA; 
+            MEM_OP <= MEM_NOP; 
             JUMP <= '1';
             CALL <= '1';
             TO_REG <= "10";
@@ -115,7 +115,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= MEM_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '1';
             CALL <= '0';
             TO_REG <= TO_REG_NA; 
@@ -128,7 +128,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= LOAD_DATA;
+            MEM_OP <= MEM_READ;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "11";
@@ -141,7 +141,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA;
-            MEM_OP <= LOAD_DATA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "01";
@@ -154,7 +154,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= STORE_DATA;
+            MEM_OP <= MEM_WRITE;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= TO_REG_NA;
@@ -167,7 +167,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA;
-            MEM_OP <= STORE_DATA;
+            MEM_OP <= MEM_WRITE;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= TO_REG_NA;
@@ -180,7 +180,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= LOAD_GENE; 
-            MEM_OP <= GENE_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "00";
@@ -193,7 +193,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= STORE_GENE; 
-            MEM_OP <= MEM_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "00";
@@ -206,7 +206,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= MEM_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= "01";
@@ -218,7 +218,7 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= GENE_OP_NA; 
-            MEM_OP <= MEM_OP_NA;
+            MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
             TO_REG <= TO_REG_NA;

@@ -18,7 +18,7 @@ entity EX_MEM is
            signal gene_op_in      : in  STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
            signal cond_in         : in  STD_LOGIC_VECTOR (COND_WIDTH-1 downto 0);
            signal jump_in         : in  STD_LOGIC;
-           signal mem_op_in       : in  STD_LOGIC_VECTOR (MEM_OP_WIDTH-1 downto 0);
+           signal mem_op_in       : in  MEM_OP_TYPE;
            signal to_reg_in       : in  STD_LOGIC_VECTOR (TO_REG_OP_WIDTH-1 downto 0);
            signal call_in         : in  STD_LOGIC;
            signal overflow_in     : in  STD_LOGIC;
@@ -28,7 +28,7 @@ entity EX_MEM is
            signal gene_op_out     : out STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
            signal cond_out        : out STD_LOGIC_VECTOR (COND_WIDTH-1 downto 0);
            signal jump_out        : out STD_LOGIC;
-           signal mem_op_out      : out STD_LOGIC_VECTOR (MEM_OP_WIDTH-1 downto 0);
+           signal mem_op_out      : out  MEM_OP_TYPE;
            signal to_reg_out      : out STD_LOGIC_VECTOR (TO_REG_OP_WIDTH-1 downto 0);
            signal call_out        : out STD_LOGIC;
            signal overflow_out    : out STD_LOGIC;
@@ -141,13 +141,13 @@ port map(clk => clk,
    		data_in =>to_reg_in, 
          data_out =>to_reg_out);
          
-CONTROL_MEM_OP : flip_flop
-generic map(N => MEM_OP_WIDTH)
-port map(clk => clk, 
-         reset => reset, 
-         enable => halt,
-         data_in => mem_op_in, 
-         data_out =>mem_op_out);
+--CONTROL_MEM_OP : flip_flop
+--generic map(N => MEM_OP_WIDTH)
+--port map(clk => clk, 
+--         reset => reset, 
+--         enable => halt,
+--         data_in => mem_op_in, 
+--         data_out =>mem_op_out);
 
 
 
@@ -157,10 +157,12 @@ CONTROL_SIGNALS : process(clk, reset, halt)
            call_out <= '0';
            jump_out <= '0'; 
 			  reg_write_out <= '0';
+			  mem_op_out <= MEM_NOP;
         elsif rising_edge(clk) and halt = '0' then 
            call_out <= call_in;
            jump_out <= jump_in;
 			  reg_write_out <= reg_write_in; 
+			  mem_op_out <= mem_op_in; 
         end if;
 end process CONTROL_SIGNALS;    
 
