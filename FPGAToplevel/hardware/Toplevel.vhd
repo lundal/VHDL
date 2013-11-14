@@ -91,7 +91,8 @@ architecture behavioral of toplevel is
     type std_logic_vector_19_array is array(NUM_PROC_PAIRS*2-1 downto 0) of std_logic_vector(18 downto 0);
     type std_logic_vector_32_array is array(NUM_PROC_PAIRS*2-1 downto 0) of std_logic_vector(31 downto 0);
     type std_logic_vector_64_array is array(NUM_PROC_PAIRS*2-1 downto 0) of std_logic_vector(63 downto 0);
-      -- instruction cache signals
+    
+	 -- instruction cache signals
     signal instruction_cache_MemRq : std_logic_array;
     signal instruction_cache_MemAck : std_logic_array;
     signal instruction_cache_MemAddr : std_logic_vector_19_array;
@@ -101,23 +102,35 @@ architecture behavioral of toplevel is
     signal instruction_cache_InstA : std_logic_vector_32_array;
     signal instruction_cache_InstB : std_logic_vector_32_array;
     signal instruction_cache_Halt : std_logic_array;
-      -- fitness core signals
+     
+	 
+	 -- fitness core signals
     signal halt_inst : std_logic_array; 
     signal imem_address : std_logic_vector_32_array;
     signal imem_data_in : std_logic_vector_32_array;
-    signal request_data_bus : std_logic_array;
-    signal ack_mem_ctrl : std_logic_array;
+ 
+	 signal data_request_0 : std_logic_array;
+	 signal data_request_1 : std_logic_array; 
+	 
+	 signal ack_mem_ctrl : std_logic_array;
     signal data_mem_bus_in : std_logic_vector_64_array;
     signal data_mem_addr_bus : std_logic_vector_19_array;
     signal data_mem_bus_out : std_logic_vector_64_array;
     signal dmem_data_out : std_logic_vector_64_array;
-    signal genetic_data_out : std_logic_vector_64_array;
-    signal genetic_data_in : std_logic_vector_64_array;
+    --signal genetic_data_out : std_logic_vector_64_array;
+    --signal genetic_data_in : std_logic_vector_64_array;
     signal pipeline_settings_out : std_logic_vector_3_array;
     signal ack_genetic_ctrl : std_logic_array;
     signal genetic_request_0 : std_logic_array;
     signal genetic_request_1 : std_logic_array;
     signal instruction_address_bus : std_logic_vector_19_array;
+
+
+	signal genetic_data_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal genetic_data_out : std_logic_vector(DATA_WIDTH-1 downto 0); 
+	signal data_mem_bus_in 	: std_logic_vector(DATA_WIDTH-1 downto 0); 
+	signal data_mem_bus_out : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal data_mem_addr_bus : std_logic_vector(DATA_WIDTH-1 downto 0); 
 
 begin
 
@@ -179,32 +192,50 @@ port map(
         Clock   => Clock
         );
     
-    
-    data_controller : entity work.fitness_memory_controller
-    port map(
-    -- Control signals
-        REQUEST_0 => data_controller_request_0,
-        REQUEST_1 => data_controller_request_1,
-        ACK => data_controller_ack,
+
+
+data_controller : entity work.memory_data_controller
+port map( -- Control signals
+		   REQUEST_0 => data_request_0, 
+			REQUEST_1 => data_request_1, 
+		   ACK       => ack_mem_ctrl, 
         
-        -- Processor
-        ADDR_IN => data_controller_addr_in,
-        DATA_IN => data_controller_data_in,
-        DATA_OUT => data_controller_data_out,
+	      -- Buses
+			PROC_ADDR  => data_mem_addr_bus,
+			PROC_DATA_IN  => data_mem_bus_out, 
+			PROC_DATA_OUT => data_mem_bus_in, 
         
-        -- Memory
-        MEM_ADDR => data_controller_mem_addr,
-        MEM_DATA_IN => data_controller_mem_data_in,
-        MEM_DATA_OUT => data_controller_mem_data_out,
+			-- Memory
+			MEM_ADDR   => DataAddr,
+			MEM_DATA   => DataData,
+			MEM_ENABLE => DataCE,
+			MEM_WRITE  => DataWE,
+			MEM_LBUB   => DataLBUB,
         
-        OP => data_controller_op,
-        HALT => Halt,
-        CLK => Clock
+         CLK => clk
     );
+
+
+
+
+
+
+
     
-    
-    -- genetic_pipeline : entity work.genetic_pipeline;
-    
+genetic_pipeline_mapping : entity work.genetic_pipeline
+port map(
+			REQUEST_0 => genetic_request_0, 
+			REQUEST_1 => genetic_request_1, 
+			ACK       => ack_genetic_ctrl, 
+			DATA_IN   => genetic_data_in, 
+			DATA_OUT  => genetic_data_out, 
+			RESET     => reset, 
+			CLK       => clk 
+    );
+	 
+	 
+	 
+    --Maps instruction caches and fitness cores
     FITNESS_CORE_PAIRS: for i in 0 to NUM_PROC_PAIRS-1 generate
     
         INSTRUCTION_CACHE : entity work.InstructionCache
@@ -243,18 +274,19 @@ port map(
             imem_data_in => InstDataBus,
 
             --Control signals related to the data memory
-            request_data_bus => request_data_bus(i*2),
+            data_request_0 => data_request_0(i*2),
+				data_reqquest_1 =>data_request_0(i*2), 
             ack_mem_ctrl => ack_mem_ctrl(i*2),
 
             --Bus signals related to data memory
-            data_mem_bus_in => DataDataBus,
-            data_mem_addr_bus => DataAddrBus,
-            data_mem_bus_out => DataDataBus,
+            data_mem_bus_in => data_mem_bus_in, 
+            data_mem_addr_bus => data_mem_addr_bus, 
+            data_mem_bus_out => data_mem_bus_out, 
 
             --Bus signals related to genetic storage
-            genetic_data_out => genetic_data_out(i*2),
-            genetic_data_in => genetic_data_in(i*2),
-            pipeline_settings_out => pipeline_settings_out(i*2),
+            genetic_data_out => genetic_data_out,  
+				genetic_data_in => genetic_data_in,
+				pipeline_settings_out => pipeline_settings_out(i*2),
 
             --Control signals related to genetic storage
             ack_genetic_ctrl => ack_genetic_ctrl(i*2),
@@ -277,13 +309,14 @@ port map(
             imem_data_in => InstDataBus,
 
             --Control signals related to the data memory
-            request_data_bus => request_data_bus(i*2+1),
+            data_request_0 => data_request_0(i*2+1), 
+				data_request_1 =>data_request_1(i*2+1), 
             ack_mem_ctrl => ack_mem_ctrl(i*2+1),
 
             --Bus signals related to data memory
-            data_mem_bus_in => DataDataBus,
-            data_mem_addr_bus => DataAddrBus,
-            data_mem_bus_out => DataDataBus,
+              data_mem_bus_in => data_mem_bus_in, 
+            data_mem_addr_bus => data_mem_addr_bus, 
+            data_mem_bus_out => data_mem_bus_out,
 
             --Bus signals related to genetic storage
             genetic_data_out => genetic_data_out(i*2+1),
