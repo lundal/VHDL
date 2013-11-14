@@ -15,7 +15,7 @@ architecture Behavioral of flip_flop is
 
 begin
 
-    FLIP_FLOP : process (clk, reset)
+    FLIP_FLOP : process (clk, reset, enable, data_in)
     begin 
         if reset = '1' then 
             data_out <= (others => '0');
