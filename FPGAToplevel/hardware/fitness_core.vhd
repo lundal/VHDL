@@ -33,7 +33,6 @@ entity fitness_core is
 			 --Bus signals related to genetic storage
 			 genetic_data_out 	   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 			 genetic_data_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-			 pipeline_settings_out 	: out STD_LOGIC_VECTOR(SETTINGS_WIDTH-1 downto 0);
 			 
 			 --Control signals related to genetic storage
 			 ack_genetic_ctrl 		: in STD_LOGIC; 
@@ -147,7 +146,7 @@ architecture Behavioral of fitness_core is
 	signal pc_incremented_signal_mem : std_logic_vector(ADDR_WIDTH-1 downto 0);
 	signal rda_signal_mem : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 	signal data_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_out_signal_mem : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	signal pc_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rs_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rt_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal gene_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -174,16 +173,15 @@ architecture Behavioral of fitness_core is
 	signal res_signal_wb  : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal data_signal_wb  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rda_signal_wb  : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_out_signal_wb : std_logic_vector(ADDR_WIDTH-1 downto 0);
+	signal pc_out_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 --GLOBAL SIGNALS--
 	signal halt_mem_signal 			       : std_logic;
 	signal halt_pipeline_signal 	 		 : std_logic; 
-	signal multiplication_halt_signal 	 : std_logic; 
 begin
 
 --Halt if one of them are true
-halt_pipeline_signal <=  halt_inst or halt_mem_signal or multiplication_halt_signal; --Not tested
+halt_pipeline_signal <=  halt_inst or halt_mem_signal or multiplication_halt; --Not tested
 control_unit: entity work.control_unit
 port map (
 
@@ -461,7 +459,6 @@ port map (
     immediate => imm_signal_execute,
     rsa => rsa_signal_execute,
     rta => rta_signal_execute,
-    rda => rda_signal_execute,
 
     -- From other stages
     stage4_alu_result => res_signal_mem,
@@ -488,7 +485,6 @@ memory_stage : entity work.memory_stage
 	--Bit signals
 	clk => clk, 
 	reset => reset, 
-	processor_enable => processor_enable, 
    halt => halt_mem_signal, 
 	
 	--Processor related control signals in

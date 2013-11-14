@@ -10,7 +10,6 @@ entity memory_stage is
 	--Bit signals
 	clk  					    : in STD_LOGIC;
 	reset 				    : in STD_LOGIC;
-	processor_enable 	    : in STD_LOGIC;
    halt                  : out STD_LOGIC; 
 	
 	--Processor related control signals in
@@ -50,7 +49,7 @@ entity memory_stage is
 	--Processor related bus signals out 
 	gene_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	data_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTh-1 downto 0);
-	pc_out 					 : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+	pc_out 					 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	pc_jump_addr 			 : out STD_LOGIC_VECTOR (ADDR_WIDTH-1 downto 0);
 	
 	-- Genetic related bus signals in 
@@ -81,7 +80,7 @@ signal gene_out_signal 			  : std_logic_vector(DATA_WIDTH-1 downto 0);
 signal pc_incremented_signal    : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 signal mem_op_ctrl_signal 		  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-signal mem_addr_signal 			  : std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
+
 
 signal execute_signal 			  : std_logic;
 signal execute_flipflop_signal  : std_logic; 
@@ -147,7 +146,7 @@ port map (
 conditional_unit : entity work.conditional_unit 
 generic map(N => DATA_WIDTH)
 port map (
-		     COND => cond_op_in,
+		     COND => condition_signal,
 			  ALU_RES => res_signal,
 			  ALU_OVF => overflow_in,
 		     EXEC => execute_signal
@@ -214,7 +213,6 @@ begin
 end process;
 
 
-mem_addr_signal <= res_in(ADDR_WIDTH-1 downto 0);
 
 jump_signal <= jump_in and execute_signal;
 
@@ -222,14 +220,13 @@ jump_signal <= jump_in and execute_signal;
 --Sign extend pc_incremented
 pc_incremented_signal <= SXT(pc_incremented, DATA_WIDTH);
 
---Split result to fit as memory addr
-mem_addr_signal <= res_in(ADDR_WIDTH-1 downto 0);
+
 
 halt <= genetic_halt_signal or mem_halt_signal;
 
 
 pc_jump_addr <= pc_out_signal(ADDR_WIDTH-1 downto 0);
-pc_out <= pc_out_signal(ADDR_WIDTH-1 downto 0); 
+pc_out <= pc_out_signal; 
 
 end Behavioral;
 
