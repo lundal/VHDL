@@ -50,8 +50,8 @@ entity memory_stage is
 	--Processor related bus signals out 
 	gene_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	data_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTh-1 downto 0);
-	pc_out 					 : out STD_LOGIC_VECTOR(19-1 downto 0);
-	pc_jump_addr 			 : out STD_LOGIC_VECTOR (19-1 downto 0);
+	pc_out 					 : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+	pc_jump_addr 			 : out STD_LOGIC_VECTOR (ADDR_WIDTH-1 downto 0);
 	
 	-- Genetic related bus signals in 
 	genetic_data_in 		: in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -65,7 +65,7 @@ entity memory_stage is
 	
 	--Data memory related bus signals out 
 	data_mem_bus_out		 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-	data_mem_addr_bus 	 : out STD_LOGIC_VECTOR(17-1 downto 0)
+	data_mem_addr_bus 	 : out STD_LOGIC_VECTOR(ADDR_WIDTH-2-1 downto 0)
 	);
 end memory_stage;
 
@@ -145,7 +145,7 @@ port map (
 
 
 conditional_unit : entity work.conditional_unit 
-generic map(N => 64)
+generic map(N => DATA_WIDTH)
 port map (
 		     COND => cond_op_in,
 			  ALU_RES => res_signal,
@@ -156,7 +156,7 @@ port map (
 
 
 multiplexor : entity work.multiplexor 
-generic map(N => 64)
+generic map(N => DATA_WIDTH)
 port map ( sel =>jump_signal, 
 			  in0 => pc_incremented_signal, 
 			  in1 =>res_in, 
@@ -166,12 +166,13 @@ port map ( sel =>jump_signal,
 
 
 --Used to delay alu result for one cycle
-flip_flop : entity work.flip_flop
-	port map(clk => clk, 
-				reset => reset,
-				enable => '0', 
-				data_in => res_in,
-				data_out => res_signal);
+flip_flop : entity work.flip_flop	
+generic map(N => 64)
+port map(clk => clk, 
+			reset => reset,
+			enable => '0', 
+			data_in => res_in,
+			data_out => res_signal);
 				
 
 --This will also react as an flip_flop for reg_write
@@ -219,16 +220,16 @@ jump_signal <= jump_in and execute_signal;
 
 			
 --Sign extend pc_incremented
-pc_incremented_signal <= SXT(pc_incremented, 64);
+pc_incremented_signal <= SXT(pc_incremented, DATA_WIDTH);
 
 --Split result to fit as memory addr
-mem_addr_signal <= res_in(18 downto 0);
+mem_addr_signal <= res_in(ADDR_WIDTH-1 downto 0);
 
 halt <= genetic_halt_signal or mem_halt_signal;
 
 
-pc_jump_addr <= pc_out_signal(19-1 downto 0);
-pc_out <= pc_out_signal(19-1 downto 0); 
+pc_jump_addr <= pc_out_signal(ADDR_WIDTH-1 downto 0);
+pc_out <= pc_out_signal(ADDR_WIDTH-1 downto 0); 
 
 
 --TODO: Remove later 

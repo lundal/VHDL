@@ -9,10 +9,10 @@ entity EX_MEM is
            halt                   : in  STD_LOGIC;
            
            -- PC in
-           pc_incremented_in : in std_logic_vector(19-1 downto 0);
+           pc_incremented_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
            
            -- PC out
-           pc_incremented_out : out std_logic_vector(19-1 downto 0);
+           pc_incremented_out : out std_logic_vector(ADDR_WIDTH-1 downto 0);
            
            --Control signals
            signal gene_op_in      : in  STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
@@ -70,7 +70,7 @@ begin
 
 
 PC_INCREMENTED : flip_flop 
-generic map(N => 19)
+generic map(N => ADDR_WIDTH)
 	port map (clk => clk, 
 			    reset => reset, 
 				 enable => halt, 
