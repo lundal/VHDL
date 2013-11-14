@@ -36,6 +36,7 @@ entity memory_data_controller is
         MEM_WRITE  : out STD_LOGIC;
         MEM_LBUB   : out STD_LOGIC;
         
+        ENABLE : in  STD_LOGIC;
         CLK : in  STD_LOGIC
     );
 end memory_data_controller;
@@ -159,42 +160,46 @@ begin
     request_int <= REQUEST_0 or REQUEST_1;
     has_request <= '0' when request_int = (NUM_PROC downto 0 => '0') else '1';
     
-    STATE_CHANGER : process (CLK, state, has_request, request_int)
+    STATE_CHANGER : process (CLK, state, ENABLE, has_request, request_int)
 		variable chosen : integer range 0 to NUM_PROC := 0;
     begin
         if rising_edge(CLK) then
             case state is
                 when Choose =>
-                    -- Check if there exists a request
-                    if (has_request = '1') then
-                        
-                        -- Go to next (to prevent starvation)
-                        if (chosen = NUM_PROC) then
-                            chosen := 0;
-                        else
-                            chosen := chosen + 1;
+                    if (ENABLE = '1') then
+                        -- Check if there exists a request
+                        if (has_request = '1') then
+                            
+                            -- Go to next (to prevent starvation)
+                            if (chosen = NUM_PROC) then
+                                chosen := 0;
+                            else
+                                chosen := chosen + 1;
+                            end if;
+                            
+                            -- Choose next (or return to original if none)
+                            for i in 0 to NUM_PROC-1 loop
+                                if request_int(chosen) = '0' then
+                                    if (chosen = NUM_PROC) then
+                                        chosen := 0;
+                                    else
+                                        chosen := chosen + 1;
+                                    end if;
+                                end if;
+                            end loop;
+                            
+                            -- Send ack
+                            ACK(chosen) <= '1';
+                            
                         end if;
                         
-                        -- Choose next (or return to original if none)
-                        for i in 0 to NUM_PROC-1 loop
-                            if request_int(chosen) = '0' then
-                                if (chosen = NUM_PROC) then
-                                    chosen := 0;
-                                else
-                                    chosen := chosen + 1;
-                                end if;
-                            end if;
-                        end loop;
-                        
-                        -- Send ack
-                        ACK(chosen) <= '1';
-                        
-                    end if;
-                    
-                    if REQUEST_0(chosen) = '1' then
-                        state <= ReadFetch;
-                    elsif REQUEST_1(chosen) = '1' then
-                        state <= WriteFetch;
+                        if REQUEST_0(chosen) = '1' then
+                            state <= ReadFetch;
+                        elsif REQUEST_1(chosen) = '1' then
+                            state <= WriteFetch;
+                        else
+                            state <= Choose;
+                        end if;
                     else
                         state <= Choose;
                     end if;
