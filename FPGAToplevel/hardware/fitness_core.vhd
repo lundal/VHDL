@@ -183,8 +183,7 @@ architecture Behavioral of fitness_core is
 begin
 
 --Halt if one of them are true
-halt_pipeline_signal <= '0'; --halt_inst --or halt_mem_signal or multiplication_halt_signal; does not work yet
-
+halt_pipeline_signal <=  halt_inst or halt_mem_signal or multiplication_halt_signal; --Not tested
 control_unit: entity work.control_unit
 port map (
 
