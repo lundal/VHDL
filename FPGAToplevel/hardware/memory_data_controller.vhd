@@ -159,7 +159,7 @@ begin
     request_int <= REQUEST_0 or REQUEST_1;
     has_request <= '0' when request_int = (NUM_PROC downto 0 => '0') else '1';
     
-    STATE_CHANGER : process (CLK, state)
+    STATE_CHANGER : process (CLK, state, has_request, request_int,)
 		variable chosen : integer range 0 to NUM_PROC := 0;
     begin
         if rising_edge(CLK) then
