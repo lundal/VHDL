@@ -9,10 +9,10 @@ entity MEM_WB is
            halt             : in  STD_LOGIC;
            
            -- PC in
-           pc_incremented_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
+           pc_incremented_in : in std_logic_vector(19-1 downto 0);
            
            -- PC out
-           pc_incremented_out : out std_logic_vector(DATA_WIDTH-1 downto 0);
+           pc_incremented_out : out std_logic_vector(19-1 downto 0);
            
            --CONTROL in
            to_reg_op_in     : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
@@ -55,7 +55,7 @@ begin
 
 
 PC_INCREMENTED : flip_flop 
-	generic map(N => DATA_WIDTH)
+	generic map(N => 19)
 	port map(clk => clk, 
 				reset => reset, 
 				enable => halt, 

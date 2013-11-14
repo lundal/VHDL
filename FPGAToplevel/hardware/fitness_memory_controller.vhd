@@ -77,7 +77,7 @@ begin
         end if;
     end process;
     
-    STATE_MACHINE : process (CLK, state, OP, ADDR_IN, DATA_IN)
+    STATE_MACHINE : process (CLK, state, OP, ADDR_IN, DATA_IN, ack)
     begin
         case state is
             when Idle =>

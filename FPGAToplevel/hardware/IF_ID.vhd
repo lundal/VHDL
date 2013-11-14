@@ -13,10 +13,10 @@ entity IF_ID is
            
            -- bus in
            instruction_in  : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
-           pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
+           pc_incremented_in : in std_logic_vector(19-1 downto 0);
            
            -- bus out
-           pc_incremented_out : out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+           pc_incremented_out : out STD_LOGIC_VECTOR(19-1 downto 0);
            instruction_out : out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0)
            
            );
@@ -57,7 +57,7 @@ begin
 end process;
 
 
-TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable)
+TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable, current_state)
         begin
                 if reset = '1' then 
                         pc_incremented_out <= (others => '0');

@@ -6,18 +6,18 @@ entity fetch_stage is
            reset 				: in STD_LOGIC;
            pc_update 		: in STD_LOGIC;
            pc_src 			: in STD_LOGIC; 
-			  pc_jump_addr 	: in STD_LOGIC_VECTOR(31 downto 0);
-           pc_incremented 	: out STD_LOGIC_VECTOR(31 downto 0);
-           pc_signal 		: out STD_LOGIC_VECTOR(31 downto 0));
+			  pc_jump_addr 	: in STD_LOGIC_VECTOR(19-1 downto 0);
+           pc_incremented 	: out STD_LOGIC_VECTOR(19-1 downto 0);
+           pc_signal 		: out STD_LOGIC_VECTOR(19-1 downto 0));
 end fetch_stage;
 
 architecture Behavioral of fetch_stage is
 
 -- SIGNAL declerations
 signal ground_signal 		  : STD_LOGIC; 
-signal pc_incremented_signal : STD_LOGIC_VECTOR(31 downto 0);
-signal pc_out_signal         : STD_LOGIC_VECTOR(31 downto 0);
-signal pc_input_signal       : STD_LOGIC_VECTOR(31 downto 0);
+signal pc_incremented_signal : STD_LOGIC_VECTOR(19-1 downto 0);
+signal pc_out_signal         : STD_LOGIC_VECTOR(19-1 downto 0);
+signal pc_input_signal       : STD_LOGIC_VECTOR(19-1 downto 0);
 
  Component Adder 
 		generic(N : NATURAL);
@@ -35,7 +35,7 @@ begin
 
 
 MUX : entity work.multiplexor 
-generic map(N => 32)
+generic map(N => 19)
 port map(
 			sel => pc_src, 
 			in0 => pc_incremented_signal, 
@@ -53,9 +53,9 @@ port map(clk => clk,
          
 
 PC_INCREMENTER : Adder 
-generic map(N => 32)
+generic map(N => 19)
 port map( A => pc_out_signal, 
-          B => "00000000000000000000000000000001", 
+          B => "0000000000000000001", 
           R => pc_incremented_signal,
           CARRY_IN => '0',
           OVERFLOW => ground_signal);

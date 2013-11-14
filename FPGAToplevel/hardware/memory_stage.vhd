@@ -44,13 +44,13 @@ entity memory_stage is
 	fitness_in 				 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	gene_in 					 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	res_in 					 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-	pc_incremented 		 : in STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+	pc_incremented 		 : in STD_LOGIC_VECTOR(19-1 downto 0);
 	
 	--Processor related bus signals out 
 	gene_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 	data_out 				 : out STD_LOGIC_VECTOR(DATA_WIDTh-1 downto 0);
-	pc_out 					 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-	pc_jump_addr 			 : out STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
+	pc_out 					 : out STD_LOGIC_VECTOR(19-1 downto 0);
+	pc_jump_addr 			 : out STD_LOGIC_VECTOR (19-1 downto 0);
 	
 	-- Genetic related bus signals in 
 	genetic_data_in 		: in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -64,7 +64,7 @@ entity memory_stage is
 	
 	--Data memory related bus signals out 
 	data_mem_bus_out		 : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-	data_mem_addr_bus 	 : out STD_LOGIC_VECTOR(MEM_ADDR_WIDTH-1 downto 0)
+	data_mem_addr_bus 	 : out STD_LOGIC_VECTOR(17-1 downto 0)
 	);
 end memory_stage;
 
@@ -202,8 +202,8 @@ mem_addr_signal <= res_in(18 downto 0);
 halt <= genetic_halt_signal or mem_halt_signal;
 
 
-pc_jump_addr <= pc_out_signal(31 downto 0);
-pc_out <= pc_out_signal; 
+pc_jump_addr <= pc_out_signal(19-1 downto 0);
+pc_out <= pc_out_signal(19-1 downto 0); 
 
 
 --TODO: Remove later 

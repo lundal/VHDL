@@ -9,6 +9,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all;
 
 entity InstructionCache is
 	generic(
@@ -64,8 +65,8 @@ architecture Behavioral of InstructionCache is
 	
 	signal State      : StateType := Check;
     
-    signal InstAddrA  : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal InstAddrB  : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal InstAddrA  : STD_LOGIC_VECTOR(19-1 downto 0);
+    signal InstAddrB  : STD_LOGIC_VECTOR(19-1 downto 0);
 	signal FaultA     : STD_LOGIC := '0';
 	signal FaultB     : STD_LOGIC := '0';
     signal CacheAddrA : STD_LOGIC_VECTOR(9-1 downto 0);
@@ -73,9 +74,20 @@ architecture Behavioral of InstructionCache is
 	signal WriteA     : STD_LOGIC := '0';
 	signal WriteB     : STD_LOGIC := '0';
     
-    signal Stale : boolean(2**ADDR_WIDTH-1 downto 0);
+    signal stale_in : std_logic_vector(512-1 downto 0);
+    signal stale_out : std_logic_vector(512-1 downto 0);
 	
 begin
+
+    Stale : entity work.flip_flop
+    generic map(N => 512)
+    port map(
+        clk => Clock,
+        reset => '0',
+        enable => '0',
+        data_in => stale_in,
+        data_out => stale_out
+    );
     
     InstCache : BRAM_TDP
     generic map(
@@ -104,20 +116,20 @@ begin
     AddrCache : BRAM_TDP
     generic map(
         ADDR_WIDTH => 9,
-        DATA_WIDTH => 32,
+        DATA_WIDTH => 19,
         WE_WIDTH   => 4,
         RAM_SIZE   => "18Kb",
         WRITE_MODE => "WRITE_FIRST" -- TODO: Will this create conflicts?
     )
     port map(
         A_ADDR => CacheAddrA,
-        A_IN   => PCA,
+        A_IN   => PCA(18 downto 0),
         A_OUT  => InstAddrA,
         A_WE   => WriteA,
         A_EN   => '1',
         
         B_ADDR => CacheAddrB,
-        B_IN   => PCB,
+        B_IN   => PCB(18 downto 0),
         B_OUT  => InstAddrB,
         B_WE   => WriteB,
         B_EN   => '1',
@@ -125,8 +137,8 @@ begin
         CLK    => Clock
     );
     
-    FaultA <= '1' when Stale(PCA) or InstAddrA /= PCA else '0';
-    FaultB <= '1' when Stale(PCB) or InstAddrB /= PCB else '0';
+    FaultA <= '1' when stale_in(to_integer(unsigned(PCA))) = '1' or InstAddrA /= PCA else '0';
+    FaultB <= '1' when stale_in(to_integer(unsigned(PCB))) = '1' or InstAddrB /= PCB else '0';
     
     CacheAddrA <= PCA(9-1 downto 0);
     CacheAddrB <= PCB(9-1 downto 0);
@@ -146,8 +158,11 @@ begin
 		end if;
 	end process;
     
-	StateMachine : process(State, FaultA, FaultB)
+	StateMachine : process(State, FaultA, FaultB, PCA, PCB, CacheAddrA, CacheAddrB, Reset, stale_out)
 	begin
+    
+        stale_in <= stale_out;
+        
 		if State = Check then
             -- Disconnect from memory
             MemAddr <= (others => 'Z');
@@ -169,30 +184,33 @@ begin
             MemRq <= '1';
             
             -- Replace data
-            if (FaultA = '1' and FaultB = '1' and CacheAddrA = CacheAddrB) then
-                MemAddr <= PCA;
-                WriteA <= '1';
-                WriteB <= '1';
-            elsif (FaultA = '1') then
-                MemAddr <= PCA;
-                WriteA <= '1';
-                WriteB <= '0';
-                Stale(PCA) <= false;
+            if Reset = '1' then
+                stale_in <= (others => '1');
             else
-                MemAddr <= PCB;
-                WriteA <= '0';
-                WriteB <= '1';
-                Stale(PCB) <= false;
+                
+                if (FaultA = '1' and FaultB = '1' and CacheAddrA = CacheAddrB) then
+                    MemAddr <= PCA;
+                    WriteA <= '1';
+                    WriteB <= '1';
+                    stale_in(to_integer(unsigned(PCA))) <= '0';
+                    stale_in(to_integer(unsigned(PCB))) <= '0';
+                
+                elsif (FaultA = '1') then
+                    MemAddr <= PCA;
+                    WriteA <= '1';
+                    WriteB <= '0';
+                    stale_in <= stale_out;
+                    stale_in(to_integer(unsigned(PCA))) <= '0';
+                else
+                    MemAddr <= PCB;
+                    WriteA <= '0';
+                    WriteB <= '1';
+                    stale_in <= stale_out;
+                    stale_in(to_integer(unsigned(PCB))) <= '0';
+                end if;
             end if;
 		end if;
 	end process;
-    
-    process (Reset)
-    begin
-        if Reset = '1' then
-            Stale <= (others => true);
-        end if;
-    end process;
 	
 end Behavioral;
 

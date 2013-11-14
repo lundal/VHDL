@@ -15,15 +15,16 @@ use WORK.CONSTANTS.ALL;
 
 entity MemMux is
     generic(
-        DATA_WIDTH : natural := 16;
-        ADDR_WIDTH : natural := 19
+        DATA_WIDTH : natural := 32;
+        ADDR_WIDTH : natural := 19;
+        SCU_DATA_BUS_WIDTH : natural := 16
     );
     port(
         SCU_STATE   : in    STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0);
         
         SCU_CE      : in    STD_LOGIC;
         SCU_WE      : in    STD_LOGIC;
-        SCU_DATA    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        SCU_DATA    : inout STD_LOGIC_VECTOR(SCU_DATA_BUS_WIDTH-1 downto 0);
         SCU_ADDR    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
         SCU_LBUB    : in    STD_LOGIC;
         
@@ -35,7 +36,7 @@ entity MemMux is
         
         DCTRL_CE    : in    STD_LOGIC;
         DCTRL_WE    : in    STD_LOGIC;
-        DCTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DCTRL_DATA  : inout STD_LOGIC_VECTOR(16-1 downto 0);
         DCTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
         DCTRL_LBUB  : in    STD_LOGIC;
         
@@ -43,14 +44,14 @@ entity MemMux is
         IMEM_CE_LO      : out   STD_LOGIC;
         IMEM_WE_HI      : out   STD_LOGIC;
         IMEM_WE_LO      : out   STD_LOGIC;
-        IMEM_DATA_HI    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-        IMEM_DATA_LO    : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        IMEM_DATA_HI    : inout STD_LOGIC_VECTOR(16-1 downto 0);
+        IMEM_DATA_LO    : inout STD_LOGIC_VECTOR(16-1 downto 0);
         IMEM_ADDR       : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
         IMEM_LBUB       : out   STD_LOGIC;
         
         DMEM_CE     : out   STD_LOGIC;
         DMEM_WE     : out   STD_LOGIC;
-        DMEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DMEM_DATA   : inout STD_LOGIC_VECTOR(16-1 downto 0);
         DMEM_ADDR   : out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
         DMEM_LBUB   : out   STD_LOGIC
     );
@@ -125,7 +126,7 @@ begin
                 MuxIL <= '0';
                 MuxD  <= '1';
             when others =>
-                -- What happened?
+                -- This should never happen
                 MuxIH <= '0';
                 MuxIL <= '0';
                 MuxD  <= '0';
@@ -136,7 +137,7 @@ begin
     
     INST_HI_MUX : MemMuxA
     generic map(
-        DATA_WIDTH => DATA_WIDTH
+        DATA_WIDTH => 16
     )
     port map (
         CE     => IMEM_CE_HI,
@@ -145,7 +146,7 @@ begin
         
         A_CE   => ICTRL_CE,
         A_WE   => ICTRL_WE,
-        A_DATA => ICTRL_DATA(DATA_WIDTH*2-1 downto DATA_WIDTH),
+        A_DATA => ICTRL_DATA(32-1 downto 16),
         
         B_CE   => SCU_CE,
         B_WE   => SCU_WE,
@@ -156,7 +157,7 @@ begin
     
     INST_LO_MUX : MemMuxA
     generic map(
-        DATA_WIDTH => DATA_WIDTH
+        DATA_WIDTH => 16
     )
     port map (
         CE     => IMEM_CE_LO,
@@ -165,7 +166,7 @@ begin
         
         A_CE   => ICTRL_CE,
         A_WE   => ICTRL_WE,
-        A_DATA => ICTRL_DATA(DATA_WIDTH-1 downto 0),
+        A_DATA => ICTRL_DATA(16-1 downto 0),
         
         B_CE   => SCU_CE,
         B_WE   => SCU_WE,
@@ -176,7 +177,7 @@ begin
     
     DATA_MUX : MemMuxA
     generic map(
-        DATA_WIDTH => DATA_WIDTH
+        DATA_WIDTH => 16
     )
     port map (
         CE     => DMEM_CE,

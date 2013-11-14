@@ -38,7 +38,7 @@ entity write_back_stage is
 				call   : in std_logic;
 				
 				--Bus signals in 
-				pc_incremented_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
+				pc_incremented_in : in std_logic_vector(19-1 downto 0);
 				gene_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
 				res_in  : in std_logic_vector(DATA_WIDTH-1 downto 0);
 				data_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -63,7 +63,7 @@ multiplexor4 : entity work.multiplexor4
 	port map( sel => to_reg, 
 			    in0 => gene_in, 
 				 in1 => res_in, 
-				 in2 => pc_incremented_in, 
+				 in2 =>  X"00000000000" & "0" & pc_incremented_in, 
 				 in3 => data_in, 
 				 output => WBD_out_signal
 				

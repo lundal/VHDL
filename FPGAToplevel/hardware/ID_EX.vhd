@@ -13,10 +13,10 @@ entity ID_EX is
            halt                         : in  STD_LOGIC;
            
            -- PC in
-           pc_incremented_in : in std_logic_vector(INST_WIDTH-1 downto 0);
+           pc_incremented_in : in std_logic_vector(19-1 downto 0);
            
            -- PC out
-           pc_incremented_out : out std_logic_vector(INST_WIDTH-1 downto 0);
+           pc_incremented_out : out std_logic_vector(19-1 downto 0);
            
            -- CONTROL SIGNALS in
            alu_src_in                   : in  STD_LOGIC;
@@ -84,7 +84,7 @@ begin
 --DATA IN/OUT mappings 
 
 PC_INCREMENTED : flip_flop
-generic map(N => INST_WIDTH)
+generic map(N => 19)
 port map(clk => clk, 
 			reset => reset, 
 			enable => halt, 

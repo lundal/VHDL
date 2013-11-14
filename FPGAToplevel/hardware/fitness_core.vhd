@@ -13,7 +13,7 @@ entity fitness_core is
 			 halt_inst 					: in  STD_LOGIC; 
 			 
 			 --Bus signals related to instruction cache
-			 imem_address 		 		: out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+			 imem_address 		 		: out STD_LOGIC_VECTOR(19-1 downto 0);
 			 imem_data_in 		 		: in  STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
           
 			 --Control signals related to the data memory
@@ -24,7 +24,7 @@ entity fitness_core is
 			 
 			 --Bus signals related to data memory
 			 data_mem_bus_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          data_mem_addr_bus		 		: out STD_LOGIC_VECTOR(MEM_ADDR_WIDTH-1 downto 0);
+          data_mem_addr_bus		 		: out STD_LOGIC_VECTOR(17-1 downto 0);
           data_mem_bus_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           dmem_data_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           
@@ -51,9 +51,9 @@ architecture Behavioral of fitness_core is
 
 	-- Bus signals
 	signal instruction_signal_fetch 		: std_logic_vector(INST_WIDTH-1 downto 0);
-	signal pc_incremented_signal_fetch 	: std_logic_vector(INST_WIDTH-1 downto 0);
-	signal pc_signal_fetch 					: std_logic_vector(INST_WIDTH-1 downto 0);
-	signal pc_jump_addr_signal 			: std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_incremented_signal_fetch 	: std_logic_vector(19-1 downto 0);
+	signal pc_signal_fetch 					: std_logic_vector(19-1 downto 0);
+	signal pc_jump_addr_signal 			: std_logic_vector(19-1 downto 0);
 
 --DECODE SIGNALS-- 
  
@@ -89,7 +89,7 @@ architecture Behavioral of fitness_core is
 
 	--Passing signals
 	signal rda_signal_decode : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_incremented_signal_decode : std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_incremented_signal_decode : std_logic_vector(19-1 downto 0);
 
 --EXECUTE SIGNALS--
 
@@ -109,7 +109,7 @@ architecture Behavioral of fitness_core is
 	signal gene_op_signal_execute : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
 	signal mem_op_signal_execute : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
 	signal to_reg_signal_execute : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
-	signal pc_incremented_signal_execute : std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_incremented_signal_execute : std_logic_vector(19-1 downto 0);
 	signal overflow_signal_execute : std_logic;
 
 	--BUS signals
@@ -143,14 +143,14 @@ architecture Behavioral of fitness_core is
 	--BUS signals
 	signal gene_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal res_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_incremented_signal_mem : std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_incremented_signal_mem : std_logic_vector(19-1 downto 0);
 	signal rda_signal_mem : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 	signal data_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pc_out_signal_mem : std_logic_vector(19-1 downto 0);
 	signal rs_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rt_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal gene_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_jump_addr_signal_mem : std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_jump_addr_signal_mem : std_logic_vector(19-1 downto 0);
 
 
 
@@ -168,12 +168,12 @@ architecture Behavioral of fitness_core is
 	--BUS SIGNALS --
 	signal WBD_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal WBA_signal_wb : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_incremented_signal_wb : std_logic_vector(INST_WIDTH-1 downto 0);
+	signal pc_incremented_signal_wb : std_logic_vector(19-1 downto 0);
 	signal gene_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0); 
 	signal res_signal_wb  : std_logic_vector(DATA_WIDTH-1 downto 0);
    signal data_signal_wb  : std_logic_vector(DATA_WIDTH-1 downto 0);
 	signal rda_signal_wb  : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_out_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
+	signal pc_out_signal_wb : std_logic_vector(19-1 downto 0);
 
 --GLOBAL SIGNALS--
 	signal halt_mem_signal 			       : std_logic;
