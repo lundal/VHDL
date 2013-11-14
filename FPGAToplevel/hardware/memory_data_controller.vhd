@@ -25,7 +25,7 @@ entity memory_data_controller is
         ACK       : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
         
         -- Buses
-        PROC_ADDR     : in  STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        PROC_ADDR     : in  STD_LOGIC_VECTOR(ADDR_WIDTH-2-1 downto 0);
         PROC_DATA_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         PROC_DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         
@@ -42,7 +42,7 @@ end memory_data_controller;
 
 architecture Behavioral of memory_data_controller is
     
-    signal counter : UNSIGNED(2-1 downto 0) := (others => '0');
+    signal counter : STD_LOGIC_VECTOR(2-1 downto 0) := (others => '0');
     
     -- Internal control signals
     signal read_0 : STD_LOGIC := '0';
@@ -103,7 +103,7 @@ begin
     INCREMENTER : process (CLK, increment)
     begin
         if rising_edge(CLK) and increment = '0' then
-            counter <= counter + 1;
+            counter <= STD_LOGIC_VECTOR(UNSIGNED(counter) + 1);
         end if;
     end process;
     
@@ -115,11 +115,11 @@ begin
         read_2 <= '0';
         read_3 <= '0';
         
-        if counter = 0 then
+        if counter = "00" then
             read_0 <= '1';
-        elsif counter = 1 then
+        elsif counter = "01" then
             read_1 <= '1';
-        elsif counter = 2 then
+        elsif counter = "10" then
             read_2 <= '1';
         else
             read_3 <= '1';
@@ -141,16 +141,16 @@ begin
     end process;
     
     -- MUX: Write out
-    write_out <= write_data(NUM_PROC*4/4-1 downto NUM_PROC*3/4) when counter = 0 else
-                 write_data(NUM_PROC*3/4-1 downto NUM_PROC*2/4) when counter = 1 else
-                 write_data(NUM_PROC*2/4-1 downto NUM_PROC*1/4) when counter = 2 else
-                 write_data(NUM_PROC*1/4-1 downto NUM_PROC*0/4) when counter = 3;
+    write_out <= write_data(NUM_PROC*4/4-1 downto NUM_PROC*3/4) when counter = "00" else
+                 write_data(NUM_PROC*3/4-1 downto NUM_PROC*2/4) when counter = "01" else
+                 write_data(NUM_PROC*2/4-1 downto NUM_PROC*1/4) when counter = "10" else
+                 write_data(NUM_PROC*1/4-1 downto NUM_PROC*0/4) when counter = "11";
     
     -- Tristate
     MEM_DATA <= write_out when write = '1' else (others => 'Z');
     
     -- Memory address
-    MEM_ADDR <= STD_LOGIC_VECTOR(UNSIGNED(addr) + counter);
+    MEM_ADDR <= addr & counter;
     
     -- Concatenate output
     PROC_DATA_OUT <= read_0_data & read_1_data & read_2_data & read_3_data;
@@ -159,7 +159,7 @@ begin
     request_int <= REQUEST_0 or REQUEST_1;
     has_request <= '0' when request_int = (NUM_PROC downto 0 => '0') else '1';
     
-    STATE_CHANGER : process (CLK, state, has_request, request_int,)
+    STATE_CHANGER : process (CLK, state, has_request, request_int)
 		variable chosen : integer range 0 to NUM_PROC := 0;
     begin
         if rising_edge(CLK) then
@@ -203,7 +203,7 @@ begin
                     state <= Read;
                 
                 when Read =>
-                    if counter = 3 then
+                    if counter = "11" then
                         state <= Choose;
                     else
                         state <= Read;
@@ -219,7 +219,7 @@ begin
                     state <= Write2;
                 
                 when Write2 =>
-                    if counter = 3 then
+                    if counter = "11" then
                         state <= Choose;
                     else
                         state <= Write0;

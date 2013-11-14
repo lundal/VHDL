@@ -4,7 +4,7 @@ use Work.CONSTANTS.all;
 
 entity fitness_memory_controller is
     generic (
-        ADDR_WIDTH : natural := 19;
+        ADDR_WIDTH : natural := 17;
         DATA_WIDTH : natural := 64
     );
     port (
