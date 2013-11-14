@@ -55,7 +55,7 @@ begin
 
 
 PC_INCREMENTED : flip_flop 
-	generic map(N => 19)
+	generic map(N => ADDR_WIDTH)
 	port map(clk => clk, 
 				reset => reset, 
 				enable => halt, 

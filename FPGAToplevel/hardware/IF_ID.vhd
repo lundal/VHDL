@@ -13,10 +13,10 @@ entity IF_ID is
            
            -- bus in
            instruction_in  : in  STD_LOGIC_VECTOR (INST_WIDTH-1 downto 0);
-           pc_incremented_in : in std_logic_vector(19-1 downto 0);
+           pc_incremented_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
            
            -- bus out
-           pc_incremented_out : out STD_LOGIC_VECTOR(19-1 downto 0);
+           pc_incremented_out : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
            instruction_out : out STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0)
            
            );
