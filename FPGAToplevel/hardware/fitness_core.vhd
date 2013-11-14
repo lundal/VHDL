@@ -221,7 +221,7 @@ end process;
 
 MULTIPLICATION_UNIT : process(func_decode)
 begin 
-	if func_decode = "" then 
+	if func_decode = "0010" then 
 		multiplication_signal_decode <= '1'; 
 	else 
 		multiplication_signal_decode <= '0';
