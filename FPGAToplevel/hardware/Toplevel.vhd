@@ -296,7 +296,7 @@ begin
     end generate FITNESS_CORE_PAIRS;
     
     -- Reset when SCU connected to imem
-    reset = '1' when SCU_STATE = STATE_INST_HI or SCU_STATE = STATE_INST_LO else '0';
+    reset <= '1' when SCU_STATE = STATE_INST_HI or SCU_STATE = STATE_INST_LO else '0';
     
 end Behavioral;
         
