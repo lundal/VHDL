@@ -2,115 +2,162 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use Work.CONSTANTS.all;
 
-
 entity fitness_memory_controller is
-	Port (
-			clk : in std_logic;
-			reset : in std_logic;
-			processor_enable : in std_logic;
-			
-			--Control signals in
-			mem_op : in std_logic_vector(MEM_OP_WIDTH-1 downto 0);
-			ack_mem_ctrl : in std_logic;
-			
-			--Control signals out
-			mem_op_ctrl : out std_logic_vector(MEM_OP_WIDTH-1 downto 0);
-			request_bus : out std_logic;
-			halt 			: out std_logic;
-			
-			--BUS in
-			addr : in std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
-			store_data : in std_logic_vector(DATA_WIDTH-1 downto 0);
-			
-			--Memory bus controller
-			addr_bus : out std_logic_vector(MEM_ADDR_WIDTH-1 downto 0);
-			data_bus_out : out std_logic_vector(DATA_WIDTH-1 downto 0);
-			data_bus_in : in std_logic_vector(DATA_WIDTH-1 downto 0);
-			
-			--BUS out
-			read_data_out  : out std_logic_vector(DATA_WIDTH-1 downto 0)
-						
-	);
+    generic (
+        ADDR_WIDTH : natural := 19;
+        DATA_WIDTH : natural := 64
+    );
+    port (
+        -- Control signals
+        REQUEST_0 : out STD_LOGIC;
+        REQUEST_1 : out STD_LOGIC;
+        ACK       : in  STD_LOGIC;
+        
+        -- Processor
+        ADDR_IN  : in  STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        DATA_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        
+        -- Memory
+        MEM_ADDR     : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        MEM_DATA_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        MEM_DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        
+        OP   : in  MEM_OP_TYPE;
+        HALT : out STD_LOGIC;
+        CLK  : in  STD_LOGIC
+    );
 end fitness_memory_controller;
 
 architecture Behavioral of fitness_memory_controller is
-
-type state_type is (REQUEST, WAIT_FOR_ACK, PERFORM_OPERATION, WAIT_FOR_MEMORY);
-signal CURRENT_STATE, NEXT_STATE : state_type;
-
-constant WRITE_DATA : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "11";
-constant READ_DATA  : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "01";
-constant NOP 		  : std_logic_vector(MEM_OP_WIDTH-1 downto 0) := "00";
-
+    
+    -- State machine
+    type state_type is (Idle, Write, ReadRequest, ReadWait);
+    signal state : state_type := Idle;
+    
+    -- Internal signals
+    signal op_int : MEM_OP_TYPE;
 begin
 
-RUN : process(clk, reset)
-	begin 
-		if reset = '1' then
-			CURRENT_STATE <= REQUEST;
-		elsif rising_edge(clk) then 
-			CURRENT_STATE <= NEXT_STATE;
-		end if;
-	end process; 
-
-STATE_MACHINE : process(CURRENT_STATE, mem_op, ack_mem_ctrl, addr, store_data, data_bus_in) 
-	begin 
-	case CURRENT_STATE is 
-		when REQUEST => 
-			--Disconnect from buses
-			mem_op_ctrl   		 <= (others => 'Z');
- 			addr_bus 		 <= (others => 'Z'); 
-			data_bus_out 		 <= (others => 'Z'); 			
-			
-			case mem_op is
-				when NOP => 
-					halt <= '0';
-					request_bus <= '0';
-					NEXT_STATE <= REQUEST;
-				when others => 
-					halt <= '1';
-					request_bus <= '1';
-					NEXT_STATE <= WAIT_FOR_ACK; 
-			end case;
-			read_data_out <= (others => '0');
-			
-		when WAIT_FOR_ACK =>
-			if ack_mem_ctrl = '1' then
-				request_bus <= '0';
-				addr_bus <= addr; --Got access, put addr on bus
-			   mem_op_ctrl <= mem_op; 
-				if mem_op = WRITE_DATA then 
-					data_bus_out <= store_data; -- If write, put data on data bus
-					NEXT_STATE <= PERFORM_OPERATION;
-				else 
-					NEXT_STATE <= WAIT_FOR_MEMORY;
-				end if;
-			else 
-				NEXT_STATE <= WAIT_FOR_ACK;				
-			end if;
-			read_data_out <= (others => '0');
-		
-		when WAIT_FOR_MEMORY => 
-			if ack_mem_ctrl = '1' then
-				NEXT_STATE <= WAIT_FOR_MEMORY;
-			elsif ack_mem_ctrl = '0' then 
-				read_data_out <= data_bus_in;
-				halt <= '0';
-				NEXT_STATE <= REQUEST;
-			else 
-				read_data_out <= (others => '0');
-			end if;
-			
-		when PERFORM_OPERATION => 
-			halt <= '0';
-			read_data_out <= (others => '0');
-			NEXT_STATE <= REQUEST;
-			
-	end case;
-end process STATE_MACHINE;
-
-
-
-
+    STATE_CHANGER : process (CLK, state, OP, ACK)
+    begin
+        if rising_edge(CLK) then
+            case state is
+                when Idle =>
+                    if (OP = MEM_WRITE) then
+                        state <= Write;
+                    elsif (OP = MEM_READ) then
+                        state <= ReadRequest;
+                    else
+                        state <= Idle;
+                    end if;
+                
+                when Write =>
+                    if (ACK = '1') then
+                        state <= Idle;
+                    else
+                        state <= Write;
+                    end if;
+                
+                when ReadRequest =>
+                    if (ACK = '1') then
+                        state <= ReadWait;
+                    else
+                        state <= ReadRequest;
+                    end if;
+                
+                when ReadWait =>
+                    if (ACK = '1') then
+                        state <= ReadWait;
+                    else
+                        state <= Idle;
+                    end if;
+                
+            end case;
+        end if;
+    end process;
+    
+    STATE_MACHINE : process (CLK, state, OP, ADDR_IN, DATA_IN)
+    begin
+        case state is
+            when Idle =>
+                op_int <= OP;
+                
+                MEM_ADDR <= (others => 'Z');
+                MEM_DATA_OUT <= (others => 'Z');
+                
+                if (OP /= MEM_NOP) then
+                    HALT <= '1';
+                else
+                    HALT <= '0';
+                end if;
+            
+            when Write =>
+                if (ACK = '1') then
+                    op_int <= MEM_NOP;
+                    
+                    MEM_ADDR <= ADDR_IN;
+                    MEM_DATA_OUT <= DATA_IN;
+                    
+                    HALT <= '0';
+                else
+                    op_int <= MEM_WRITE;
+                    
+                    MEM_ADDR <= (others => 'Z');
+                    MEM_DATA_OUT <= (others => 'Z');
+                    
+                    HALT <= '1';
+                end if;
+            
+            when ReadRequest =>
+                MEM_DATA_OUT <= (others => 'Z');
+                
+                HALT <= '1';
+                
+                if (ACK = '1') then
+                    op_int <= MEM_NOP;
+                    
+                    MEM_ADDR <= ADDR_IN;
+                else
+                    op_int <= MEM_READ;
+                    
+                    MEM_ADDR <= (others => 'Z');
+                end if;
+                
+            when ReadWait =>
+                MEM_DATA_OUT <= (others => 'Z');
+                
+                op_int <= MEM_NOP;
+                
+                if (ACK = '1') then
+                    MEM_ADDR <= ADDR_IN;
+                    
+                    HALT <= '1';
+                else
+                    MEM_ADDR <= (others => 'Z');
+                    
+                    HALT <= '0';
+                end if;
+            
+        end case;
+    end process;
+    
+    TRANSLATOR : process(op_int)
+    begin
+        case op_int is
+            when MEM_NOP =>
+                REQUEST_0 <= '0';
+                REQUEST_1 <= '0';
+            when MEM_READ =>
+                REQUEST_0 <= '1';
+                REQUEST_1 <= '0';
+            when MEM_WRITE =>
+                REQUEST_0 <= '0';
+                REQUEST_1 <= '1';
+        end case;
+    end process;
+    
+    DATA_OUT <= MEM_DATA_IN;
+    
 end Behavioral;
 
