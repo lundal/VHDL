@@ -103,4 +103,6 @@ package CONSTANTS is
 	constant ONE32	: STD_LOGIC_VECTOR(31 downto 0) :=  (31 downto 0 => '1');
 	constant ONE64	: STD_LOGIC_VECTOR(63 downto 0) :=  (63 downto 0 => '1');
 	
+	type MEM_OP_TYPE is (MEM_NOP, MEM_READ, MEM_WRITE);
+	
 end CONSTANTS;
