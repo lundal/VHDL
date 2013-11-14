@@ -66,6 +66,10 @@ architecture Behavioral of memory_data_controller is
     type state_type is (Choose, ReadFetch, Read, WriteFetch, Write0, Write1, Write2);
     signal state : state_type := Choose;
     
+    -- Request signals
+    signal request_int : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal has_request : STD_LOGIC;
+    
 begin
     
     FF_READ_0 : process (CLK, read_0, MEM_DATA)
@@ -151,12 +155,49 @@ begin
     -- Concatenate output
     PROC_DATA_OUT <= read_0_data & read_1_data & read_2_data & read_3_data;
     
+    -- Request signals
+    request_int <= REQUEST_0 or REQUEST_1;
+    has_request <= '0' when request_int = (NUM_PROC downto 0 => '0') else '1';
+    
     STATE_CHANGER : process (CLK, state)
+		variable chosen : integer range 0 to NUM_PROC := 0;
     begin
         if rising_edge(CLK) then
             case state is
                 when Choose =>
-                    null;
+                    -- Check if there exists a request
+                    if (has_request = '1') then
+                        
+                        -- Go to next (to prevent starvation)
+                        if (chosen = NUM_PROC) then
+                            chosen := 0;
+                        else
+                            chosen := chosen + 1;
+                        end if;
+                        
+                        -- Choose next (or return to original if none)
+                        for i in 0 to NUM_PROC-1 loop
+                            if request_int(chosen) = '0' then
+                                if (chosen = NUM_PROC) then
+                                    chosen := 0;
+                                else
+                                    chosen := chosen + 1;
+                                end if;
+                            end if;
+                        end loop;
+                        
+                        -- Send ack
+                        ACK(chosen) <= '1';
+                        
+                    end if;
+                    
+                    if REQUEST_0(chosen) = '1' then
+                        state <= ReadFetch;
+                    elsif REQUEST_1(chosen) = '1' then
+                        state <= WriteFetch;
+                    else
+                        state <= Choose;
+                    end if;
                 
                 when ReadFetch =>
                     state <= Read;
@@ -191,33 +232,36 @@ begin
     STATE_MACHINE : process (CLK, state)
     begin
         -- Defaults
-        MEM_ENABLE <= '1';
-        MEM_WRITE <= '1';
-        MEM_LBUB <= '1';
         fetch <= '1';
-        write <= '0';
         increment <= '0';
         
         case state is
             when Choose =>
-                null;
+                MEM_ENABLE <= '1';
+                MEM_WRITE <= '1';
+                MEM_LBUB <= '1';
             
             when ReadFetch =>
                 MEM_ENABLE <= '0';
+                MEM_WRITE <= '1';
                 MEM_LBUB <= '0';
             
             when Read =>
                 MEM_ENABLE <= '0';
+                MEM_WRITE <= '1';
                 MEM_LBUB <= '0';
             
             when WriteFetch =>
+                MEM_ENABLE <= '1';
+                MEM_WRITE <= '1';
+                MEM_LBUB <= '1';
+                
                 fetch <= '1';
             
             when Write0 =>
-                if CLK = '1' then
-                    MEM_WRITE <= '1';
-                    MEM_LBUB <= '1';
-                else
+                MEM_ENABLE <= '1';
+                
+                if falling_edge(CLK) then
                     MEM_WRITE <= '0';
                     MEM_LBUB <= '0';
                 end if;
@@ -230,14 +274,16 @@ begin
                 write <= '1';
             
             when Write2 =>
-                if CLK = '1' then
-                    write <= '1';
-                else
+                MEM_ENABLE <= '1';
+                MEM_WRITE <= '1';
+                MEM_LBUB <= '1';
+                
+                if falling_edge(CLK) then
                     write <= '0';
                 end if;
                 
                 increment <= '1';
-                
+            
         end case;
     end process;
 end Behavioral;
