@@ -6,6 +6,7 @@
 --
 -- Description:
 -- A cache for 2 CPUs with room for 512 instructions.
+-- Address 0 is reserved for cache fault
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -37,29 +38,6 @@ entity InstructionCache is
 end InstructionCache;
 
 architecture Behavioral of InstructionCache is
-	
-    component BRAM_TDP is
-        generic (
-            ADDR_WIDTH	:	natural := 9;
-            DATA_WIDTH	:	natural := 32;
-            WE_WIDTH	:	natural := 4;
-            RAM_SIZE	:	string	:= "18Kb";
-            WRITE_MODE	:	string	:= "WRITE_FIRST"
-        );
-        port (
-            A_ADDR	:	in	STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            A_IN	:	in	STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            A_OUT	:	out	STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            A_WE	:	in	STD_LOGIC;
-            A_EN	:	in	STD_LOGIC;
-            B_ADDR	:	in	STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-            B_IN	:	in	STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            B_OUT	:	out	STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-            B_WE	:	in	STD_LOGIC;
-            B_EN	:	in	STD_LOGIC;
-            CLK		:	in	STD_LOGIC
-        );
-    end component;
     
 	type StateType is (Check, Replace);
 	
@@ -73,29 +51,16 @@ architecture Behavioral of InstructionCache is
     signal CacheAddrB : STD_LOGIC_VECTOR(9-1 downto 0);
 	signal WriteA     : STD_LOGIC := '0';
 	signal WriteB     : STD_LOGIC := '0';
-    
-    signal stale_in : std_logic_vector(2**9-1 downto 0);
-    signal stale_out : std_logic_vector(2**9-1 downto 0);
 	
 begin
-
-    Stale : entity work.flip_flop
-    generic map(N => 512)
-    port map(
-        clk => Clock,
-        reset => '0',
-        enable => '0',
-        data_in => stale_in,
-        data_out => stale_out
-    );
     
-    InstCache : BRAM_TDP
+    InstCache : entity WORK.BRAM_TDP
     generic map(
         ADDR_WIDTH => 9,
         DATA_WIDTH => 32,
         WE_WIDTH   => 4,
         RAM_SIZE   => "18Kb",
-        WRITE_MODE => "WRITE_FIRST" -- TODO: Will this create conflicts?
+        WRITE_MODE => "WRITE_FIRST"
     )
     port map(
         A_ADDR => CacheAddrA,
@@ -113,13 +78,13 @@ begin
         CLK    => Clock
     );
     
-    AddrCache : BRAM_TDP
+    AddrCache : entity WORK.BRAM_TDP
     generic map(
         ADDR_WIDTH => 9,
         DATA_WIDTH => 19,
         WE_WIDTH   => 4,
         RAM_SIZE   => "18Kb",
-        WRITE_MODE => "WRITE_FIRST" -- TODO: Will this create conflicts?
+        WRITE_MODE => "WRITE_FIRST"
     )
     port map(
         A_ADDR => CacheAddrA,
@@ -137,8 +102,8 @@ begin
         CLK    => Clock
     );
     
-    FaultA <= '1' when stale_in(to_integer(unsigned(PCA))) = '1' or InstAddrA /= PCA else '0';
-    FaultB <= '1' when stale_in(to_integer(unsigned(PCB))) = '1' or InstAddrB /= PCB else '0';
+    FaultA <= '1' when InstAddrA = (ADDR_WIDTH-1 downto 0 => '0') or InstAddrA /= PCA else '0';
+    FaultB <= '1' when InstAddrB = (ADDR_WIDTH-1 downto 0 => '0') or InstAddrB /= PCB else '0';
     
     CacheAddrA <= PCA(9-1 downto 0);
     CacheAddrB <= PCB(9-1 downto 0);
@@ -158,12 +123,9 @@ begin
 		end if;
 	end process;
     
-	StateMachine : process(State, FaultA, FaultB, PCA, PCB, CacheAddrA, CacheAddrB, Reset, stale_out)
+	StateMachine : process(State, FaultA, FaultB, PCA, PCB, CacheAddrA, CacheAddrB, Reset)
 	begin
-    
-        stale_in <= stale_out;
-        
-		if State = Check then
+        if State = Check then
             -- Disconnect from memory
             MemAddr <= (others => 'Z');
             
@@ -183,25 +145,18 @@ begin
             Halt <= '1';
             MemRq <= '1';
             
-                if (FaultA = '1' and FaultB = '1' and CacheAddrA = CacheAddrB) then
+                if (CacheAddrA = CacheAddrB) then
                     MemAddr <= PCA;
                     WriteA <= '1';
                     WriteB <= '1';
-                    stale_in(to_integer(unsigned(PCA))) <= '0';
-                    stale_in(to_integer(unsigned(PCB))) <= '0';
-                
                 elsif (FaultA = '1') then
                     MemAddr <= PCA;
                     WriteA <= '1';
                     WriteB <= '0';
-                    stale_in <= stale_out;
-                    stale_in(to_integer(unsigned(PCA))) <= '0';
                 else
                     MemAddr <= PCB;
                     WriteA <= '0';
                     WriteB <= '1';
-                    stale_in <= stale_out;
-                    stale_in(to_integer(unsigned(PCB))) <= '0';
                 end if;
 		end if;
 	end process;
