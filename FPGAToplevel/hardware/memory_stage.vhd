@@ -129,7 +129,7 @@ port map (
         ACK       => ack_mem_ctrl, 
         
         -- Processor
-        ADDR_IN  => res_in(ADDR_WIDTH-1 downto 0),
+        ADDR_IN  => res_in(ADDR_WIDTH-2-1 downto 0),
         DATA_IN  => gene_in,
         DATA_OUT => data_out,
         
@@ -230,11 +230,6 @@ halt <= genetic_halt_signal or mem_halt_signal;
 
 pc_jump_addr <= pc_out_signal(ADDR_WIDTH-1 downto 0);
 pc_out <= pc_out_signal(ADDR_WIDTH-1 downto 0); 
-
-
---TODO: Remove later 
-
-data_out <= (others => '0');
 
 end Behavioral;
 

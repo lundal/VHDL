@@ -61,7 +61,7 @@ architecture Behavioral of memory_data_controller is
     signal read_3_data : STD_LOGIC_VECTOR(DATA_WIDTH/4-1 downto 0) := (others => '0');
     signal write_data : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
     signal write_out : STD_LOGIC_VECTOR(DATA_WIDTH/4-1 downto 0) := (others => '0');
-    signal addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal addr : STD_LOGIC_VECTOR(ADDR_WIDTH-2-1 downto 0) := (others => '0');
     
     -- State machine
     type state_type is (Choose, ReadFetch, Read, WriteFetch, Write0, Write1, Write2);
@@ -142,10 +142,10 @@ begin
     end process;
     
     -- MUX: Write out
-    write_out <= write_data(NUM_PROC*4/4-1 downto NUM_PROC*3/4) when counter = "00" else
-                 write_data(NUM_PROC*3/4-1 downto NUM_PROC*2/4) when counter = "01" else
-                 write_data(NUM_PROC*2/4-1 downto NUM_PROC*1/4) when counter = "10" else
-                 write_data(NUM_PROC*1/4-1 downto NUM_PROC*0/4) when counter = "11";
+    write_out <= write_data(DATA_WIDTH*4/4-1 downto DATA_WIDTH*3/4) when counter = "00" else
+                 write_data(DATA_WIDTH*3/4-1 downto DATA_WIDTH*2/4) when counter = "01" else
+                 write_data(DATA_WIDTH*2/4-1 downto DATA_WIDTH*1/4) when counter = "10" else
+                 write_data(DATA_WIDTH*1/4-1 downto DATA_WIDTH*0/4);
     
     -- Tristate
     MEM_DATA <= write_out when write = '1' else (others => 'Z');
@@ -158,7 +158,7 @@ begin
     
     -- Request signals
     request_int <= REQUEST_0 or REQUEST_1;
-    has_request <= '0' when request_int = (NUM_PROC downto 0 => '0') else '1';
+    has_request <= '0' when request_int = (NUM_PROC-1 downto 0 => '0') else '1';
     
     STATE_CHANGER : process (CLK, state, ENABLE, has_request, request_int)
 		variable chosen : integer range 0 to NUM_PROC := 0;
@@ -166,6 +166,9 @@ begin
         if rising_edge(CLK) then
             case state is
                 when Choose =>
+                    -- Reset ack
+                    ACK <= (others => '0');
+                    
                     if (ENABLE = '1') then
                         -- Check if there exists a request
                         if (has_request = '1') then
@@ -205,6 +208,9 @@ begin
                     end if;
                 
                 when ReadFetch =>
+                    -- Reset ack
+                    ACK(chosen) <= '0';
+                    
                     state <= Read;
                 
                 when Read =>

@@ -84,8 +84,11 @@ begin
                 HALT <= '0';
                 
                 -- Output gene
-                DATA_OUT <= Gene_IN;
+                DATA_OUT <= GENE_IN;
         end case;
     end process;
+    
+    GENE_OUT <= DATA_IN;
+    
 end Behavioral;
 

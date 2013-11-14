@@ -74,8 +74,8 @@ architecture Behavioral of InstructionCache is
 	signal WriteA     : STD_LOGIC := '0';
 	signal WriteB     : STD_LOGIC := '0';
     
-    signal stale_in : std_logic_vector(512-1 downto 0);
-    signal stale_out : std_logic_vector(512-1 downto 0);
+    signal stale_in : std_logic_vector(2**9-1 downto 0);
+    signal stale_out : std_logic_vector(2**9-1 downto 0);
 	
 begin
 
@@ -183,11 +183,6 @@ begin
             Halt <= '1';
             MemRq <= '1';
             
-            -- Replace data
-            if Reset = '1' then
-                stale_in <= (others => '1');
-            else
-                
                 if (FaultA = '1' and FaultB = '1' and CacheAddrA = CacheAddrB) then
                     MemAddr <= PCA;
                     WriteA <= '1';
@@ -208,7 +203,6 @@ begin
                     stale_in <= stale_out;
                     stale_in(to_integer(unsigned(PCB))) <= '0';
                 end if;
-            end if;
 		end if;
 	end process;
 	

@@ -14,9 +14,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity genetic_pipeline is
     generic (
         NUM_PROC     : natural := 4;
-        ADDR_WIDTH   : natural := 9;
-        DATA_WIDTH   : natural := 64;
-        RANDOM_WIDTH : natural := 32
+        DATA_WIDTH   : natural := 64
     );
     port (
         REQUEST_0 : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
@@ -180,9 +178,14 @@ architecture Behavioral of genetic_pipeline is
     end component;
     
     -- Constants
+    constant ADDR_WIDTH : integer := 9;
+    constant RANDOM_WIDTH : integer := DATA_WIDTH/2;
+    
+    -- Settings widths
     constant settings_width_selection : integer := 5;
     constant settings_width_crossover : integer := 3;
     constant settings_width_mutation  : integer := 8;
+    
     
     -- Rated Pool signals
     signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);

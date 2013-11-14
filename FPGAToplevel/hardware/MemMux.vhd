@@ -29,7 +29,7 @@ entity MemMux is
         
         ICTRL_CE    : in    STD_LOGIC;
         ICTRL_WE    : in    STD_LOGIC;
-        ICTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        ICTRL_DATA  : inout STD_LOGIC_VECTOR(DATA_WIDTH*2-1 downto 0);
         ICTRL_ADDR  : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
         ICTRL_LBUB  : in    STD_LOGIC;
         

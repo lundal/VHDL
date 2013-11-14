@@ -20,6 +20,7 @@ package CONSTANTS is
 	constant ADDR_WIDTH				:	integer := 19;
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
+    constant MEMORY_WIDTH           :   integer := 16;
 	
     constant STATE_WIDTH            :   integer := 2;
     constant STATE_PROC             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "00";
