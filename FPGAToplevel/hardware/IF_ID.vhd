@@ -36,44 +36,41 @@ component flip_flop
     );
 end component flip_flop;
 
-type state_type is (STATE_RUNNING, STATE_DISABLED);
-         signal CURRENT_STATE: state_type; 
+    type state_type is (STATE_RUNNING, STATE_DISABLED);
+    signal CURRENT_STATE: state_type := STATE_DISABLED; 
 begin
 
 
-  STATE_MACHINE : process(clk, reset, processor_enable, CURRENT_STATE)
+    STATE_MACHINE : process(clk, reset, processor_enable, CURRENT_STATE)
     begin 
         if reset = '1' then 
             CURRENT_STATE <= STATE_DISABLED;
-         elsif rising_edge(clk) then 
-            if processor_enable = '1' then 
-                if CURRENT_STATE = STATE_DISABLED then
-                    CURRENT_STATE <= STATE_RUNNING;
-                end if;
+        elsif rising_edge(clk) then 
+            if processor_enable = '1' and CURRENT_STATE = STATE_DISABLED then 
+                CURRENT_STATE <= STATE_RUNNING;
             else
                 CURRENT_STATE <= STATE_DISABLED;
             end if;
-         end if;
-end process;
+        end if;
+    end process;
 
 
-TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable, current_state, halt)
-	begin
-			if reset = '1' then 
-				pc_incremented_out <= (others => '0');
-			elsif rising_edge(clk) then 
-				if halt = '0' then 
-					pc_incremented_out <= pc_incremented_in;
-				end if;
+    TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable, current_state, halt)
+    begin
+        if reset = '1' then 
+            pc_incremented_out <= (others => '0');
+        elsif rising_edge(clk) then 
+            if halt = '0' then 
+                pc_incremented_out <= pc_incremented_in;
+            end if;
         end if;
         
         if reset = '0' and CURRENT_STATE = STATE_RUNNING and halt = '0' then
             instruction_out <= instruction_in;
         else 
-				instruction_out <= (others => '0');
-		  end if;
-        
- end process;
+            instruction_out <= (others => '0');
+        end if;
+    end process;
 
 
 --Mappings
