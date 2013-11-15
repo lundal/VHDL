@@ -92,7 +92,7 @@ signal condition_signal			  : std_logic_vector(COND_WIDTH-1 downto 0);
 signal flush 						  : std_logic; 
 
 signal reg_write_signal 		  : std_logic;
-signal mem_op_signal 			  : std_logic_vector(MEM_OP_WIDTH-1 downto 0);
+signal mem_op_signal 			  : MEM_OP_TYPE;
 signal gene_op_signal 			  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);	
 
 
@@ -111,7 +111,7 @@ port map (
         DATA_OUT => genetic_data_out, 
         
         -- To/from processor
-        OP       => gene_op_in,
+        OP       => gene_op_signal,
         FITNESS  => fitness_in,
         GENE_IN  => gene_in,
         GENE_OUT => gene_out,
@@ -137,7 +137,7 @@ port map (
         MEM_DATA_IN  => data_mem_bus_in, 
         MEM_DATA_OUT => data_mem_bus_out, 
         
-        OP   => mem_op_in, 
+        OP   => mem_op_signal, 
         HALT => mem_halt_signal, 
         CLK  => clk 
     );
@@ -146,7 +146,7 @@ port map (
 conditional_unit : entity work.conditional_unit 
 generic map(N => DATA_WIDTH)
 port map (
-		     COND => condition_signal,
+		     COND => cond_op_in,
 			  ALU_RES => res_signal,
 			  ALU_OVF => overflow_in,
 		     EXEC => execute_signal
@@ -183,31 +183,36 @@ begin
 	elsif rising_edge(clk) then
 		if flush = '1' then
 			flush_counter <= flush_counter + "01";
-			condition_signal <= "0000";
 			reg_write_out <= '0';
 			call_out <= '0';
+			mem_op_signal <= MEM_NOP;
+			gene_op_signal <= "00";
 			if flush_counter = "11" then 
 				flush <= '0';
 			end if;
+		--Flush pipeline 
 		elsif execute_signal = '1' and jump_in = '1' then
 			flush <= '1';
 			flush_counter <= "01";
-			condition_signal <= "0000";
 			reg_write_out <= '0';
 			call_out <= '0';
-		
+			mem_op_signal <= MEM_NOP; 
+		--Flush current
 		elsif execute_signal <= '0' then
 			reg_write_out <= '0';
 			call_out <= '0';
 			flush_counter <= "00";
 			flush <= '0';
-			condition_signal <= "0000";
+			mem_op_signal <= MEM_NOP; 
+			gene_op_signal <= "00";
+			
 		else 
 			flush_counter <= "00";
 			flush <= '0';
-			condition_signal <= cond_op_in; 
 			reg_write_out <= reg_write_in;
 			call_out <= call_in;
+			mem_op_signal <= mem_op_in; 
+			gene_op_signal <= gene_op_in; 
 		end if;
 	end if;
 end process;
