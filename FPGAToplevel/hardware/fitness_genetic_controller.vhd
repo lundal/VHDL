@@ -80,6 +80,8 @@ begin
                 end if;
                 
             when Store =>
+                request <= GENE_OP_NONE;
+                
                 -- Release halt: Data is written at tick
                 HALT <= '0';
                 

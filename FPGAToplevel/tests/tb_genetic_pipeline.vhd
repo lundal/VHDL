@@ -20,9 +20,7 @@ architecture Behavioral of tb_genetic_pipeline is
     component genetic_pipeline is
         generic (
             NUM_PROC     : natural := 4;
-            ADDR_WIDTH   : natural := 9;
-            DATA_WIDTH   : natural := 64;
-            RANDOM_WIDTH : natural := 32
+            DATA_WIDTH   : natural := 64
         );
         port (
             REQUEST_0 : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
@@ -40,7 +38,6 @@ architecture Behavioral of tb_genetic_pipeline is
     signal REQUEST_1 : STD_LOGIC_VECTOR(1-1 downto 0)  := (others => '0');
     signal DATA_IN   : STD_LOGIC_VECTOR(64-1 downto 0) := (others => '1');
     signal RESET     : STD_LOGIC := '0';
-    signal CLK       : STD_LOGIC := '0';
     
     --Outputs
     signal ACK      : STD_LOGIC_VECTOR(1-1 downto 0);
@@ -55,9 +52,7 @@ begin
     UUT : genetic_pipeline
     generic map (
         NUM_PROC => 1,
-        ADDR_WIDTH => 9,
-        DATA_WIDTH => 64,
-        RANDOM_WIDTH => 32
+        DATA_WIDTH => 64
     )
     port map (
         REQUEST_0 => REQUEST_0,

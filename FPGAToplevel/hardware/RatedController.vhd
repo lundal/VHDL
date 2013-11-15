@@ -55,7 +55,7 @@ begin
 	-- Check if any settings request
 	has_request_set <= '0' when REQUEST_SET(NUM_PROC-1 downto 0) = (NUM_PROC-1 downto 0 => '0') else '1';
     
-	STATE_SELECTOR : process(CLK, state, has_request, has_request_set, request_int, ack_int, REQUEST_GENE)
+	STATE_MACHINE : process(CLK, state, has_request, has_request_set, request_int, ack_int, REQUEST_GENE)
         variable chosen_set : integer range 0 to NUM_PROC-1 := 0;
 		variable chosen     : integer range 0 to NUM_PROC   := 0;
 	begin
@@ -63,8 +63,11 @@ begin
             -- Reset Ack signals
             ack_int <= (others => '0');
             
-            -- Reset write settings
+            -- Reset signals
+            INCREMENT <= '0';
             WRITE_SET <= '0';
+            WRITE_FIT <= '0';
+            WRITE_GENE <= '0';
             
             case state is
                 when Choose =>
@@ -92,9 +95,6 @@ begin
                         -- Send ack
                         ack_int(chosen_set) <= '1';
                         
-                        -- Write settings
-                        WRITE_SET <= '1';
-                        
                     -- Check if there exists a request
                     elsif (has_request = '1') then
                         
@@ -121,57 +121,42 @@ begin
                         
                     end if;
                     
-                    -- Choose next state
+                    -- Settings chosen
                     if (has_request_set = '1') then
+                        WRITE_SET <= '1';
+                        
                         state <= Choose;
+                    
+                    -- Genetic chosen
                     elsif (has_request = '1' and chosen = NUM_PROC) then
                         state <= Gene;
+                    
+                    -- Processor chosen
                     elsif (has_request = '1') then
+                        INCREMENT <= '1';
+                        WRITE_FIT <= '1';
+                        
                         state <= Proc;
+                    
+                    -- No request
                     else
                         state <= Choose;
                     end if;
+                
                 when Gene =>
                     if (REQUEST_GENE = '0') then
                         state <= Choose;
                     else
                         state <= Gene;
                     end if;
+                
                 when Proc =>
+                    INCREMENT <= '1';
+                    WRITE_GENE <= '1';
+                    
                     state <= Choose;
             end case;
 		end if;
-	end process;
-    
-	STATE_MACHINE : process(state, ack_int)
-	begin
-        case state is
-            when Choose =>
-                -- Ack given to genetic
-                if (ack_int(0) = '1') then
-                    INCREMENT <= '0';
-                    WRITE_FIT <= '0';
-                    WRITE_GENE <= '0';
-                -- Ack given to processor
-                elsif (ack_int /= (NUM_PROC downto 0 => '0')) then
-                    INCREMENT <= '1';
-                    WRITE_FIT <= '1';
-                    WRITE_GENE <= '0';
-                -- No ack given
-                else
-                    INCREMENT <= '0';
-                    WRITE_FIT <= '0';
-                    WRITE_GENE <= '0';
-                end if;
-            when Gene =>
-                INCREMENT <= '0';
-                WRITE_FIT <= '0';
-                WRITE_GENE <= '0';
-            when Proc =>
-                INCREMENT <= '1';
-                WRITE_FIT <= '0';
-                WRITE_GENE <= '1';
-        end case;
 	end process;
     
 end Behavioral;

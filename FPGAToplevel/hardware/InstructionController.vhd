@@ -35,9 +35,6 @@ end InstructionController;
 
 architecture Behavioral of InstructionController is
 	
-	type StateType is (Choose, Feed);
-	
-	signal State       : StateType := Choose;
 	signal HasRequest  : STD_LOGIC := '0';
 	
 begin
@@ -51,45 +48,36 @@ begin
 	-- Check if any 
 	HasRequest <= '0' when Request(NUM_CACHES-1 downto 0) = (NUM_CACHES-1 downto 0 => '0') else '1';
 	
-	StateSelector : process(Clock, Enabled, HasRequest)
+	process(Clock, Enabled, HasRequest)
+        variable Chosen : integer range 0 to NUM_CACHES-1 := 0;
 	begin
-		if rising_edge(Clock) then
-			-- Only go to Feed if there is a request and it is enabled
-			if Enabled = '1' and State = Choose and HasRequest = '1' then
-				State <= Feed;
-			else
-				State <= Choose;
-			end if;
-		end if;
-	end process;
-	
-	StateMachine : process(State, HasRequest, Request)
-		variable Chosen : integer range 0 to NUM_CACHES := 0;
-	begin
-		if State = Choose then
-			-- Reset Ack signals
-			Ack <= (others => '0');
-			
-			-- Choose
-			for I in 0 to NUM_CACHES-1 loop
-				if Request(Chosen) = '0' then
-					if Chosen = NUM_CACHES-1 then
-						Chosen := 0;
-					else
-						Chosen := Chosen + 1;
-					end if;
-				end if;
-			end loop;
-			
-			-- Send Ack
-			if HasRequest = '1' then
-				Ack(Chosen) <= '1';
-			end if;
-		else
-			-- Let the cache nom on the memory!
-			
-			-- This is the only cycle with access, so reset Ack
-			Ack <= (others => '0');
+		if rising_edge(Clock) and Enabled = '1' and HasRequest = '1' then
+            -- Reset ack
+            Ack <= (others => '0');
+            
+            
+            -- Go to next (to prevent starvation)
+            if Chosen = NUM_CACHES-1 then
+                Chosen := 0;
+            else
+                Chosen := Chosen + 1;
+            end if;
+                    
+            -- Choose (or return to first)
+            for I in 0 to NUM_CACHES-2 loop
+                if Request(Chosen) = '0' then
+                    if Chosen = NUM_CACHES-1 then
+                        Chosen := 0;
+                    else
+                        Chosen := Chosen + 1;
+                    end if;
+                end if;
+            end loop;
+            
+            -- Send Ack
+            if HasRequest = '1' then
+                Ack(Chosen) <= '1';
+            end if;
 		end if;
 	end process;
 	

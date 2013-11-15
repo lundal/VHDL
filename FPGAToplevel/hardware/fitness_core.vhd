@@ -413,7 +413,6 @@ end process;
 decode_stage : entity work.decode_stage
 port map (
     clk => clk,
-    reset => reset,
     processor_enable => processor_enable,
 
     --Control signals
