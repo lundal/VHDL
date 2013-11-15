@@ -63,7 +63,7 @@ begin
                 end if;
 
                 -- Choose next (or return to first if none)
-                for i in 0 to NUM_PROC-1 loop
+                for i in 0 to NUM_PROC-2 loop
                     if request_int(chosen) = '0' then
                         if (chosen = NUM_PROC) then
                             chosen := 0;
