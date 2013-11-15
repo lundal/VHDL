@@ -18,7 +18,7 @@ PROGRAM_COUNTER : process(clk, reset)
     begin 
         addr_out <= (others => '0');
         if reset = '1' then 
-            addr_out <= (others => '0');
+            addr_out <= "0000000000000000001";
          elsif rising_edge(clk) then 
             if pc_update = '1' then 
                 addr_out <= addr;

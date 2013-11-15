@@ -17,15 +17,18 @@ entity MemMuxA is
     port(
         CE     : out STD_LOGIC;
         WE     : out STD_LOGIC;
-        DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DATA_IN : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         
         A_CE   : in  STD_LOGIC;
         A_WE   : in  STD_LOGIC;
-        A_DATA : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        A_DATA_IN : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        A_DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         
         B_CE   : in  STD_LOGIC;
         B_WE   : in  STD_LOGIC;
-        B_DATA : inout STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        B_DATA_IN : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        B_DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
         
         Sel    : in  STD_LOGIC
     );
@@ -37,10 +40,11 @@ begin
     
     CE   <= A_CE when Sel = '0' else B_CE;
     WE   <= A_WE when Sel = '0' else B_WE;
-    DATA <= A_DATA when Sel = '0' else B_DATA;
     
-    A_DATA <= DATA when Sel = '0' and A_WE = '1' else (others => 'Z');
-    B_DATA <= DATA when Sel = '1' and B_WE = '1' else (others => 'Z');
+    DATA_OUT <= A_DATA_IN when Sel = '0' else B_DATA_IN;
+    
+    A_DATA_OUT <= DATA_IN;
+    B_DATA_OUT <= DATA_IN;
     
 end Behavioral;
 

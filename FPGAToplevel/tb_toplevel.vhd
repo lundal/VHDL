@@ -92,36 +92,36 @@ BEGIN
           Clock => Clock
         );
         
---    inst_mem : entity work.fakeinstmem
+    inst_mem : entity work.fakeinstmem
+    port map(
+		IMEM_ADDR => IMEM_ADDR,
+		IMEM_DATA_LO => IMEM_DATA_LO,
+		IMEM_WE_LO => IMEM_WE_LO,
+		IMEM_CE_LO => IMEM_CE_LO,
+		IMEM_DATA_HI => IMEM_DATA_HI,
+		IMEM_WE_HI => IMEM_WE_HI,
+		IMEM_CE_HI => IMEM_CE_HI,
+        IMEM_LBUB => '1',
+        clk => clock
+	);
+    
+--    inst_mem_hi : entity work.fakemem
 --    port map(
---		IMEM_ADDR => IMEM_ADDR,
---		IMEM_DATA_LO => IMEM_DATA_LO,
---		IMEM_WE_LO => IMEM_WE_LO,
---		IMEM_CE_LO => IMEM_CE_LO,
---		IMEM_DATA_HI => IMEM_DATA_HI,
---		IMEM_WE_HI => IMEM_WE_HI,
---		IMEM_CE_HI => IMEM_CE_HI,
---        IMEM_LBUB => '1',
---        clk => clock
+--		ADDR => IMEM_ADDR,
+--		DATA => IMEM_DATA_HI,
+--		WE => IMEM_WE_HI,
+--		CE => IMEM_CE_HI,
+--		CLK => Clock
 --	);
-    
-    inst_mem_hi : entity work.fakemem
-    port map(
-		ADDR => IMEM_ADDR,
-		DATA => IMEM_DATA_HI,
-		WE => IMEM_WE_HI,
-		CE => IMEM_CE_HI,
-		CLK => Clock
-	);
-    
-    inst_mem_lo : entity work.fakemem
-    port map(
-		ADDR => IMEM_ADDR,
-		DATA => IMEM_DATA_LO,
-		WE => IMEM_WE_LO,
-		CE => IMEM_CE_LO,
-		CLK => Clock
-	);
+--    
+--    inst_mem_lo : entity work.fakemem
+--    port map(
+--		ADDR => IMEM_ADDR,
+--		DATA => IMEM_DATA_LO,
+--		WE => IMEM_WE_LO,
+--		CE => IMEM_CE_LO,
+--		CLK => Clock
+--	);
     
     data_mem : entity work.fakemem
     port map(

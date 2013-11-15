@@ -31,7 +31,8 @@ entity memory_data_controller is
         
         -- Memory
         MEM_ADDR   : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-        MEM_DATA   : inout STD_LOGIC_VECTOR(DATA_WIDTH/4-1 downto 0);
+        MEM_DATA_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH/4-1 downto 0);
+        MEM_DATA_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH/4-1 downto 0);
         MEM_ENABLE : out STD_LOGIC;
         MEM_WRITE  : out STD_LOGIC;
         MEM_LBUB   : out STD_LOGIC;
@@ -51,7 +52,6 @@ architecture Behavioral of memory_data_controller is
     signal read_2 : STD_LOGIC := '0';
     signal read_3 : STD_LOGIC := '0';
     signal fetch : STD_LOGIC := '0';
-    signal write : STD_LOGIC := '0';
     signal increment : STD_LOGIC := '0';
     
     -- Flip-Flop data
@@ -73,31 +73,31 @@ architecture Behavioral of memory_data_controller is
     
 begin
     
-    FF_READ_0 : process (CLK, read_0, MEM_DATA)
+    FF_READ_0 : process (CLK, read_0, MEM_DATA_IN)
     begin 
         if rising_edge(CLK) and read_0 ='1' then 
-            read_0_data <= MEM_DATA;
+            read_0_data <= MEM_DATA_IN;
         end if;
     end process;
     
-    FF_READ_1 : process (CLK, read_1, MEM_DATA)
+    FF_READ_1 : process (CLK, read_1, MEM_DATA_IN)
     begin 
         if rising_edge(CLK) and read_1 ='1' then 
-            read_1_data <= MEM_DATA;
+            read_1_data <= MEM_DATA_IN;
         end if;
     end process;
     
-    FF_READ_2 : process (CLK, read_2, MEM_DATA)
+    FF_READ_2 : process (CLK, read_2, MEM_DATA_IN)
     begin 
         if rising_edge(CLK) and read_2 ='1' then 
-            read_2_data <= MEM_DATA;
+            read_2_data <= MEM_DATA_IN;
         end if;
     end process;
     
-    FF_READ_3 : process (CLK, read_3, MEM_DATA)
+    FF_READ_3 : process (CLK, read_3, MEM_DATA_IN)
     begin 
         if rising_edge(CLK) and read_3 ='1' then 
-            read_3_data <= MEM_DATA;
+            read_3_data <= MEM_DATA_IN;
         end if;
     end process;
 
@@ -148,7 +148,7 @@ begin
                  write_data(DATA_WIDTH*1/4-1 downto DATA_WIDTH*0/4);
     
     -- Tristate
-    MEM_DATA <= write_out when write = '1' else (others => 'Z');
+    MEM_DATA_OUT <= write_out;
     
     -- Memory address
     MEM_ADDR <= addr & counter;
@@ -283,17 +283,11 @@ begin
                 MEM_ENABLE <= '0';
                 MEM_WRITE <= '0';
                 MEM_LBUB <= '0';
-                
-                write <= '1';
             
             when Write2 =>
                 MEM_ENABLE <= '1';
                 MEM_WRITE <= '1';
                 MEM_LBUB <= '1';
-                
-                if falling_edge(CLK) then
-                    write <= '0';
-                end if;
                 
                 increment <= '1';
             

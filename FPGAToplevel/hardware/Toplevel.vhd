@@ -1,4 +1,4 @@
--- Toplevel design for the project
+            -- Toplevel design for the project
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -48,7 +48,8 @@ architecture behavioral of toplevel is
     signal InstWE   : STD_LOGIC;
     signal InstLBUB : STD_LOGIC;
     signal InstAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal InstData : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+    signal InstData_IN : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+    signal InstData_OUT : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
     --signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
     --signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
     signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
@@ -61,7 +62,8 @@ architecture behavioral of toplevel is
     signal DataWE   : STD_LOGIC;
     signal DataLBUB : STD_LOGIC;
     signal DataAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal DataData : STD_LOGIC_VECTOR(16-1 downto 0);
+    signal DataData_IN : STD_LOGIC_VECTOR(16-1 downto 0);
+    signal DataData_OUT : STD_LOGIC_VECTOR(16-1 downto 0);
     signal DataRq0  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
     signal DataRq1  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
     signal DataAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
@@ -94,16 +96,89 @@ architecture behavioral of toplevel is
     signal instruction_cache_PC : ARRAY_PC_TYPE;
     signal instruction_cache_Inst : ARRAY_INST_TYPE;
     
-
-    
     -- Genetic signals
     signal genetic_request_0 : std_logic_vector(NUM_PROC_PAIRS*2-1 downto 0);
     signal genetic_request_1 : std_logic_vector(NUM_PROC_PAIRS*2-1 downto 0);
     signal genetic_ack : std_logic_vector(NUM_PROC_PAIRS*2-1 downto 0);
     signal genetic_rated_bus : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal genetic_unrated_bus : std_logic_vector(DATA_WIDTH-1 downto 0);
+    
+    -- Uni-directional signals
+    signal SCU_DATA_OE : STD_LOGIC;
+    signal SCU_DATA_IN     : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    signal SCU_DATA_OUT    : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    
+    signal IMEM_DATA_HI_OE : STD_LOGIC;
+    signal IMEM_DATA_HI_IN    : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    signal IMEM_DATA_HI_OUT   : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    
+    signal IMEM_DATA_LO_OE : STD_LOGIC;
+    signal IMEM_DATA_LO_IN    : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    signal IMEM_DATA_LO_OUT   : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    
+    signal DMEM_DATA_OE : STD_LOGIC;
+    signal DMEM_DATA_IN   : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    signal DMEM_DATA_OUT  : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
+    
+    signal IMEM_CE_HI_INT : STD_LOGIC;
+    signal IMEM_CE_LO_INT : STD_LOGIC;
+    signal IMEM_WE_HI_INT : STD_LOGIC;
+    signal IMEM_WE_LO_INT : STD_LOGIC;
+    signal DMEM_CE_INT : STD_LOGIC;
+    signal DMEM_WE_INT : STD_LOGIC;
 
 begin
+    
+    SCU_DATA_OE <= SCU_WE or SCU_CE;
+    IMEM_DATA_HI_OE <= IMEM_CE_HI_INT or IMEM_WE_HI_INT;
+    IMEM_DATA_LO_OE <= IMEM_CE_LO_INT or IMEM_WE_LO_INT;
+    DMEM_DATA_OE <= DMEM_CE_INT or DMEM_WE_INT;
+    
+    SPLIT_SCU_DATA : process(SCU_DATA_OE , SCU_DATA, SCU_DATA_OUT)
+    begin
+        if SCU_DATA_OE = '0' then
+            SCU_DATA <= (others => 'Z');
+        else
+            SCU_DATA <= SCU_DATA_OUT;
+        end if;
+        
+        SCU_DATA_IN <= SCU_DATA;
+    end process;
+    
+    SPLIT_IMEM_DATA_HI : process(IMEM_DATA_HI_OE, IMEM_DATA_HI, IMEM_DATA_HI_OUT)
+    begin
+        if IMEM_DATA_HI_OE = '0' then
+            IMEM_DATA_HI <= (others => 'Z');
+        else
+            IMEM_DATA_HI <= IMEM_DATA_HI_OUT;
+        end if;
+        
+        IMEM_DATA_HI_IN <= IMEM_DATA_HI;
+    end process;
+    
+    SPLIT_IMEM_DATA_LO : process(IMEM_DATA_LO_OE, IMEM_DATA_LO, IMEM_DATA_LO_OUT)
+    begin
+        if IMEM_DATA_LO_OE = '0' then
+            IMEM_DATA_LO <= (others => 'Z');
+        else
+            IMEM_DATA_LO <= IMEM_DATA_LO_OUT;
+        end if;
+        
+        IMEM_DATA_LO_IN <= IMEM_DATA_LO;
+    end process;
+    
+    SPLIT_DMEM_DATA : process(DMEM_DATA_OE, DMEM_DATA, DMEM_DATA_OUT)
+    begin
+        if DMEM_DATA_OE = '0' then
+            DMEM_DATA <= (others => 'Z');
+        else
+            DMEM_DATA <= DMEM_DATA_OUT;
+        end if;
+        
+        DMEM_DATA_IN <= DMEM_DATA;
+    end process;
+    
+    
     
     MemMux : entity work.MemMux
     generic map(
@@ -115,37 +190,51 @@ begin
         
         SCU_CE      => SCU_CE,
         SCU_WE      => SCU_WE,
-        SCU_DATA    => SCU_DATA,
+        SCU_DATA_IN => SCU_DATA_IN,
+        SCU_DATA_OUT => SCU_DATA_OUT,
         SCU_ADDR    => SCU_ADDR,
         SCU_LBUB    => SCU_LBUB,
         
         ICTRL_CE    => InstCE,
         ICTRL_WE    => InstWE,
-        ICTRL_DATA  => InstData,
+        ICTRL_DATA_IN => InstData_IN,
+        ICTRL_DATA_OUT => InstData_OUT,
         ICTRL_ADDR  => InstAddr,
         ICTRL_LBUB  => InstLBUB,
         
         DCTRL_CE    => DataCE,
         DCTRL_WE    => DataWE,
-        DCTRL_DATA  => DataData,
+        DCTRL_DATA_IN => DataData_IN,
+        DCTRL_DATA_OUT => DataData_OUT,
         DCTRL_ADDR  => DataAddr,
         DCTRL_LBUB  => DataLBUB,
         
-        IMEM_CE_HI      => IMEM_CE_HI,
-        IMEM_CE_LO      => IMEM_CE_LO,
-        IMEM_WE_HI      => IMEM_WE_HI,
-        IMEM_WE_LO      => IMEM_WE_LO,
-        IMEM_DATA_HI    => IMEM_DATA_HI,
-        IMEM_DATA_LO    => IMEM_DATA_LO,
+        IMEM_CE_HI      => IMEM_CE_HI_INT,
+        IMEM_CE_LO      => IMEM_CE_LO_INT,
+        IMEM_WE_HI      => IMEM_WE_HI_INT,
+        IMEM_WE_LO      => IMEM_WE_LO_INT,
+        IMEM_DATA_HI_IN => IMEM_DATA_HI_IN,
+        IMEM_DATA_HI_OUT => IMEM_DATA_HI_OUT,
+        IMEM_DATA_LO_IN => IMEM_DATA_LO_IN,
+        IMEM_DATA_LO_OUT => IMEM_DATA_LO_OUT,
         IMEM_ADDR       => IMEM_ADDR,
         IMEM_LBUB       => IMEM_LBUB,
         
-        DMEM_CE     => DMEM_CE,
-        DMEM_WE     => DMEM_WE,
-        DMEM_DATA   => DMEM_DATA,
+        DMEM_CE     => DMEM_CE_INT,
+        DMEM_WE     => DMEM_WE_INT,
+        DMEM_DATA_IN => DMEM_DATA_IN,
+        DMEM_DATA_OUT => DMEM_DATA_OUT,
         DMEM_ADDR   => DMEM_ADDR,
         DMEM_LBUB   => DMEM_LBUB
     );
+    
+    IMEM_CE_HI <= IMEM_CE_HI_INT;
+    IMEM_CE_LO <= IMEM_CE_LO_INT;
+    DMEM_CE <= DMEM_CE_INT;
+    
+    IMEM_WE_HI <= IMEM_WE_HI_INT;
+    IMEM_WE_LO <= IMEM_WE_LO_INT;
+    DMEM_WE <= DMEM_WE_INT;
 
     InstructionController : entity work.InstructionController
     generic map(
@@ -162,7 +251,7 @@ begin
         Data    => InstDataBus,
         
         MemAddr => InstAddr,
-        MemData => InstData,
+        MemData => InstData_OUT,
         MemCE   => InstCE,
         MemWE   => InstWE,
         MemLBUB => InstLBUB,
@@ -190,7 +279,8 @@ begin
         
         -- Memory
         MEM_ADDR   => DataAddr,
-        MEM_DATA   => DataData,
+        MEM_DATA_IN => DataData_OUT,
+        MEM_DATA_OUT => DataData_IN,
         MEM_ENABLE => DataCE,
         MEM_WRITE  => DataWE,
         MEM_LBUB   => DataLBUB,

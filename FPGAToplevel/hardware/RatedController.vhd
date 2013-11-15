@@ -151,7 +151,6 @@ begin
                     end if;
                 
                 when Proc =>
-                    INCREMENT <= '1';
                     WRITE_GENE <= '1';
                     
                     state <= Choose;

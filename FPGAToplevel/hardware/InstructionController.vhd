@@ -23,7 +23,7 @@ entity InstructionController is
 		MemWE   : out   STD_LOGIC;
 		MemLBUB : out   STD_LOGIC;
 		MemAddr	: out   STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-		MemData : inout STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+		MemData : in    STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
 		Request : in    STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
 		Ack     : out   STD_LOGIC_VECTOR(NUM_CACHES-1 downto 0);
 		Addr    : in    STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
@@ -51,32 +51,35 @@ begin
 	process(Clock, Enabled, HasRequest)
         variable Chosen : integer range 0 to NUM_CACHES-1 := 0;
 	begin
-		if rising_edge(Clock) and Enabled = '1' and HasRequest = '1' then
+		if rising_edge(Clock)then
             -- Reset ack
             Ack <= (others => '0');
             
+            if Enabled = '1' and HasRequest = '1' then
             
-            -- Go to next (to prevent starvation)
-            if Chosen = NUM_CACHES-1 then
-                Chosen := 0;
-            else
-                Chosen := Chosen + 1;
-            end if;
-                    
-            -- Choose (or return to first)
-            for I in 0 to NUM_CACHES-2 loop
-                if Request(Chosen) = '0' then
-                    if Chosen = NUM_CACHES-1 then
-                        Chosen := 0;
-                    else
-                        Chosen := Chosen + 1;
-                    end if;
+                -- Go to next (to prevent starvation)
+                if Chosen = NUM_CACHES-1 then
+                    Chosen := 0;
+                else
+                    Chosen := Chosen + 1;
                 end if;
-            end loop;
+                        
+                -- Choose (or return to first)
+                for I in 0 to NUM_CACHES-2 loop
+                    if Request(Chosen) = '0' then
+                        if Chosen = NUM_CACHES-1 then
+                            Chosen := 0;
+                        else
+                            Chosen := Chosen + 1;
+                        end if;
+                    end if;
+                end loop;
+                
+                -- Send Ack
+                if HasRequest = '1' then
+                    Ack(Chosen) <= '1';
+                end if;
             
-            -- Send Ack
-            if HasRequest = '1' then
-                Ack(Chosen) <= '1';
             end if;
 		end if;
 	end process;
