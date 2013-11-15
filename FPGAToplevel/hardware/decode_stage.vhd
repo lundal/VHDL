@@ -11,7 +11,6 @@ use WORK.CONSTANTS.ALL;
 
 entity decode_stage is
     port( clk                   : in STD_LOGIC;
-          reset                 : in STD_LOGIC;
           processor_enable      : in STD_LOGIC;
           
           --Control signals
@@ -38,27 +37,6 @@ end decode_stage;
 
 architecture Behavioral of decode_stage is
 
--- COMPONENT declerations
-component multiplexor
-    generic(N                   : integer);
-    Port ( sel                  : in  STD_LOGIC;
-           in0                  : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           in1                  : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           output               : out  STD_LOGIC_VECTOR (N-1 downto 0));
-end component;
-
-component register_file 
-    port (CLK                   : in  STD_LOGIC;
-          RESET                 : in  STD_LOGIC;
-          RW                    : in  STD_LOGIC; 
-          RS_ADDR               : in  STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0); 
-          RT_ADDR               : in  STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          RD_ADDR               : in  STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          WRITE_DATA            : in  STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
-          RS                    : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0);
-          RT                    : out STD_LOGIC_VECTOR(REG_WIDTH-1 downto 0));
-end component;
-
 -- Signal declerations
 signal rd_addr_internal                 : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
 signal rsa_internal                 : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
@@ -80,14 +58,14 @@ signal reg_op2                          : std_logic_vector(REG_ADDR_WIDTH-1 down
 
 begin
 
-REG_SRC_MUX_MAP : multiplexor
+REG_SRC_MUX_MAP : entity WORK.multiplexor
 generic map(N => REG_ADDR_WIDTH)
 port map( sel => reg_src, 
           in0 =>rsa_internal, 
           in1 => rd_addr_internal, 
           output => reg_op1);
 
-REG_STORE_MUX_MAP : multiplexor 
+REG_STORE_MUX_MAP : entity WORK.multiplexor 
 generic map(N => REG_ADDR_WIDTH)
 port map(sel => reg_store, 
         in0 =>rt_addr_internal, 
@@ -95,7 +73,7 @@ port map(sel => reg_store,
         output =>reg_op2);
         
 
-IMM_MUX_MAP : multiplexor 
+IMM_MUX_MAP : entity WORK.multiplexor 
 generic map(N => DATA_WIDTH)
 port map(sel =>imm_src, 
          in0 =>immediate_value_out_internal, 
@@ -103,9 +81,8 @@ port map(sel =>imm_src,
          output => immediate); 
 
 
-REGISTER_FILE_MAP : register_file
+REGISTER_FILE_MAP : entity WORK.register_file
 port map (CLK => clk, 
-          RESET => reset, 
           RW => reg_write, 
           RS_ADDR => reg_op1, 
           RT_ADDR => reg_op2, 
