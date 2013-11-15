@@ -178,6 +178,7 @@ architecture Behavioral of fitness_core is
 --GLOBAL SIGNALS--
 	signal halt_mem_signal 			       : std_logic;
 	signal halt_pipeline_signal 	 		 : std_logic; 
+	signal pc_update_signal 				 : std_logic;
 begin
 
 --Halt if one of them are true
@@ -383,11 +384,12 @@ port map (
 
 --STAGES-- 
 
+pc_update_signal <= processor_enable and not halt_pipeline_signal; 
 
 fetch_stage : entity work.fetch_stage
 port map ( clk => clk, 
            reset => reset,
-           pc_update => processor_enable,
+           pc_update => pc_update_signal,
            pc_src  => jump_signal_mem, 
 			  pc_jump_addr => pc_jump_addr_signal_mem, 
            pc_incremented 	=> pc_incremented_signal_fetch,
