@@ -27,7 +27,7 @@ entity fitness_core is
 			 data_mem_bus_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           data_mem_addr_bus		 		: out STD_LOGIC_VECTOR(ADDR_WIDTH-2-1 downto 0);
           data_mem_bus_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          dmem_data_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          
           
 			 
 			 --Bus signals related to genetic storage

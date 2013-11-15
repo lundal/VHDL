@@ -58,14 +58,13 @@ end process;
 
 
 TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable, current_state, halt)
-        begin
-                if reset = '1' then 
-                        pc_incremented_out <= (others => '0');
-                        instruction_out <= (others => '0');
-                elsif rising_edge(clk) then 
-                        if halt = '0' then 
-                           pc_incremented_out <= pc_incremented_in;
-                        end if;
+	begin
+			if reset = '1' then 
+				pc_incremented_out <= (others => '0');
+			elsif rising_edge(clk) then 
+				if halt = '0' then 
+					pc_incremented_out <= pc_incremented_in;
+				end if;
         end if;
         
         if reset = '0' and CURRENT_STATE = STATE_RUNNING and halt = '0' then
