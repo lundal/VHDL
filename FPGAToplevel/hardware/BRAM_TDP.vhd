@@ -103,7 +103,7 @@ begin
 		DOB_REG => 0, -- Optional port B output register (0 or 1)
 		READ_WIDTH_A => DATA_WIDTH, -- Valid values are 1-36
 		READ_WIDTH_B => DATA_WIDTH, -- Valid values are 1-36
-		SIM_COLLISION_CHECK => "ALL", -- Collision check enable "ALL", "WARNING_ONLY", "GENERATE_X_ONLY" or "NONE"
+		SIM_COLLISION_CHECK => "NONE", -- Collision check enable "ALL", "WARNING_ONLY", "GENERATE_X_ONLY" or "NONE"
 		WRITE_MODE_A => WRITE_MODE, -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
 		WRITE_MODE_B => WRITE_MODE, -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
 		WRITE_WIDTH_A => DATA_WIDTH, -- Valid values are 1-36
