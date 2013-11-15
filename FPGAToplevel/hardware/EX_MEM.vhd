@@ -158,11 +158,13 @@ CONTROL_SIGNALS : process(clk, reset, halt)
            jump_out <= '0'; 
 			  reg_write_out <= '0';
 			  mem_op_out <= MEM_NOP;
+			  overflow_out <= '0';
         elsif rising_edge(clk) and halt = '0' then 
            call_out <= call_in;
            jump_out <= jump_in;
 			  reg_write_out <= reg_write_in; 
 			  mem_op_out <= mem_op_in; 
+			  overflow_out <= overflow_in;  
         end if;
 end process CONTROL_SIGNALS;    
 

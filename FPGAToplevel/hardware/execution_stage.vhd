@@ -30,7 +30,7 @@ entity execution_stage is
           immediate           : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           rsa                 : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
           rta                 : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
-          rda                 : in STD_LOGIC_VECTOR(REG_ADDR_WIDTH-1 downto 0);
+          
           
           -- From other stages
           stage4_alu_result   : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);

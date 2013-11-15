@@ -57,7 +57,7 @@ begin
 end process;
 
 
-TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable, current_state)
+TEST : process (reset, clk, pc_incremented_in, instruction_in, processor_enable, current_state, halt)
         begin
                 if reset = '1' then 
                         pc_incremented_out <= (others => '0');
