@@ -39,8 +39,8 @@ begin
     WE   <= A_WE when Sel = '0' else B_WE;
     DATA <= A_DATA when Sel = '0' else B_DATA;
     
-    A_DATA <= DATA when Sel = '0' else (others => 'Z');
-    B_DATA <= DATA when Sel = '1' else (others => 'Z');
+    A_DATA <= DATA when Sel = '0' and A_WE = '1' else (others => 'Z');
+    B_DATA <= DATA when Sel = '1' and B_WE = '1' else (others => 'Z');
     
 end Behavioral;
 

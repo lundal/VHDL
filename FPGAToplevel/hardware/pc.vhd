@@ -16,6 +16,7 @@ begin
 
 PROGRAM_COUNTER : process(clk, reset)
     begin 
+        addr_out <= (others => '0');
         if reset = '1' then 
             addr_out <= (others => '0');
          elsif rising_edge(clk) then 
