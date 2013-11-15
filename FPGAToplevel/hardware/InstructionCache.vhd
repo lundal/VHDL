@@ -128,22 +128,7 @@ begin
     CacheAddrA <= PCA(BRAM_ADDR_WIDTH-1 downto 0) when Reset = '0' else CounterA;
     CacheAddrB <= PCB(BRAM_ADDR_WIDTH-1 downto 0) when Reset = '0' else CounterB;
     
-	StateSelector : process(Clock, State)
-	begin
-		if rising_edge(Clock) then
-			-- Go to replace after receiving memory access after a fault
-			if State = Check and (FaultA = '1' or FaultB = '1') and MemAck = '1' then
-				State <= Replace;
-            -- Stay in replace while connected to memory
-            elsif State = Replace and MemAck = '1' then
-                State <= Replace;
-			else
-				State <= Check;
-			end if;
-		end if;
-	end process;
-    
-	StateMachine : process(State, FaultA, FaultB, PCA, PCB, CacheAddrA, CacheAddrB, Reset)
+	StateMachine : process(FaultA, FaultB, PCA, PCB, CacheAddrA, CacheAddrB, Reset, MemAck)
 	begin
         if Reset = '1' then
             -- Disconnect from memory
@@ -155,7 +140,36 @@ begin
             
             Halt <= '1';
             MemRq <= '0';
-        elsif State = Check then
+        elsif FaultA = '1' or FaultB = '1' then
+            Halt <= '1';
+            
+            -- Ask for access and 
+            if MemAck = '0' then
+                MemAddr <= (others => 'Z');
+                MemRq <= '1';
+            else
+                MemRq <= '0';
+                if (CacheAddrA = CacheAddrB) then
+                    MemAddr <= PCA;
+                elsif (FaultA = '1') then
+                    MemAddr <= PCA;
+                else
+                    MemAddr <= PCB;
+                end if;
+            end if;
+            
+            -- Fetch data until correct (might get lucky)
+            if (CacheAddrA = CacheAddrB) then
+                WriteA <= '1';
+                WriteB <= '1';
+            elsif (FaultA = '1') then
+                WriteA <= '1';
+                WriteB <= '0';
+            else
+                WriteA <= '0';
+                WriteB <= '1';
+            end if;
+        else
             -- Disconnect from memory
             MemAddr <= (others => 'Z');
             
@@ -163,32 +177,9 @@ begin
             WriteA <= '0';
             WriteB <= '0';
             
-            -- Check for faults
-            if (FaultA = '1' or FaultB = '1') then
-                Halt <= '1';
-                MemRq <= '1';
-            else
-                Halt <= '0';
-                MemRq <= '0';
-            end if;
-		else
-            Halt <= '1';
-            MemRq <= '1';
-            
-                if (CacheAddrA = CacheAddrB) then
-                    MemAddr <= PCA;
-                    WriteA <= '1';
-                    WriteB <= '1';
-                elsif (FaultA = '1') then
-                    MemAddr <= PCA;
-                    WriteA <= '1';
-                    WriteB <= '0';
-                else
-                    MemAddr <= PCB;
-                    WriteA <= '0';
-                    WriteB <= '1';
-                end if;
-		end if;
+            Halt <= '0';
+            MemRq <= '0';
+        end if;
 	end process;
 	
 end Behavioral;
