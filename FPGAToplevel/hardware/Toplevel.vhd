@@ -73,7 +73,7 @@ architecture behavioral of toplevel is
     -- instruction cache signals
     signal instruction_cache_MemRq : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
     signal instruction_cache_MemAck : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
-    signal instruction_cache_Halt :  STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
+    signal instruction_cache_Halt :  STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
     signal instruction_cache_MemAddr : std_logic_vector(ADDR_WIDTH-1 downto 0);
     signal instruction_cache_MemData : std_logic_vector(INST_WIDTH-1 downto 0);
     
@@ -234,7 +234,7 @@ begin
             processor_enable => SCU_ENABLE,
             
             --Control signals related to the instruction cache
-            halt_inst => instruction_cache_Halt(i*2),
+            halt_inst => instruction_cache_Halt(i),
             
             --Bus signals related to instruction cache
             imem_address => instruction_cache_PCA(i),
@@ -268,7 +268,7 @@ begin
             processor_enable => SCU_ENABLE,
             
             --Control signals related to the instruction cache
-            halt_inst => instruction_cache_Halt(i*2+1),
+            halt_inst => instruction_cache_Halt(i),
             
             --Bus signals related to instruction cache
             imem_address => instruction_cache_PCB(i),
