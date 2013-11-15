@@ -261,6 +261,8 @@ begin
                 MEM_ENABLE <= '0';
                 MEM_WRITE <= '1';
                 MEM_LBUB <= '0';
+                
+                increment <= '1';
             
             when WriteFetch =>
                 MEM_ENABLE <= '1';
