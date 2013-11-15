@@ -146,7 +146,7 @@ port map (
 conditional_unit : entity work.conditional_unit 
 generic map(N => DATA_WIDTH)
 port map (
-		     COND => cond_op_in,
+		     COND => condition_signal,
 			  ALU_RES => res_signal,
 			  ALU_OVF => overflow_in,
 		     EXEC => execute_signal
