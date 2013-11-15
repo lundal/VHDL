@@ -8,7 +8,7 @@ use WORK.CONSTANTS.ALL;
 
 entity Toplevel is
     generic(
-        NUM_PROC_PAIRS : natural := 1
+        NUM_PROC_PAIRS : natural := 2
     );
     port(
         SCU_ENABLE  : in    STD_LOGIC;
