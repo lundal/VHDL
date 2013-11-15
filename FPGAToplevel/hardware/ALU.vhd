@@ -9,7 +9,7 @@ entity ALU is
 	
 	generic(
 		N : integer := 64;
-		INCMULT : integer := 1
+		INCMULT : integer := 0
 	);
 	
 	port(
