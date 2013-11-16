@@ -32,7 +32,8 @@ entity BRAM_TDP is
 		DATA_WIDTH	:	natural := 32;
 		WE_WIDTH	:	natural := 4;
 		RAM_SIZE	:	string	:= "18Kb";
-		WRITE_MODE	:	string	:= "WRITE_FIRST"
+		WRITE_MODE	:	string	:= "WRITE_FIRST";
+        INIT_FILE : string := "NONE"
 	);
 	port (
 		A_ADDR	:	in	STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
@@ -67,7 +68,8 @@ architecture Behavioral of BRAM_TDP is
 			WRITE_MODE_A : string;
 			WRITE_MODE_B : string;
 			WRITE_WIDTH_A : integer;
-			WRITE_WIDTH_B : integer
+			WRITE_WIDTH_B : integer;
+            INIT_FILE : string := "NONE"
 		);
 		port (
 			DOA : out std_logic_vector;
@@ -107,7 +109,8 @@ begin
 		WRITE_MODE_A => WRITE_MODE, -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
 		WRITE_MODE_B => WRITE_MODE, -- "WRITE_FIRST", "READ_FIRST" or "NO_CHANGE"
 		WRITE_WIDTH_A => DATA_WIDTH, -- Valid values are 1-36
-		WRITE_WIDTH_B => DATA_WIDTH -- Valid values are 1-36
+		WRITE_WIDTH_B => DATA_WIDTH, -- Valid values are 1-36
+        INIT_FILE => INIT_FILE
 	)
 	port map (
 		DOA => A_OUT, -- Output port-A data
