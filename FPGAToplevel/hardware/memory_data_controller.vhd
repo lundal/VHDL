@@ -208,9 +208,6 @@ begin
                     end if;
                 
                 when ReadFetch =>
-                    -- Reset ack
-                    ACK(chosen) <= '0';
-                    
                     state <= Read;
                 
                 when Read =>
@@ -221,6 +218,9 @@ begin
                     end if;
                 
                 when WriteFetch =>
+                    -- Reset ack
+                    ACK(chosen) <= '0';
+                    
                     state <= Write0;
                 
                 when Write0 =>
@@ -243,7 +243,7 @@ begin
     STATE_MACHINE : process (CLK, state)
     begin
         -- Defaults
-        fetch <= '1';
+        fetch <= '0';
         increment <= '0';
         
         case state is
