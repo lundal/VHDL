@@ -2,6 +2,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity fetch_stage is
+    generic ( processor_id : natural := 1);
     Port ( clk 				: in STD_LOGIC;
            reset 				: in STD_LOGIC;
            pc_update 		: in STD_LOGIC;
@@ -44,7 +45,8 @@ port map(
 
 
           
-PROGRAM_COUNTER_MAP : entity work.pc 
+PROGRAM_COUNTER_MAP : entity work.pc
+generic map(default => processor_id)
 port map(clk => clk, 
          reset => reset, 
          pc_update => pc_update, 

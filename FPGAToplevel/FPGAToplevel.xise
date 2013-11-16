@@ -209,7 +209,12 @@
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="tb_toplevel.vhd" xil_pn:type="FILE_VHDL"/>
+    <file xil_pn:name="tb_toplevel.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="PostMapSimulation"/>
+      <association xil_pn:name="PostRouteSimulation"/>
+      <association xil_pn:name="PostTranslateSimulation"/>
+    </file>
     <file xil_pn:name="hardware/crossover_core_doublesplit.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -342,10 +347,6 @@
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="tb_toplevel.vhd" xil_pn:type="FILE_VHDL">
-      <association xil_pn:name="BehavioralSimulation"/>
-      <association xil_pn:name="Implementation"/>
-    </file>
     <file xil_pn:name="FakeInstMem.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -467,7 +468,7 @@
     <property xil_pn:name="Ignore User Timing Constraints Par" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Implementation Top" xil_pn:value="Architecture|Toplevel|behavioral" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Implementation Top File" xil_pn:value="hardware/Toplevel.vhd" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Implementation Top Instance Path" xil_pn:value="/tb_toplevel/uut" xil_pn:valueState="non-default"/>
+    <property xil_pn:name="Implementation Top Instance Path" xil_pn:value="/Toplevel" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Include 'uselib Directive in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Include SIMPRIM Models in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Include UNISIM Models in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
