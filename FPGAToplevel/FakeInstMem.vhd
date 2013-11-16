@@ -55,8 +55,8 @@ begin
     begin
         case IMEM_ADDR is
             when "0000000000000000000" =>
-                IMEM_DATA_HI <= "1111111111111111";
-                IMEM_DATA_LO <= "0000000000001111";
+                IMEM_DATA_HI <= hi(0);
+                IMEM_DATA_LO <= lo(0);
             when "0000000000000000001" =>
                 IMEM_DATA_HI <= hi(1);
                 IMEM_DATA_LO <= lo(1);

@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all;
 
 entity fetch_stage is
     generic ( processor_id : natural := 1);
@@ -16,9 +17,9 @@ architecture Behavioral of fetch_stage is
 
 -- SIGNAL declerations
 signal ground_signal 		  : STD_LOGIC; 
-signal pc_incremented_signal : STD_LOGIC_VECTOR(19-1 downto 0);
-signal pc_out_signal         : STD_LOGIC_VECTOR(19-1 downto 0);
-signal pc_input_signal       : STD_LOGIC_VECTOR(19-1 downto 0);
+signal pc_incremented_signal : STD_LOGIC_VECTOR(19-1 downto 0) := std_logic_vector(to_unsigned(processor_id, 19));
+signal pc_out_signal         : STD_LOGIC_VECTOR(19-1 downto 0) := std_logic_vector(to_unsigned(processor_id, 19));
+signal pc_input_signal       : STD_LOGIC_VECTOR(19-1 downto 0) := std_logic_vector(to_unsigned(processor_id, 19));
 
  Component Adder 
 		generic(N : NATURAL);
