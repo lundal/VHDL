@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use work.CONSTANTS.all;
 
 entity fitness_core is
-    generic (processor_id : natural := 1);
+    generic (processor_id : natural := 1    );
     port( 
 			-- Bit signals
 			 clk 					 		: in  STD_LOGIC;
@@ -183,7 +183,7 @@ architecture Behavioral of fitness_core is
 begin
 
 --Halt if one of them are true
-halt_pipeline_signal <=  halt_inst or halt_mem_signal or multiplication_halt; --Not tested
+halt_pipeline_signal <= halt_inst or halt_mem_signal or multiplication_halt; --Not tested
 control_unit: entity work.control_unit
 port map (
 

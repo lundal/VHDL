@@ -16,9 +16,9 @@ architecture Behavioral of pc is
 
 begin
 
-PROGRAM_COUNTER : process(clk, reset)
+PROGRAM_COUNTER : process(clk, reset, pc_update, addr)
     begin 
-        addr_out <= (others => '0');
+        --addr_out <= (others => '0');
         if reset = '1' then 
             addr_out <= std_logic_vector(to_unsigned(default, 19)); 
          elsif rising_edge(clk) then 
