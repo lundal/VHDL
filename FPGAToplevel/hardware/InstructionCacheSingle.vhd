@@ -135,17 +135,21 @@ begin
             
             --Halt <= '1';
             MemRq <= '0';
+        elsif MemAck = '1' then
+            Halt <= '1';
+            
+            MemRq <= '0';
+            MemAddr <= PC;
+            
+            -- Fetch data
+            WriteA <= '1';
+            WriteB <= '0';
         elsif Fault = '1' then
             Halt <= '1';
             
             -- Ask for access and 
-            if MemAck = '0' then
-                MemAddr <= (others => 'Z');
-                MemRq <= '1';
-            else
-                MemRq <= '0';
-                MemAddr <= PC;
-            end if;
+            MemAddr <= (others => 'Z');
+            MemRq <= '1';
             
             -- Fetch data until correct (might get lucky)
             WriteA <= '1';
