@@ -144,7 +144,7 @@ begin
                     MemRq <= '0';
                     MemAddr <= PC_Curr;
                     Write <= '1';
-                    Halt <= '0';
+                    Halt <= '1';
                 else
                     -- Wait for ack
                     MemRq <= '1';
