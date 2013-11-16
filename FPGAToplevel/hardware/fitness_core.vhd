@@ -58,6 +58,8 @@ architecture Behavioral of fitness_core is
     signal decode_rsa : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
     signal decode_rta : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
     signal decode_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal decode_rs : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal decode_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal decode_imm : std_logic_vector(IMMEDIATE_WIDTH-1 downto 0);
     signal decode_target : std_logic_vector(TARGET_WIDTH-1 downto 0);
      
@@ -393,8 +395,8 @@ begin
         RT_ADDR => decode_to_execute_rta,
         RD_ADDR => writeback_wba,
         WRITE_DATA => writeback_wb,
-        RS => decode_to_execute_rs,
-        RT => decode_to_execute_rt
+        RS => decode_rs,
+        RT => decode_rt
 	);
     
     -- MUX: RegSrc
@@ -438,6 +440,24 @@ begin
 	);
     
     decode_to_execute_pc <= decode_from_fetch_pc;
+    
+    FORWARD_RS : process(writeback_reg_write, writeback_wba, decode_rsa, writeback_wb, decode_rs)
+    begin
+        if writeback_reg_write = '1' and writeback_wba = decode_rsa and decode_rsa /= (REG_ADDR_WIDTH-1 downto 0 => '0') then
+            decode_to_execute_rs <= writeback_wb;
+        else
+            decode_to_execute_rs <= decode_rs;
+        end if;
+    end process;
+    
+    FORWARD_RT : process(writeback_reg_write, writeback_wba, decode_rta, writeback_wb, decode_rt)
+    begin
+        if writeback_reg_write = '1' and writeback_wba = decode_rta and decode_rta /= (REG_ADDR_WIDTH-1 downto 0 => '0') then
+            decode_to_execute_rt <= writeback_wb;
+        else
+            decode_to_execute_rt <= decode_rt;
+        end if;
+    end process;
     
     -------------
     -- EXECUTE --
