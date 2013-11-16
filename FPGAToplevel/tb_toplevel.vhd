@@ -206,6 +206,8 @@ BEGIN
          wait for clock_period;
       end loop;
       
+      scu_data <= (others => 'Z');
+      
       scu_ce <= '1';
       scu_we <= '1';
       

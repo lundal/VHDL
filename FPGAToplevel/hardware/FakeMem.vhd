@@ -72,7 +72,7 @@ begin
 		CLK    => NCLK
 	);
 	
-	DATA <= INT_OUT when (WE = '1') else (others => 'Z');
+	DATA <= INT_OUT when (WE = '1' and CE = '0') else (others => 'Z');
     
     NCLK <= not CLK;
 	

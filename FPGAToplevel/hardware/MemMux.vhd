@@ -70,6 +70,10 @@ architecture Behavioral of MemMux is
     signal MUXI  : STD_LOGIC;
     signal MUXD  : STD_LOGIC;
     
+    signal SCU_DATA_OUT_INST_HI : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal SCU_DATA_OUT_INST_LO : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal SCU_DATA_OUT_DATA : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    
 begin
     
     STATE_DECODER : process(SCU_STATE)
@@ -79,23 +83,33 @@ begin
                 MuxIH <= '0';
                 MuxIL <= '0';
                 MuxD  <= '0';
+                
+                SCU_DATA_OUT <= (others => '0');
             when STATE_INST_HI =>
                 MuxIH <= '1';
                 MuxIL <= '0';
                 MuxD  <= '0';
+                
+                SCU_DATA_OUT <= SCU_DATA_OUT_INST_HI;
             when STATE_INST_LO =>
                 MuxIH <= '0';
                 MuxIL <= '1';
                 MuxD  <= '0';
+                
+                SCU_DATA_OUT <= SCU_DATA_OUT_INST_LO;
             when STATE_DATA =>
                 MuxIH <= '0';
                 MuxIL <= '0';
                 MuxD  <= '1';
+                
+                SCU_DATA_OUT <= SCU_DATA_OUT_DATA;
             when others =>
                 -- This should never happen
                 MuxIH <= '0';
                 MuxIL <= '0';
                 MuxD  <= '0';
+                
+                SCU_DATA_OUT <= (others => '0');
         end case;
     end process;
     
@@ -119,7 +133,7 @@ begin
         B_CE   => SCU_CE,
         B_WE   => SCU_WE,
         B_DATA_IN => SCU_DATA_IN,
-        B_DATA_OUT => SCU_DATA_OUT,
+        B_DATA_OUT => SCU_DATA_OUT_INST_HI,
         
         Sel    => MuxIH
     );
@@ -142,7 +156,7 @@ begin
         B_CE   => SCU_CE,
         B_WE   => SCU_WE,
         B_DATA_IN => SCU_DATA_IN,
-        B_DATA_OUT => SCU_DATA_OUT,
+        B_DATA_OUT => SCU_DATA_OUT_INST_LO,
         
         Sel    => MuxIL
     );
@@ -165,7 +179,7 @@ begin
         B_CE   => SCU_CE,
         B_WE   => SCU_WE,
         B_DATA_IN => SCU_DATA_IN,
-        B_DATA_OUT => SCU_DATA_OUT,
+        B_DATA_OUT => SCU_DATA_OUT_DATA,
         
         Sel    => MuxD
     );
