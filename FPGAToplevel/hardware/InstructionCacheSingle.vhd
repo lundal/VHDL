@@ -39,21 +39,17 @@ architecture Behavioral of InstructionCacheSingle is
     
     constant BRAM_ADDR_WIDTH : integer := 9;
     
-    type StateType is (Check, Replace);
-	signal State      : StateType := Check;
-    
-    signal AddrInA    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal AddrInB    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal InstAddrA  : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal InstAddrB  : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal CacheAddrA : STD_LOGIC_VECTOR(BRAM_ADDR_WIDTH-1 downto 0);
-    signal CacheAddrB : STD_LOGIC_VECTOR(BRAM_ADDR_WIDTH-1 downto 0);
+    signal AddrIn     : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal InstAddr   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal CacheAddr  : STD_LOGIC_VECTOR(BRAM_ADDR_WIDTH-1 downto 0);
     signal Fault      : STD_LOGIC := '0';
-	signal WriteA     : STD_LOGIC := '0';
-    signal WriteB     : STD_LOGIC := '0';
+	signal Write      : STD_LOGIC := '0';
     
     signal CounterA : STD_LOGIC_VECTOR(BRAM_ADDR_WIDTH-1 downto 0);
     signal CounterB : STD_LOGIC_VECTOR(BRAM_ADDR_WIDTH-1 downto 0);
+    
+    signal PC_Prev : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal PC_Curr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
 	
 begin
     
@@ -66,17 +62,17 @@ begin
         WRITE_MODE => "WRITE_FIRST"
     )
     port map(
-        A_ADDR => CacheAddrA,
+        A_ADDR => CacheAddr,
         A_IN   => MemData,
         A_OUT  => Inst,
-        A_WE   => WriteA,
+        A_WE   => Write,
         A_EN   => '1',
         
-        B_ADDR => CacheAddrB,
-        B_IN   => MemData,
+        B_ADDR => (others => '0'),
+        B_IN   => (others => '0'),
         --B_OUT  => Inst,
-        B_WE   => WriteB,
-        B_EN   => '1',
+        B_WE   => '0',
+        B_EN   => '0',
         
         CLK    => Clock
     );
@@ -90,16 +86,16 @@ begin
         WRITE_MODE => "WRITE_FIRST"
     )
     port map(
-        A_ADDR => CacheAddrA,
-        A_IN   => AddrInA,
-        A_OUT  => InstAddrA,
-        A_WE   => WriteA,
+        A_ADDR => CacheAddr,
+        A_IN   => AddrIn,
+        A_OUT  => InstAddr,
+        A_WE   => Write,
         A_EN   => '1',
         
-        B_ADDR => CacheAddrB,
-        B_IN   => AddrInB,
+        B_ADDR => CounterB,
+        B_IN   => (others => '0'),
         --B_OUT  => InstAddrB,
-        B_WE   => WriteB,
+        B_WE   => Reset,
         B_EN   => '1',
         
         CLK    => Clock
@@ -115,55 +111,54 @@ begin
         INCREMENT => Clock
     );
     
-    Fault <= '1' when InstAddrA = (ADDR_WIDTH-1 downto 0 => '0') or InstAddrA /= PC else '0';
+    FF_PC : process (Clock, PC)
+    begin
+        if rising_edge(Clock) then
+            PC_Prev <= PC;
+        end if;
+    end process;
     
-    AddrInA <= PC when Reset = '0' else (others => '0');
-    AddrInB <= PC when Reset = '0' else (others => '0');
+    Fault <= '1' when InstAddr = (ADDR_WIDTH-1 downto 0 => '0') or InstAddr /= PC_Prev else '0';
     
-    CacheAddrA <= PC(BRAM_ADDR_WIDTH-1 downto 0) when Reset = '0' else CounterA;
-    CacheAddrB <= PC(BRAM_ADDR_WIDTH-1 downto 0) when Reset = '0' else CounterB;
+    AddrIn <= PC_Curr when Reset = '0' else (others => '0');
     
-	StateMachine : process(Fault, Reset, MemAck, PC)
+    PC_Curr <= PC_Prev when Fault = '1' else PC;
+    
+    CacheAddr <= PC_Curr(BRAM_ADDR_WIDTH-1 downto 0) when Reset = '0' else CounterA;
+    
+	StateMachine : process(Fault, Reset, MemAck, PC_Curr)
 	begin
         if Reset = '1' then
             -- Disconnect from memory
             MemAddr <= (others => 'Z');
             
             -- Reset data
-            WriteA <= '1';
-            WriteB <= '1';
-            
-            --Halt <= '1';
-            MemRq <= '0';
-        elsif MemAck = '1' then
-            Halt <= '1';
-            
-            MemRq <= '0';
-            MemAddr <= PC;
-            
-            -- Fetch data
-            WriteA <= '1';
-            WriteB <= '0';
-        elsif Fault = '1' then
-            Halt <= '1';
-            
-            -- Ask for access and 
-            MemAddr <= (others => 'Z');
-            MemRq <= '1';
-            
-            -- Fetch data until correct (might get lucky)
-            WriteA <= '1';
-            WriteB <= '0';
-        else
-            -- Disconnect from memory
-            MemAddr <= (others => 'Z');
-            
-            -- Don't corrupt the data
-            WriteA <= '0';
-            WriteB <= '0';
+            Write <= '1';
             
             Halt <= '0';
             MemRq <= '0';
+        else
+            if Fault = '1' then
+                if MemAck = '1' then
+                    -- Replace data
+                    MemRq <= '0';
+                    MemAddr <= PC_Curr;
+                    Write <= '1';
+                    Halt <= '0';
+                else
+                    -- Wait for ack
+                    MemRq <= '1';
+                    MemAddr <= (others => 'Z');
+                    Write <= '0';
+                    Halt <= '1';
+                end if;
+            else
+                -- Everything OK
+                MemRq <= '0';
+                MemAddr <= (others => 'Z');
+                Write <= '0';
+                Halt <= '0';
+            end if;
         end if;
 	end process;
 	
