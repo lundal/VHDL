@@ -10,7 +10,8 @@ entity memory_stage is
 	--Bit signals
 	clk  					    : in STD_LOGIC;
 	reset 				    : in STD_LOGIC;
-   halt                  : out STD_LOGIC; 
+   halt                  : out STD_LOGIC;
+   halt_pipeline 			 : in STD_LOGIC; 
 	
 	--Processor related control signals in
 	overflow_in 			 : in STD_LOGIC;
@@ -169,7 +170,7 @@ flip_flop : entity work.flip_flop
 generic map(N => 64)
 port map(clk => clk, 
 			reset => reset,
-			enable => '0', 
+			enable => halt_pipeline, 
 			data_in => res_in,
 			data_out => res_signal);
 				
@@ -180,7 +181,7 @@ begin
 	if reset = '1' then 
 		flush_counter <= "00";
 		flush <= '0';
-	elsif rising_edge(clk) then
+	elsif rising_edge(clk) and halt_pipeline = '0' then
 		if flush = '1' then
 			flush_counter <= flush_counter + "01";
 			reg_write_out <= '0';
@@ -191,14 +192,14 @@ begin
 				flush <= '0';
 			end if;
 		--Flush pipeline 
-		elsif execute_signal = '1' and jump_in = '1' then
+		elsif execute_signal = '1' and jump_in = '1' and halt_pipeline = '0' then
 			flush <= '1';
-			flush_counter <= "01";
+			flush_counter <= "00";
 			reg_write_out <= '0';
 			call_out <= '0';
 			mem_op_signal <= MEM_NOP; 
 		--Flush current
-		elsif execute_signal <= '0' then
+		elsif execute_signal <= '0' and halt_pipeline = '0' then
 			reg_write_out <= '0';
 			call_out <= '0';
 			flush_counter <= "00";
@@ -207,8 +208,8 @@ begin
 			gene_op_signal <= "00";
 			
 		else 
-			flush_counter <= "00";
-			flush <= '0';
+			--flush_counter <= "00";
+			--flush <= '0';
 			reg_write_out <= reg_write_in;
 			call_out <= call_in;
 			mem_op_signal <= mem_op_in; 

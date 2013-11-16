@@ -488,6 +488,7 @@ memory_stage : entity work.memory_stage
 	clk => clk, 
 	reset => reset, 
    halt => halt_mem_signal, 
+	halt_pipeline => halt_pipeline_signal, 
 	
 	--Processor related control signals in
 	overflow_in => overflow_signal_mem, 
