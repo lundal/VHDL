@@ -180,6 +180,8 @@ architecture Behavioral of fitness_core is
 	signal halt_mem_signal 			       : std_logic;
 	signal halt_pipeline_signal 	 		 : std_logic; 
 	signal pc_update_signal 				 : std_logic;
+    
+    signal pc_previous 			: std_logic_vector(ADDR_WIDTH-1 downto 0);
 begin
 
 --Halt if one of them are true
@@ -387,6 +389,13 @@ port map (
 
 pc_update_signal <= processor_enable and not halt_pipeline_signal; 
 
+prev_pc : process(clk, pc_signal_fetch)
+begin
+    if rising_edge(clk) then
+        pc_previous <= pc_signal_fetch;
+    end if;
+end process;
+
 fetch_stage : entity work.fetch_stage
 generic map( processor_id => processor_id)
 port map ( clk => clk, 
@@ -403,7 +412,11 @@ port map ( clk => clk,
 FETCH_INSTRUCTION : process(processor_enable, pc_signal_fetch, imem_data_in) 
 begin 
 	if processor_enable = '1' then
-		imem_address <= pc_signal_fetch;
+        if halt_inst = '1' then
+            imem_address <= pc_previous;
+        else
+            imem_address <= pc_signal_fetch;
+        end if;
 		instruction_signal_fetch <= imem_data_in; 
 	else 
 		imem_address <= (others => '0');

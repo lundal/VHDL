@@ -124,14 +124,7 @@ port map(clk => clk,
          enable => halt,
          data_in => cond_in, 
          data_out => cond_out);
-         
-CONTROL_GENE_OP : flip_flop
-generic map(N => GENE_OP_WIDTH)
-port map(clk => clk,
-         reset => reset,
-         enable => halt,
-         data_in => gene_op_in, 
-         data_out => gene_op_out);
+
          
 CONTROL_TO_REG : flip_flop
 generic map(N => TO_REG_OP_WIDTH)
@@ -157,19 +150,26 @@ CONTROL_SIGNALS : process(clk, reset, halt)
            call_out <= '0';
            jump_out <= '0'; 
 			  reg_write_out <= '0';
-			  mem_op_out <= MEM_NOP;
 			  overflow_out <= '0';
         elsif rising_edge(clk) and halt = '0' then 
            call_out <= call_in;
            jump_out <= jump_in;
 			  reg_write_out <= reg_write_in; 
-			  mem_op_out <= mem_op_in; 
+			  
 			  overflow_out <= overflow_in;  
         end if;
 end process CONTROL_SIGNALS;    
 
-
-
+mem_stuff_signals : process(reset, mem_op_in, gene_op_in)
+begin
+    if reset = '1' then
+        mem_op_out <= MEM_NOP;
+        gene_op_out <= GENE_OP_NONE;
+    else
+        mem_op_out <= mem_op_in;
+        gene_op_out <= gene_op_in;
+    end if;
+end process;
 
 end Behavioral;
 

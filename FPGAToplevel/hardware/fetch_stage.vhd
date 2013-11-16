@@ -21,17 +21,6 @@ signal pc_incremented_signal : STD_LOGIC_VECTOR(19-1 downto 0) := std_logic_vect
 signal pc_out_signal         : STD_LOGIC_VECTOR(19-1 downto 0) := std_logic_vector(to_unsigned(processor_id, 19));
 signal pc_input_signal       : STD_LOGIC_VECTOR(19-1 downto 0) := std_logic_vector(to_unsigned(processor_id, 19));
 
- Component Adder 
-		generic(N : NATURAL);
-		Port(
-		A			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-		B			:	in	STD_LOGIC_VECTOR(N-1 downto 0);
-		R			:	out	STD_LOGIC_VECTOR(N-1 downto 0);
-		CARRY_IN	:	in	STD_LOGIC;
-		OVERFLOW	:	out	STD_LOGIC);
- end component Adder;
-
-
 begin
 
 
@@ -55,7 +44,7 @@ port map(clk => clk,
          addr_out => pc_out_signal);
          
 
-PC_INCREMENTER : Adder 
+PC_INCREMENTER : entity work.Adder 
 generic map(N => 19)
 port map( A => pc_out_signal, 
           B => "0000000000000000001", 
