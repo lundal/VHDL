@@ -103,7 +103,7 @@ begin
 
     INCREMENTER : process (CLK, increment)
     begin
-        if rising_edge(CLK) and increment = '0' then
+        if rising_edge(CLK) and increment = '1' then
             counter <= STD_LOGIC_VECTOR(UNSIGNED(counter) + 1);
         end if;
     end process;
