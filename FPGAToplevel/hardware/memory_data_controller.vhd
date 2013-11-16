@@ -161,7 +161,7 @@ begin
     has_request <= '0' when request_int = (NUM_PROC-1 downto 0 => '0') else '1';
     
     STATE_CHANGER : process (CLK, state, ENABLE, has_request, request_int)
-		variable chosen : integer range 0 to NUM_PROC := 0;
+		variable chosen : integer range 0 to NUM_PROC-1 := 0;
     begin
         if rising_edge(CLK) then
             case state is
@@ -174,16 +174,16 @@ begin
                         if (has_request = '1') then
                             
                             -- Go to next (to prevent starvation)
-                            if (chosen = NUM_PROC) then
+                            if (chosen = NUM_PROC-1) then
                                 chosen := 0;
                             else
                                 chosen := chosen + 1;
                             end if;
                             
                             -- Choose next (or return to original if none)
-                            for i in 0 to NUM_PROC-1 loop
+                            for i in 0 to NUM_PROC-2 loop
                                 if request_int(chosen) = '0' then
-                                    if (chosen = NUM_PROC) then
+                                    if (chosen = NUM_PROC-1) then
                                         chosen := 0;
                                     else
                                         chosen := chosen + 1;
