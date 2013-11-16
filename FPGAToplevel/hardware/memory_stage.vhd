@@ -92,8 +92,8 @@ signal condition_signal			  : std_logic_vector(COND_WIDTH-1 downto 0);
 signal flush 						  : std_logic; 
 
 signal reg_write_signal 		  : std_logic;
-signal mem_op_signal 			  : MEM_OP_TYPE;
-signal gene_op_signal 			  : std_logic_vector(GENE_OP_WIDTH-1 downto 0);	
+signal mem_op_signal 			  : MEM_OP_TYPE := MEM_NOP;
+signal gene_op_signal 			  : std_logic_vector(GENE_OP_WIDTH-1 downto 0) := (others => '0');	
 
 
 

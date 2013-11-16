@@ -17,16 +17,16 @@ entity RatedController is
         NUM_PROC   : natural := 4
     );
     port (
-        REQUEST_SET  : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-        REQUEST_PROC : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-        REQUEST_GENE : in  STD_LOGIC;
-        ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-        ACK_GENE     : out STD_LOGIC;
-        INCREMENT    : out STD_LOGIC;
-        WRITE_FIT    : out STD_LOGIC;
-        WRITE_GENE   : out STD_LOGIC;
-        WRITE_SET    : out STD_LOGIC;
-        CLK	         : in  STD_LOGIC
+        REQUEST_SET  : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+        REQUEST_PROC : in  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+        REQUEST_GENE : in  STD_LOGIC := '0';
+        ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+        ACK_GENE     : out STD_LOGIC := '0';
+        INCREMENT    : out STD_LOGIC := '0';
+        WRITE_FIT    : out STD_LOGIC := '0';
+        WRITE_GENE   : out STD_LOGIC := '0';
+        WRITE_SET    : out STD_LOGIC := '0';
+        CLK	         : in  STD_LOGIC := '0'
     );
 end RatedController;
 

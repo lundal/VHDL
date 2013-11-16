@@ -188,79 +188,79 @@ architecture Behavioral of genetic_pipeline is
     
     
     -- Rated Pool signals
-    signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal rated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal rated_a_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal rated_a_we   : STD_LOGIC;
-    signal rated_b_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal rated_b_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal rated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal rated_b_we   : STD_LOGIC;
+    signal rated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal rated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal rated_a_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal rated_a_we   : STD_LOGIC := '0';
+    signal rated_b_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal rated_b_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal rated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal rated_b_we   : STD_LOGIC := '0';
     
     -- Unrated Pool signals
-    signal unrated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal unrated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal unrated_a_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal unrated_a_we   : STD_LOGIC;
-    signal unrated_b_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal unrated_b_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal unrated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal unrated_b_we   : STD_LOGIC;
+    signal unrated_a_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal unrated_a_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal unrated_a_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal unrated_a_we   : STD_LOGIC := '0';
+    signal unrated_b_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal unrated_b_in   : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal unrated_b_out  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal unrated_b_we   : STD_LOGIC := '0';
     
     -- Request/Ack signals
-    signal request_unrated_proc : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-    signal request_unrated_gene : STD_LOGIC;
-    signal request_rated_set    : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-    signal request_rated_proc   : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-    signal request_rated_gene   : STD_LOGIC;
-    signal ack_unrated_proc     : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-    signal ack_unrated_gene     : STD_LOGIC;
-    signal ack_rated_proc       : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
-    signal ack_rated_gene       : STD_LOGIC;
+    signal request_unrated_proc : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+    signal request_unrated_gene : STD_LOGIC := '0';
+    signal request_rated_set    : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+    signal request_rated_proc   : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+    signal request_rated_gene   : STD_LOGIC := '0';
+    signal ack_unrated_proc     : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+    signal ack_unrated_gene     : STD_LOGIC := '0';
+    signal ack_rated_proc       : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0) := (others => '0');
+    signal ack_rated_gene       : STD_LOGIC := '0';
     
     -- Selection Core signals
-    signal selector_0_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal selector_0_run  : STD_LOGIC;
-    signal selector_0_done : STD_LOGIC;
-    signal selector_1_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal selector_1_run  : STD_LOGIC;
-    signal selector_1_done : STD_LOGIC;
+    signal selector_0_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal selector_0_run  : STD_LOGIC := '0';
+    signal selector_0_done : STD_LOGIC := '0';
+    signal selector_1_addr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal selector_1_run  : STD_LOGIC := '0';
+    signal selector_1_done : STD_LOGIC := '0';
     
     -- Settings signals
     signal settings           : STD_LOGIC_VECTOR(settings_width_selection + settings_width_crossover + settings_width_mutation downto 0) := (others => '0');
-    signal settings_mutation  : STD_LOGIC_VECTOR(settings_width_mutation-1 downto 0);
-    signal settings_crossover : STD_LOGIC_VECTOR(settings_width_crossover-1 downto 0);
-    signal settings_selection : STD_LOGIC_VECTOR(settings_width_selection-1 downto 0);
-    signal settings_gene_ctrl : STD_LOGIC;
-    signal settings_we        : STD_LOGIC;
+    signal settings_mutation  : STD_LOGIC_VECTOR(settings_width_mutation-1 downto 0) := (others => '0');
+    signal settings_crossover : STD_LOGIC_VECTOR(settings_width_crossover-1 downto 0) := (others => '0');
+    signal settings_selection : STD_LOGIC_VECTOR(settings_width_selection-1 downto 0) := (others => '0');
+    signal settings_gene_ctrl : STD_LOGIC := '0';
+    signal settings_we        : STD_LOGIC := '0';
     
     -- Gene signals
-    signal parent_0 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal parent_1 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal child_0  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal parent_0 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal parent_1 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal child_0  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal child_1  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
     
     -- Random
     signal random             : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0) := (others => '0');
     signal random_prev        : STD_LOGIC_VECTOR(RANDOM_WIDTH-1 downto 0) := (others => '0');
-    signal random_extended    : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0);
-    signal random_selection_0 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
-    signal random_selection_1 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0);
+    signal random_extended    : STD_LOGIC_VECTOR(RANDOM_WIDTH*2-1 downto 0) := (others => '0');
+    signal random_selection_0 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0) := (others => '0');
+    signal random_selection_1 : STD_LOGIC_VECTOR(ADDR_WIDTH-2 downto 0) := (others => '0');
     
     -- Incrementer signals
     signal inc_gene      : STD_LOGIC := '0';
-    signal inc_gene_a    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal inc_gene_b    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_gene_a    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal inc_gene_b    : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
     signal inc_rated_ctrl: STD_LOGIC := '0';
     signal inc_rated     : STD_LOGIC := '0';
-    signal inc_rated_a   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-    signal inc_rated_b   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_rated_a   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal inc_rated_b   : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
     signal inc_unrated   : STD_LOGIC := '0';
-    signal inc_unrated_a : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+    signal inc_unrated_a : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0) := (others => '0');
     
     -- Mutation signals
-    signal mutator_0_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-    signal mutator_1_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal mutator_0_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
+    signal mutator_1_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := (others => '0');
     
     -- Write signals
     signal write_rated_0 : STD_LOGIC := '0';

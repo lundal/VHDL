@@ -29,7 +29,7 @@ architecture Behavioral of fitness_genetic_controller is
     type state_type is (Ready, Store);
     signal state : state_type := Ready;
     
-    signal request : STD_LOGIC_VECTOR(2-1 downto 0);
+    signal request : STD_LOGIC_VECTOR(2-1 downto 0) := (others => '0');
     
 begin
     

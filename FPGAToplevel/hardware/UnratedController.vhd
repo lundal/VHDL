@@ -21,7 +21,7 @@ entity UnratedController is
         REQUEST_GENE : in  STD_LOGIC;
         ACK_PROC     : out STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
         ACK_GENE     : out STD_LOGIC;
-        INCREMENT    : out STD_LOGIC;
+        INCREMENT    : out STD_LOGIC := '0';
         CLK	         : in  STD_LOGIC
     );
 end UnratedController;
