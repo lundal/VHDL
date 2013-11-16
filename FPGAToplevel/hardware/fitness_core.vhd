@@ -551,7 +551,7 @@ begin
         COND => execute_cond,
         ALU_RES => memory_from_execute_res,
         ALU_OVF => memory_from_execute_overflow,
-        EXEC => memory_condition_reset
+        SKIP => memory_condition_reset
     );
     
     memory_to_writeback_pc <= memory_from_execute_pc;
@@ -578,9 +578,9 @@ begin
     
     -- Resets
     reset_pc <= reset;
-    reset_if_id <= reset or memory_jump;
-    reset_id_ex <= reset or memory_jump;
-    reset_ex_mem <= reset or memory_jump or memory_condition_reset;
+    reset_if_id <= reset or (memory_jump and not halt);
+    reset_id_ex <= reset or (memory_jump and not halt);
+    reset_ex_mem <= reset or ((memory_jump or memory_condition_reset) and not halt);
     reset_mem_wb <= reset;
     reset_ctrl_unit <= reset; -- Don't really need this
     

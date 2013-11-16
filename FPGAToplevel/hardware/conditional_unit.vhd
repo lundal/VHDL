@@ -12,7 +12,7 @@ entity conditional_unit is
 		COND		:	in	STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
 		ALU_RES		:	in	STD_LOGIC_VECTOR(N-1 downto 0);
 		ALU_OVF		:	in	STD_LOGIC;
-		EXEC		:	out	STD_LOGIC
+		SKIP		:	out	STD_LOGIC
 	);
 end conditional_unit;
 
@@ -36,17 +36,17 @@ begin
 	
 	-- Set execution signal
 	with COND select
-	EXEC <=	'0'			when COND_NEVER,
-			zero 		when COND_EQUAL,
-			not zero	when COND_NEQUAL,
-			pos or zero	when COND_GREATEREQ,
-			pos			when COND_GREATER,
-			neg or zero	when COND_LESSEQ,
-			neg			when COND_LESS,
-			ovf			when COND_OVERFLOW,
-			not ovf		when COND_NOVERFLOW,
-			'1'			when COND_ALWAYS,
-			'0'			when others;
+	SKIP <=	'1'			when COND_NEVER,
+			not zero 	when COND_EQUAL,
+			zero    	when COND_NEQUAL,
+			neg     	when COND_GREATEREQ,
+			neg or zero when COND_GREATER,
+			pos     	when COND_LESSEQ,
+			pos or zero	when COND_LESS,
+			not ovf		when COND_OVERFLOW,
+			ovf	    	when COND_NOVERFLOW,
+			'0'			when COND_ALWAYS,
+			'1'			when others;
 	
 end Behavioral;
 
