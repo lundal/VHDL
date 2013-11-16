@@ -56,14 +56,14 @@ begin
 		DATA_WIDTH => 16,
 		WE_WIDTH => 2,
 		RAM_SIZE => "18Kb",
-		WRITE_MODE => "WRITE_FIRST"
+		WRITE_MODE => "READ_FIRST"
 	)
 	port map (
 		A_ADDR => ADDR(9 downto 0),
 		A_IN   => DATA,
 		A_OUT  => INT_OUT,
-		A_WE   => WE,
-		A_EN   => CE,
+		A_WE   => not WE,
+		A_EN   => not CE,
 		B_ADDR => (others => '0'),
 		B_IN   => (others => '0'),
 --		B_OUT  => (others => 'Z'),
@@ -72,7 +72,7 @@ begin
 		CLK    => NCLK
 	);
 	
-	DATA <= INT_OUT when (WE = '0') else (others => 'Z');
+	DATA <= INT_OUT when (WE = '1') else (others => 'Z');
     
     NCLK <= not CLK;
 	
