@@ -1,0 +1,24 @@
+
+init:
+    jmp run
+    jmp end
+    jmp end
+    jmp end
+
+run:
+    addi r1, r0, 2  # r1 = 2
+    addi r1, r1, 4  # r1 = 6
+    sti, r1, 3      # M3 = 6
+    addi r1, r1, 8  # r1 = 14
+    addi r1, r1, 1  # r1 = 15
+    sti, r1, 5      # M5 = 15
+    ldi r2, 3       # r2 = 6
+    subi r3, r1, 1  # r3 = 14
+    ldi r4, 5       # r4 = 15
+
+end:
+    nop
+    nop
+    nop
+    jmp end
+
