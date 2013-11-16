@@ -1,0 +1,8 @@
+/* adds some numbers together */
+
+addi r1, r0, 10
+addi r2, r0, 20
+add r3, r2, r2
+add r4, r1, r1
+add r5, r4, r1
+add r6, r4, r3
