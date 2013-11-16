@@ -104,19 +104,19 @@ architecture behavioral of toplevel is
     signal genetic_unrated_bus : std_logic_vector(DATA_WIDTH-1 downto 0);
     
     -- Uni-directional signals
-    signal SCU_DATA_OE : STD_LOGIC;
+    signal SCU_DATA_OE : STD_LOGIC := '0';
     signal SCU_DATA_IN     : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     signal SCU_DATA_OUT    : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     
-    signal IMEM_DATA_HI_OE : STD_LOGIC;
+    signal IMEM_DATA_HI_OE : STD_LOGIC := '0';
     signal IMEM_DATA_HI_IN    : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     signal IMEM_DATA_HI_OUT   : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     
-    signal IMEM_DATA_LO_OE : STD_LOGIC;
+    signal IMEM_DATA_LO_OE : STD_LOGIC := '0';
     signal IMEM_DATA_LO_IN    : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     signal IMEM_DATA_LO_OUT   : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     
-    signal DMEM_DATA_OE : STD_LOGIC;
+    signal DMEM_DATA_OE : STD_LOGIC := '0';
     signal DMEM_DATA_IN   : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     signal DMEM_DATA_OUT  : STD_LOGIC_VECTOR(MEMORY_WIDTH-1 downto 0);
     
@@ -130,9 +130,9 @@ architecture behavioral of toplevel is
 begin
     
     SCU_DATA_OE <= SCU_WE or SCU_CE;
-    IMEM_DATA_HI_OE <= IMEM_CE_HI_INT or IMEM_WE_HI_INT;
-    IMEM_DATA_LO_OE <= IMEM_CE_LO_INT or IMEM_WE_LO_INT;
-    DMEM_DATA_OE <= DMEM_CE_INT or DMEM_WE_INT;
+    IMEM_DATA_HI_OE <= not(IMEM_CE_HI_INT or IMEM_WE_HI_INT);
+    IMEM_DATA_LO_OE <= not(IMEM_CE_LO_INT or IMEM_WE_LO_INT);
+    DMEM_DATA_OE <= not(DMEM_CE_INT or DMEM_WE_INT);
     
     SPLIT_SCU_DATA : process(SCU_DATA_OE , SCU_DATA, SCU_DATA_OUT)
     begin
