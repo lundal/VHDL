@@ -426,30 +426,30 @@ begin
             processor_enable => SCU_ENABLE,
             
             --Control signals related to the instruction cache
-            halt_inst => instruction_cache_Halt(i),
+            imem_halt => instruction_cache_Halt(i),
             
             --Bus signals related to instruction cache
-            imem_address => instruction_cache_PC(i),
+            imem_addr => instruction_cache_PC(i),
             imem_data_in => instruction_cache_Inst(i),
             
             --Control signals related to the data memory
-            data_request_0 => DataRq0(i),
-            data_request_1 => DataRq1(i),
-            ack_mem_ctrl => DataAck(i),
+            dmem_request_0 => DataRq0(i),
+            dmem_request_1 => DataRq1(i),
+            dmem_ack => DataAck(i),
             
             --Bus signals related to data memory
-            data_mem_bus_in => DataDataOutBus,
-            data_mem_addr_bus => DataAddrBus,
-            data_mem_bus_out => DataDataInBus,
+            dmem_addr => DataAddrBus,
+            dmem_data_in => DataDataOutBus,
+            dmem_data_out => DataDataInBus,
             
             --Bus signals related to genetic storage
-            genetic_data_out => genetic_rated_bus,
             genetic_data_in => genetic_unrated_bus,
+            genetic_data_out => genetic_rated_bus,
             
             --Control signals related to genetic storage
-            ack_genetic_ctrl => genetic_ack(i),
             genetic_request_0 => genetic_request_0(i),
-            genetic_request_1 => genetic_request_1(i)
+            genetic_request_1 => genetic_request_1(i),
+            genetic_ack => genetic_ack(i)
         );
     
     end generate FITNESS_CORE_PAIRS;

@@ -398,10 +398,10 @@ begin
 	);
     
     -- MUX: RegSrc
-    decode_rsa <= decode_rsa when decode_reg_src = '0' else decode_to_execute_rda;
+    decode_to_execute_rsa <= decode_rsa when decode_reg_src = '0' else decode_to_execute_rda;
     
     -- MUX: MemOp = Store
-    decode_rta <= decode_rta when decode_mem_op /= MEM_WRITE else decode_to_execute_rda;
+    decode_to_execute_rta <= decode_rta when decode_mem_op /= MEM_WRITE else decode_to_execute_rda;
     
     -- MUX: Immediate Source
     decode_to_execute_imm <= STD_LOGIC_VECTOR(RESIZE(SIGNED(decode_imm), DATA_WIDTH)) when decode_imm_src = '0' else STD_LOGIC_VECTOR(RESIZE(UNSIGNED(decode_target), DATA_WIDTH));
@@ -418,7 +418,7 @@ begin
         decode_target <= decode_from_fetch_inst(19-1 downto 0);
     end process;
     
-    decode_rda <= decode_to_execute_rda;
+    decode_to_execute_rda <= decode_rda;
     
     CTRL_UNIT : entity work.control_unit
 	port map (
@@ -436,6 +436,8 @@ begin
         MEM_OP => decode_mem_op,
         TO_REG => decode_to_reg
 	);
+    
+    decode_to_execute_pc <= decode_from_fetch_pc;
     
     -------------
     -- EXECUTE --
@@ -485,6 +487,11 @@ begin
         OVERFLOW => execute_to_memory_overflow
     );
     
+    execute_to_memory_pc <= execute_from_decode_pc;
+    execute_to_memory_rs <= execute_rs_forwarded;
+    execute_to_memory_rt <= execute_rt_forwarded;
+    execute_to_memory_rda <= execute_from_decode_rda;
+    
     ------------
     -- MEMORY --
     ------------
@@ -501,7 +508,7 @@ begin
         ACK       => dmem_ack,
         
         -- Processor
-        ADDR_IN  => memory_from_execute_res(ADDR_WIDTH-2 downto 0),
+        ADDR_IN  => memory_from_execute_res(ADDR_WIDTH-2-1 downto 0),
         DATA_IN  => memory_from_execute_rt,
         DATA_OUT => memory_to_writeback_data,
         
@@ -547,6 +554,8 @@ begin
         EXEC => memory_condition_reset
     );
     
+    memory_to_writeback_pc <= memory_from_execute_pc;
+    memory_to_writeback_res <= memory_from_execute_res;
     memory_to_writeback_rda <= memory_from_execute_rda;
     
     ---------------

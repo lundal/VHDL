@@ -76,7 +76,7 @@ architecture Behavioral of MemMux is
     
 begin
     
-    STATE_DECODER : process(SCU_STATE)
+    STATE_DECODER : process(SCU_STATE, SCU_DATA_OUT_INST_HI, SCU_DATA_OUT_INST_LO, SCU_DATA_OUT_DATA)
     begin
         case SCU_STATE is
             when STATE_PROC =>
