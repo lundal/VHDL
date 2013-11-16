@@ -1,175 +1,101 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+
+library WORK;
 use work.constants.all;
 
-
 entity EX_MEM is
-    Port ( clk                    : in  STD_LOGIC;
-           reset                  : in  STD_LOGIC;
-           halt                   : in  STD_LOGIC;
-           
-           -- PC in
-           pc_incremented_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
-           
-           -- PC out
-           pc_incremented_out : out std_logic_vector(ADDR_WIDTH-1 downto 0);
-           
-           --Control signals
-           signal gene_op_in      : in  STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
-           signal cond_in         : in  STD_LOGIC_VECTOR (COND_WIDTH-1 downto 0);
-           signal jump_in         : in  STD_LOGIC;
-           signal mem_op_in       : in  MEM_OP_TYPE;
-           signal to_reg_in       : in  STD_LOGIC_VECTOR (TO_REG_OP_WIDTH-1 downto 0);
-           signal call_in         : in  STD_LOGIC;
-           signal overflow_in     : in  STD_LOGIC;
-			  signal reg_write_in 	 : in  STD_LOGIC;
-           
-           --Control signals out 
-           signal gene_op_out     : out STD_LOGIC_VECTOR (GENE_OP_WIDTH-1 downto 0);
-           signal cond_out        : out STD_LOGIC_VECTOR (COND_WIDTH-1 downto 0);
-           signal jump_out        : out STD_LOGIC;
-           signal mem_op_out      : out  MEM_OP_TYPE;
-           signal to_reg_out      : out STD_LOGIC_VECTOR (TO_REG_OP_WIDTH-1 downto 0);
-           signal call_out        : out STD_LOGIC;
-           signal overflow_out    : out STD_LOGIC;
-			  signal reg_write_out   : out STD_LOGIC;
-           
-           --Data in 
-           signal rs_in        : in  STD_LOGIC_VECTOR  (DATA_WIDTH-1 downto 0);
-           signal rt_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal res_in        : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal rda_in        : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
-           
-           --Data out
-           signal rs_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal rt_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal res_out       : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-           signal rda_out       : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0)
-           );
+    port ( 
+        -- Control signals
+        clk : in  STD_LOGIC;
+        reset : in  STD_LOGIC;
+        disable : in  STD_LOGIC;
+        
+        -- Ins
+        pc_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+        rs_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        rt_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        rda_in : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+        res_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        overflow_in : in  STD_LOGIC;
+        
+        -- Outs
+        pc_out : out std_logic_vector(ADDR_WIDTH-1 downto 0);
+        rs_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        rt_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        rda_out : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
+        res_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        overflow_out : out  STD_LOGIC;
+        
+        -- Mem Control Ins
+        jump_in : in  STD_LOGIC;
+        gene_op_in : in  GENE_OP_TYPE;
+        mem_op_in : in  MEM_OP_TYPE;
+        
+        -- Mem Control Outs
+        jump_out : out  STD_LOGIC;
+        gene_op_out : out  GENE_OP_TYPE;
+        mem_op_out : out  MEM_OP_TYPE;
+        
+        -- WB Control Ins
+        to_reg_in : in  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+        call_in : in  STD_LOGIC;
+        reg_write_in : in  STD_LOGIC;
+        
+        -- WB Control Outs
+        to_reg_out : out  STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+        call_out : out  STD_LOGIC;
+        reg_write_out : out  STD_LOGIC
+    );
 end EX_MEM;
 
 architecture Behavioral of EX_MEM is
-
---Component declerations
-component flip_flop
-    generic(N : NATURAL);
-    Port ( clk      : in std_logic;
-           reset    : in std_logic;
-           enable   : in std_logic;
-           data_in  : in std_logic_vector(N-1 downto 0);
-           data_out : out std_logic_vector(N-1 downto 0)
-    );
-end component flip_flop;
-
---Signal declerations 
-
-
 begin
 
---Signals are represented from top to bottom (see pipeline figure)
-
-
-PC_INCREMENTED : flip_flop 
-generic map(N => ADDR_WIDTH)
-	port map (clk => clk, 
-			    reset => reset, 
-				 enable => halt, 
-				 data_in => pc_incremented_in, 
-				 data_out => pc_incremented_out);
-
-RS_REGISTER : flip_flop
-generic map(N => DATA_WIDTH)
-    port map(clk => clk, 
-             reset => reset, 
-             enable => halt,
-             data_in => rs_in,
-             data_out => rs_out
-);
-
-
-RT_REGISTER : flip_flop
-generic map(N => DATA_WIDTH)
-    port map(clk => clk, 
-             reset => reset, 
-             enable => halt,
-             data_in => rt_in,
-             data_out => rt_out
-);
-
-
-RES_REGISTER : flip_flop
-generic map(N => DATA_WIDTH)
-    port map(clk => clk, 
-             reset => reset, 
-             enable => halt, 
-             data_in => res_in,
-             data_out => res_out
-);
-
-
-RDA_REGISTER : flip_flop
-generic map(N => REG_ADDR_WIDTH)
-    port map (clk => clk, 
-              reset => reset, 
-              enable => halt, 
-              data_in => rda_in,
-              data_out => rda_out
-);
-
-
-CONTROL_COND : flip_flop
-generic map(N => COND_WIDTH)
-port map(clk => clk, 
-         reset => reset,
-         enable => halt,
-         data_in => cond_in, 
-         data_out => cond_out);
-
-         
-CONTROL_TO_REG : flip_flop
-generic map(N => TO_REG_OP_WIDTH)
-port map(clk => clk, 
-         reset => reset, 
-         enable => halt, 
-   		data_in =>to_reg_in, 
-         data_out =>to_reg_out);
-         
---CONTROL_MEM_OP : flip_flop
---generic map(N => MEM_OP_WIDTH)
---port map(clk => clk, 
---         reset => reset, 
---         enable => halt,
---         data_in => mem_op_in, 
---         data_out =>mem_op_out);
-
-
-
-CONTROL_SIGNALS : process(clk, reset, halt)
-    begin
-        if reset = '1' then 
-           call_out <= '0';
-           jump_out <= '0'; 
-			  reg_write_out <= '0';
-			  overflow_out <= '0';
-        elsif rising_edge(clk) and halt = '0' then 
-           call_out <= call_in;
-           jump_out <= jump_in;
-			  reg_write_out <= reg_write_in; 
-			  
-			  overflow_out <= overflow_in;  
+    process (clk, reset, disable, pc_in, rs_in, rt_in, rda_in, res_in, overflow_in, jump_in, gene_op_in, mem_op_in, to_reg_in, call_in, reg_write_in)
+    begin 
+        if rising_edge(clk) then
+            if reset = '1' then 
+                -- Outs
+                pc_out <= (others => '0');
+                rs_out <= (others => '0');
+                rt_out <= (others => '0');
+                rda_out <= (others => '0');
+                res_out <= (others => '0');
+                overflow_out <= '0';
+                
+                -- Mem Control Outs
+                jump_out <= '0';
+                gene_op_out <= GENE_NOP;
+                mem_op_out <= MEM_NOP;
+                
+                -- WB Control Outs
+                to_reg_out <= (others => '0');
+                call_out <= '0';
+                reg_write_out <= '0';
+                
+            elsif disable = '0' then 
+                -- Outs
+                pc_out <= pc_in;
+                rs_out <= rs_in;
+                rt_out <= rt_in;
+                rda_out <= rda_in;
+                res_out <= res_in;
+                overflow_out <= overflow_in;
+                
+                -- Mem Control Outs
+                jump_out <= jump_in;
+                gene_op_out <= gene_op_in;
+                mem_op_out <= mem_op_in;
+                
+                -- WB Control Outs
+                to_reg_out <= to_reg_in;
+                call_out <= call_in;
+                reg_write_out <= reg_write_in;
+                
+            end if;
         end if;
-end process CONTROL_SIGNALS;    
-
-mem_stuff_signals : process(reset, mem_op_in, gene_op_in)
-begin
-    if reset = '1' then
-        mem_op_out <= MEM_NOP;
-        gene_op_out <= GENE_OP_NONE;
-    else
-        mem_op_out <= mem_op_in;
-        gene_op_out <= gene_op_in;
-    end if;
-end process;
+    end process;
 
 end Behavioral;
 

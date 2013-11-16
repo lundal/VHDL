@@ -21,6 +21,8 @@ package CONSTANTS is
     constant INST_WIDTH             :   integer := 32;
     constant DATA_WIDTH             :   integer := 64;
     constant MEMORY_WIDTH           :   integer := 16;
+    constant IMMEDIATE_WIDTH        :   integer := 10;
+    constant TARGET_WIDTH           :   integer := 19;
 	
     constant STATE_WIDTH            :   integer := 2;
     constant STATE_PROC             :   STD_LOGIC_VECTOR(STATE_WIDTH-1 downto 0) := "00";
@@ -32,14 +34,7 @@ package CONSTANTS is
     constant GENE_OP_WIDTH   : integer := 2;
     constant MEM_OP_WIDTH    : integer := 2;
     constant TO_REG_OP_WIDTH : integer := 2;
-	constant MEM_ADDR_WIDTH  : integer := 19;
 	constant SETTINGS_WIDTH  : integer := 3;
-    
-   --ACTIONS
-	constant LOAD_DATA   : STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0) := "01";
-	constant STORE_DATA 	: STD_LOGIC_VECTOR(MEM_OP_WIDTH-1 downto 0) := "10";
-	constant LOAD_GENE 	: STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "01";
-	constant STORE_GENE  : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "10";
     
     -- Genetic
     constant GENE_OP_NONE     : STD_LOGIC_VECTOR(GENE_OP_WIDTH-1 downto 0) := "00";
@@ -97,5 +92,6 @@ package CONSTANTS is
 	constant ONE64	: STD_LOGIC_VECTOR(63 downto 0) :=  (63 downto 0 => '1');
 	
 	type MEM_OP_TYPE is (MEM_NOP, MEM_READ, MEM_WRITE);
+	type GENE_OP_TYPE is (GENE_NOP, GENE_READ, GENE_WRITE, GENE_SET);
 	
 end CONSTANTS;

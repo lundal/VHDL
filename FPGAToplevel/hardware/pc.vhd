@@ -1,33 +1,38 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use ieee.numeric_std.all;
 
+library WORK;
+use work.constants.all;
 
 entity pc is
-    generic ( default : natural);
-    Port ( clk : in  STD_LOGIC;
-           reset : in  STD_LOGIC;
-           pc_update  : in  STD_LOGIC;
-           addr : in  STD_LOGIC_VECTOR (19-1 downto 0);
-           addr_out : out  STD_LOGIC_VECTOR (19-1 downto 0));
+    port ( 
+        -- Control signals
+        clk : in  STD_LOGIC;
+        reset : in  STD_LOGIC;
+        disable : in  STD_LOGIC;
+
+        -- Ins
+        pc_in : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+
+        -- Outs
+        pc_out : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0)
+    );
 end pc;
 
 architecture Behavioral of pc is
 
 begin
 
-PROGRAM_COUNTER : process(clk, reset, pc_update, addr)
-    begin 
-        --addr_out <= (others => '0');
-        if reset = '1' then 
-            addr_out <= std_logic_vector(to_unsigned(default, 19)); 
-         elsif rising_edge(clk) then 
-            if pc_update = '1' then 
-                addr_out <= addr;
+    process (clk, reset, disable, pc_in)
+    begin
+        if rising_edge(clk) then
+            if reset = '1' then
+                pc_out <= (others => '0');
+            elsif disable = '0' then
+                pc_out <= pc_in;
             end if;
-         end if;
-  end process PROGRAM_COUNTER;
-
+        end if;
+    end process;
 
 end Behavioral;
 

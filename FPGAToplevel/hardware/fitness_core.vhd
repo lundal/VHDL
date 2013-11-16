@@ -1,586 +1,332 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+
+library WORK;
 use work.CONSTANTS.all;
 
 entity fitness_core is
-    generic (processor_id : natural);
+    generic (
+        processor_id : natural
+    );
     port( 
-			-- Bit signals
-			 clk 					 		: in  STD_LOGIC;
-          reset 				 		: in  STD_LOGIC;
-          processor_enable  		: in  STD_LOGIC;
-          
-			 --Control signals related to the instruction cache
-			 halt_inst 					: in  STD_LOGIC; 
-			 
-			 --Bus signals related to instruction cache
-			 imem_address 		 		: out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
-			 imem_data_in 		 		: in  STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
-          
-			 --Control signals related to the data memory
-			 data_request_0 			: out STD_LOGIC; 
-			 data_request_1 			: out STD_LOGIC; 
-			 ack_mem_ctrl 				: in STD_LOGIC; 
-			 
-			 
-			 
-			 --Bus signals related to data memory
-			 data_mem_bus_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          data_mem_addr_bus		 		: out STD_LOGIC_VECTOR(ADDR_WIDTH-2-1 downto 0);
-          data_mem_bus_out 	 		: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          
-          
-			 
-			 --Bus signals related to genetic storage
-			 genetic_data_out 	   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-			 genetic_data_in 		   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-			 
-			 --Control signals related to genetic storage
-			 ack_genetic_ctrl 		: in STD_LOGIC; 
-			 genetic_request_0 		: out STD_LOGIC; 
-			 genetic_request_1 	  	: out STD_LOGIC 
-			 
-			 );
-
+        -- Control signals
+        clk : in  STD_LOGIC;
+        reset : in  STD_LOGIC;
+        processor_enable : in  STD_LOGIC;
+         
+        -- Instruction memory
+        imem_halt : in STD_LOGIC;
+        imem_addr : out STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
+        imem_data_in : in STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
+        
+        -- Data memory
+        dmem_request_0 : out STD_LOGIC; 
+        dmem_request_1 : out STD_LOGIC; 
+        dmem_ack : in STD_LOGIC; 
+        dmem_addr : out STD_LOGIC_VECTOR(ADDR_WIDTH-2-1 downto 0);
+        dmem_data_in : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        dmem_data_out : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        
+        -- Genetic
+        genetic_request_0 : out STD_LOGIC; 
+        genetic_request_1 : out STD_LOGIC;
+        genetic_ack : in STD_LOGIC; 
+        genetic_data_in : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+        genetic_data_out : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0)
+    );
 end fitness_core;
 
 architecture Behavioral of fitness_core is
-
---SIGNAL DECLERATIONS --
-
---FETCH SIGNALS--
-
-	-- Bus signals
-	signal instruction_signal_fetch 		: std_logic_vector(INST_WIDTH-1 downto 0);
-	signal pc_incremented_signal_fetch 	: std_logic_vector(ADDR_WIDTH-1 downto 0);
-	signal pc_signal_fetch 					: std_logic_vector(ADDR_WIDTH-1 downto 0);
-	signal pc_jump_addr_signal 			: std_logic_vector(ADDR_WIDTH-1 downto 0);
-
---DECODE SIGNALS-- 
- 
-	--CONTROL SIGNALS--
-	-- Internally used
-	signal imm_src_signal_decode : std_logic;
-	signal reg_src_signal_decode : std_logic;
-	signal store_src_signal_decode : std_logic;
- 
-	--Passing signals
-	signal alu_src_signal_decode : std_logic;
-	signal reg_write_signal_decode : std_logic;
-	signal call_signal_decode : std_logic;
-	signal jump_signal_decode : std_logic;
-	signal multiplication_signal_decode : std_logic; 
-	signal alu_func_signal_decode : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
-	signal gene_op_signal_decode : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	signal mem_op_signal_decode : MEM_OP_TYPE;
-	signal to_reg_signal_decode : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
-	signal cond_signal_decode : std_logic_vector(COND_WIDTH-1 downto 0);
-
-	--BUS signals 
-
-	--Internally used
-	signal op_code_decode 	: std_logic_vector(OP_CODE_WIDTH-1 downto 0);
-	signal func_decode 		: std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
-	signal rs_signal_decode : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rt_signal_decode : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal imm_signal_decode : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rsa_signal_decode : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal rta_signal_decode : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal instruction_signal_decode : std_logic_vector(INST_WIDTH-1 downto 0);
-
-	--Passing signals
-	signal rda_signal_decode : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_incremented_signal_decode : std_logic_vector(19-1 downto 0);
-
---EXECUTE SIGNALS--
-
-	--CONTROL SIGNALS 
-
-	--Internally used signals 
-	signal alu_src_signal_execute  : std_logic;
-	signal alu_func_signal_execute : std_logic_vector(ALU_FUNC_WIDTH-1 downto 0);
-	signal multiplication_halt : std_logic;
-	signal multiplication_signal_execute : std_logic; 
-
-	--Passing signals 
-	signal jump_signal_execute : std_logic;
-	signal cond_signal_execute 	: std_logic_vector(COND_WIDTH-1 downto 0);
-	signal reg_write_signal_execute : std_logic;
-	signal call_signal_execute : std_logic;
-	signal gene_op_signal_execute : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	signal mem_op_signal_execute : MEM_OP_TYPE;
-	signal to_reg_signal_execute : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
-	signal pc_incremented_signal_execute : std_logic_vector(19-1 downto 0);
-	signal overflow_signal_execute : std_logic;
-
-	--BUS signals
-	signal rs_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rt_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rs_out_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rt_out_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal res_signal_execute : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rda_signal_execute : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal rsa_signal_execute : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal rta_signal_execute : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal imm_signal_execute  :std_logic_vector(DATA_WIDTH-1 downto 0);
-
-
---MEMORY signals--
-
-	--Internally used
-	signal gene_op_signal_mem : std_logic_vector(GENE_OP_WIDTH-1 downto 0);
-	signal mem_op_signal_mem : MEM_OP_TYPE;
-	signal cond_signal_mem 	: std_logic_vector(COND_WIDTH-1 downto 0);
-	signal overflow_signal_mem : std_logic; 
-	signal jump_signal_mem     : std_logic;
- 
-	-- Passing signals
-	signal reg_write_signal_mem : std_logic;
-	signal reg_write_signal_mem_out : std_logic;
-	signal call_signal_mem : std_logic;
-	signal call_signal_mem_out : std_logic; 
-	signal to_reg_signal_mem :  std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
-
-	--BUS signals
-	signal gene_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal res_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_incremented_signal_mem : std_logic_vector(ADDR_WIDTH-1 downto 0);
-	signal rda_signal_mem : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal data_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_out_signal_mem : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rs_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rt_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal gene_signal_mem 	: std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal pc_jump_addr_signal_mem : std_logic_vector(ADDR_WIDTH-1 downto 0);
-
-
-
---WRITE-BACK SIGNALS--
- 
-	--CONTROL SIGNALS--
- 
-	--Internally used
-	signal call_signal_wb : std_logic;
-	signal to_reg_signal_wb : std_logic_vector(TO_REG_OP_WIDTH-1 downto 0);
- 
-	--Passing signals
-	signal reg_write_signal_wb : std_logic;
-
-	--BUS SIGNALS --
-	signal WBD_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal WBA_signal_wb : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_incremented_signal_wb : std_logic_vector(ADDR_WIDTH-1 downto 0);
-	signal gene_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0); 
-	signal res_signal_wb  : std_logic_vector(DATA_WIDTH-1 downto 0);
-   signal data_signal_wb  : std_logic_vector(DATA_WIDTH-1 downto 0);
-	signal rda_signal_wb  : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-	signal pc_out_signal_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
-
---GLOBAL SIGNALS--
-	signal halt_mem_signal 			       : std_logic;
-	signal halt_pipeline_signal 	 		 : std_logic; 
-	signal pc_update_signal 				 : std_logic;
     
-    signal pc_previous 			: std_logic_vector(ADDR_WIDTH-1 downto 0);
+    --FETCH SIGNALS--
+    
+    signal fetch_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal fetch_pc_in : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal fetch_pc_inc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal fetch_pc_prev : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    
+    signal fetch_to_decode_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal fetch_to_decode_inst : std_logic_vector(INST_WIDTH-1 downto 0);
+
+    --DECODE SIGNALS-- 
+     
+    signal decode_from_fetch_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal decode_from_fetch_inst : std_logic_vector(INST_WIDTH-1 downto 0);
+     
+    signal decode_rsa : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal decode_rta : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal decode_imm : std_logic_vector(IMMEDIATE_WIDTH-1 downto 0);
+    signal decode_target : std_logic_vector(TARGET_WIDTH-1 downto 0);
+     
+    signal decode_to_execute_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal decode_to_execute_rs : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal decode_to_execute_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal decode_to_execute_imm : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal decode_to_execute_rsa : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal decode_to_execute_rta : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal decode_to_execute_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+     
+    -- Decode Control
+    signal decode_reg_src : STD_LOGIC;
+    signal decode_imm_src : STD_LOGIC;
+    
+    -- Execute Control
+    signal decode_alu_src : STD_LOGIC;
+    signal decode_alu_func : STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
+    signal decode_cond : STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
+    
+    -- Mem Control
+    signal decode_jump : STD_LOGIC;
+    signal decode_gene_op : GENE_OP_TYPE;
+    signal decode_mem_op : MEM_OP_TYPE;
+    
+    -- WB Control
+    signal decode_to_reg : STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+    signal decode_call : STD_LOGIC;
+    signal decode_reg_write : STD_LOGIC;
+    
+    -- EXECUTE SIGNALS --
+    
+    signal execute_from_decode_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal execute_from_decode_rs : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_from_decode_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_from_decode_imm : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_from_decode_rsa : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal execute_from_decode_rta : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal execute_from_decode_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    
+    signal execute_rs_forwarded : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_rt_forwarded : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_alu_a_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_alu_b_in : std_logic_vector(DATA_WIDTH-1 downto 0);
+    
+    signal execute_to_memory_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal execute_to_memory_rs : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_to_memory_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_to_memory_res : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal execute_to_memory_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal execute_to_memory_overflow : std_logic;
+    
+    -- Execute Control
+    signal execute_alu_src : STD_LOGIC;
+    signal execute_alu_func : STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
+    signal execute_cond : STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
+    
+    -- Mem Control
+    signal execute_jump : STD_LOGIC;
+    signal execute_gene_op : GENE_OP_TYPE;
+    signal execute_mem_op : MEM_OP_TYPE;
+    
+    -- WB Control
+    signal execute_to_reg : STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+    signal execute_call : STD_LOGIC;
+    signal execute_reg_write : STD_LOGIC;
+    
+    -- MEMORY SIGNALS --
+    
+    signal memory_from_execute_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal memory_from_execute_rs : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal memory_from_execute_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal memory_from_execute_res : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal memory_from_execute_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal memory_from_execute_overflow : std_logic;
+    
+    signal memory_condition_reset : std_logic;
+    
+    signal memory_to_writeback_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal memory_to_writeback_res : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal memory_to_writeback_data : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal memory_to_writeback_gene : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal memory_to_writeback_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    
+    -- Mem Control
+    signal memory_jump : STD_LOGIC;
+    signal memory_gene_op : GENE_OP_TYPE;
+    signal memory_mem_op : MEM_OP_TYPE;
+    
+    -- WB Control
+    signal memory_to_reg : STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+    signal memory_call : STD_LOGIC;
+    signal memory_reg_write : STD_LOGIC;
+    
+    -- WRITEBACK SIGNALS --
+    
+    signal writeback_from_memory_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
+    signal writeback_from_memory_res : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal writeback_from_memory_data : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal writeback_from_memory_gene : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal writeback_from_memory_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    
+    signal writeback_wb : std_logic_vector(DATA_WIDTH-1 downto 0);
+    signal writeback_wba : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    
+    -- WB Control
+    signal writeback_to_reg : STD_LOGIC_VECTOR(TO_REG_OP_WIDTH-1 downto 0);
+    signal writeback_call : STD_LOGIC;
+    signal writeback_reg_write : STD_LOGIC;
+    
+    -- RESET --
+    signal reset_pc : STD_LOGIC;
+    signal reset_if_id : STD_LOGIC;
+    signal reset_id_ex : STD_LOGIC;
+    signal reset_ex_mem : STD_LOGIC;
+    signal reset_mem_wb : STD_LOGIC;
+    
+    -- DISABLE --
+    signal disable_pc : STD_LOGIC;
+    signal disable_if_id : STD_LOGIC;
+    signal disable_id_ex : STD_LOGIC;
+    signal disable_ex_mem : STD_LOGIC;
+    signal disable_mem_wb : STD_LOGIC;
+    
 begin
-
---Halt if one of them are true
-halt_pipeline_signal <= halt_inst or halt_mem_signal or multiplication_halt; --Not tested
-control_unit: entity work.control_unit
-port map (
-
-    -- in
-    reset => reset, 
-	 op_code =>	op_code_decode,
-    FUNC => func_decode,
-
-    -- out
-    alu_source => alu_src_signal_decode,
-    imm_source => imm_src_signal_decode,
-    reg_source => reg_src_signal_decode,
-    reg_write => reg_write_signal_decode,
-    call => call_signal_decode,
-    jump => jump_signal_decode,
-    alu_func => alu_func_signal_decode,
-    gene_op => gene_op_signal_decode,
-    mem_op => mem_op_signal_decode,
-    to_reg => to_reg_signal_decode,
-	 store_source => store_src_signal_decode
-);
-
-
-PREPARE_OPCODE_AND_FUNC : process(instruction_signal_decode, processor_enable)
-	begin 
-		if processor_enable = '1' then
-			op_code_decode <= instruction_signal_decode(27 downto 24);
-			func_decode <=  instruction_signal_decode(3 downto 0);
-		else 
-			op_code_decode <= (others => '0');
-			func_decode <= (others => '0');
-		end if;
-end process;
-
-
-MULTIPLICATION_UNIT : process(func_decode)
-begin 
-	if func_decode = "0010" then 
-		multiplication_signal_decode <= '1'; 
-	else 
-		multiplication_signal_decode <= '0';
-	end if;
-
-end process;
-	
-
-
-
--- STAGE DIVIDERS--
-if_id : entity work.IF_ID
-port map (
-    clk => clk,
-    reset => reset,
-    halt => halt_pipeline_signal,
-    processor_enable => processor_enable, 
-	 instruction_in => instruction_signal_fetch,
-    pc_incremented_in => pc_incremented_signal_fetch,
-
-    instruction_out => instruction_signal_decode,
-    pc_incremented_out => pc_incremented_signal_decode
-);
-
-id_ex : entity work.id_ex
-port map (
-
-    clk => clk,
-    reset => reset,
-    halt => halt_pipeline_signal,
-
-    -- PC in
-    pc_incremented_in => pc_incremented_signal_decode,
-
-    -- PC out
-    pc_incremented_out => pc_incremented_signal_execute,
-
-    -- CONTROL SIGNALS in
-    alu_src_in => alu_src_signal_decode,
-    reg_write_in => reg_write_signal_decode,
-    jump_in => jump_signal_decode,
-    alu_func_in => alu_func_signal_decode,
-    cond_in => cond_signal_decode,
-    gene_op_in => gene_op_signal_decode,
-    mem_operation_in => mem_op_signal_decode,
-    to_reg_operation_in => to_reg_signal_decode,
-	 call_in => call_signal_decode,
-	 multiplication_in => multiplication_signal_decode,  
-
-    -- CONTROL SIGNALS out
-    alu_src_out => alu_src_signal_execute,
-    reg_write_out => reg_write_signal_execute,
-    jump_out => jump_signal_execute,
-    alu_func_out => alu_func_signal_execute,
-    cond_out => cond_signal_execute,
-    gene_op_out => gene_op_signal_execute,
-    mem_operation_out => mem_op_signal_execute,
-    to_reg_operation_out => to_reg_signal_execute,
-	 call_out => call_signal_execute,
-	 multiplication_out => multiplication_signal_execute, 
-
-    --DATA in
-    rs_in => rs_signal_decode,
-    rt_in => rt_signal_decode,
-    imm_in => imm_signal_decode,
-    rsa_in => rsa_signal_decode,
-    rta_in => rta_signal_decode,
-    rda_in => rda_signal_decode,
-
-    --DATA out
-    rs_out => rs_signal_execute,
-    rt_out => rt_signal_execute,
-    imm_out => imm_signal_execute,
-    rsa_out => rsa_signal_execute,
-    rta_out => rta_signal_execute,
-    rda_out => rda_signal_execute
-);
-
-
-ex_mem : entity work.ex_mem
-port map (
-    clk => clk,
-    reset => reset,
-    halt => halt_pipeline_signal,
-
-    -- PC in
-    pc_incremented_in => pc_incremented_signal_execute,
-
-    -- PC out
-    pc_incremented_out => pc_incremented_signal_mem,
-
-    --Control signals
-    gene_op_in => gene_op_signal_execute,
-    cond_in => cond_signal_execute,
-    jump_in => jump_signal_execute,
-    mem_op_in => mem_op_signal_execute,
-    to_reg_in => to_reg_signal_execute,
-    call_in => call_signal_execute,
-    overflow_in => overflow_signal_execute,
-	 reg_write_in => reg_write_signal_execute, 
-
-    --Control signals out 
-    gene_op_out => gene_op_signal_mem,
-    cond_out => cond_signal_mem,
-    jump_out => jump_signal_mem,
-    mem_op_out => mem_op_signal_mem,
-    to_reg_out => to_reg_signal_mem,
-    call_out => call_signal_mem,
-    overflow_out => overflow_signal_mem,
-	 reg_write_out => reg_write_signal_mem,
-
-    --Data in 
-    rs_in => rs_out_signal_execute,
-    rt_in => rt_out_signal_execute,
-    res_in => res_signal_execute,
-    rda_in => rda_signal_execute,
-
-    --Data out
-    rs_out => rs_signal_mem,
-    rt_out => rt_signal_mem,
-    res_out => res_signal_mem,
-    rda_out => rda_signal_mem
-);
-
-           
-mem_wb : entity work.mem_wb
-port map (
-    clk => clk,
-    reset => reset,
-    halt => halt_pipeline_signal,
-
-    -- PC in
-    pc_incremented_in => pc_out_signal_mem,
-
-    -- PC out
-    pc_incremented_out => pc_out_signal_wb,
-
-    --CONTROL in
-    to_reg_op_in => to_reg_signal_mem,
-    call_in => call_signal_mem_out,
-	 reg_write_in => reg_write_signal_mem_out,
-
-    --CONTROL out
-    to_reg_op_out => to_reg_signal_wb,
-    call_out => call_signal_wb,
-	 reg_write_out => reg_write_signal_wb,
-
-    --DATA in
-    gene_in => gene_signal_mem,
-    res_in => res_signal_mem,
-    data_in => data_out_signal_mem,
-    rda_in => rda_signal_mem,
-
-    --Data out
-    gene_out => gene_signal_wb,
-    res_out => res_signal_wb,
-    data_out => data_signal_wb,
-    rda_out => rda_signal_wb
-);
-
-
---STAGES-- 
-
-pc_update_signal <= processor_enable and not halt_pipeline_signal; 
-
-prev_pc : process(clk, pc_signal_fetch)
-begin
-    if rising_edge(clk) then
-        pc_previous <= pc_signal_fetch;
-    end if;
-end process;
-
-fetch_stage : entity work.fetch_stage
-generic map( processor_id => processor_id)
-port map ( clk => clk, 
-           reset => reset,
-           pc_update => pc_update_signal,
-           pc_src  => jump_signal_mem, 
-			  pc_jump_addr => pc_jump_addr_signal_mem, 
-           pc_incremented 	=> pc_incremented_signal_fetch,
-           pc_signal  => pc_signal_fetch);
-
-
-
-
-FETCH_INSTRUCTION : process(processor_enable, pc_signal_fetch, imem_data_in) 
-begin 
-	if processor_enable = '1' then
-        if halt_inst = '1' then
-            imem_address <= pc_previous;
-        else
-            imem_address <= pc_signal_fetch;
-        end if;
-		instruction_signal_fetch <= imem_data_in; 
-	else 
-		imem_address <= (others => '0');
-		instruction_signal_fetch <= (others => '0');
-	end if;
-end process;
-
-
-decode_stage : entity work.decode_stage
-port map (
-    clk => clk,
-    processor_enable => processor_enable,
-
-    --Control signals
-    reg_write => reg_write_signal_wb,
-    imm_src => imm_src_signal_decode,
-    reg_src => reg_src_signal_decode,
-    reg_store => store_src_signal_decode,
-
-    --Input signals
-    instruction => instruction_signal_decode,
-    write_data => WBD_signal_wb,      
-    write_register => WBA_signal_wb,
-
-    --Output signals
-    rs => rs_signal_decode,
-    rt => rt_signal_decode,
-    immediate => imm_signal_decode,
-    rsa => rsa_signal_decode,
-    rta => rta_signal_decode,
-    rda => rda_signal_decode,
-    condition_out => cond_signal_decode
-);
-
-
-execution_stage : entity work.execution_stage
-port map (
-    clk => clk,
-    reset => reset,
-
-    -- Control signals in
-    alu_src => alu_src_signal_execute,
-    alu_func => alu_func_signal_execute,
-	 multiplication => multiplication_signal_execute, 
-	 
-	 --Control signals out 
-	 halt => multiplication_halt, 
-
-    --Control signals from other stages
-    stage4_reg_write => reg_write_signal_mem,
-    stage5_reg_write => reg_write_signal_wb,
-
-    --Signals in 
-    rs => rs_signal_execute,
-    rt => rt_signal_execute,
-    immediate => imm_signal_execute,
-    rsa => rsa_signal_execute,
-    rta => rta_signal_execute,
-
-    -- From other stages
-    stage4_alu_result => res_signal_mem,
-    stage5_write_data => WBD_signal_wb,
-    stage4_reg_rd => rda_signal_mem,
-    stage5_reg_rd => rda_signal_wb,
     
-	 --Control signals out
-    overflow => overflow_signal_execute,
+    REG_IF_ID : entity work.IF_ID
+    port map ( 
+        -- Control signals
+        clk => clk,
+        reset => reset_if_id,
+        disable => disable_if_id,
+
+        -- Ins
+        pc_in => fetch_to_decode_pc,
+        instruction_in => fetch_to_decode_inst,
+
+        -- Outs
+        pc_out => decode_from_fetch_pc,
+        instruction_out => decode_from_fetch_inst
+    );
     
-	 -- Signals out 
-    alu_result => res_signal_execute,
-	 rs_out => rs_out_signal_execute, 
-	 rt_out => rt_out_signal_execute
-);
-
-
-
-
---TODO: RE-MAP this component
-
-memory_stage : entity work.memory_stage
-	Port map (
-	--Bit signals
-	clk => clk, 
-	reset => reset, 
-   halt => halt_mem_signal, 
-	halt_pipeline => halt_pipeline_signal, 
-	
-	--Processor related control signals in
-	overflow_in => overflow_signal_mem, 
-	jump_in  => jump_signal_mem, 
-	gene_op_in 	=> gene_op_signal_mem, 
-	cond_op_in => cond_signal_mem, 
-	mem_op_in  => mem_op_signal_mem, 
-	
-	reg_write_in => reg_write_signal_mem, 
-	call_in => call_signal_mem, 
-	
-	--Processor related control signals out
-	reg_write_out => reg_write_signal_mem_out, 
-	call_out => call_signal_mem_out, 
-	
-	--Genetic pipeline related control signals in 
-	ack_genetic_ctrl => ack_genetic_ctrl, 
-	
-	--Genetic pipeline related control signals out 
-	genetic_request_0 => genetic_request_0, 
-	genetic_request_1 => genetic_request_1, 
-	
-	--Memory related control signals in 
-	ack_mem_ctrl => ack_mem_ctrl, 
-	
-	--Memory related control signals out 
-	data_request_0 		 => data_request_0, 
-   data_request_1 		 => data_request_1, 
-	
-	--Processor related bus signals in 
-	fitness_in => rs_signal_mem, 
-	gene_in => rt_signal_mem, 
-	res_in => res_signal_mem, 
-	pc_incremented => pc_incremented_signal_mem, 
-	
-	--Processor related bus signals out 
-	gene_out => gene_signal_mem, 
-	data_out => data_out_signal_mem, 
-	pc_out => pc_out_signal_mem, 
-	pc_jump_addr => pc_jump_addr_signal_mem, 
-	
-	-- Genetic related bus signals in 
-	genetic_data_in  => genetic_data_in, 
-	
-	--Genetic related bus signals out 
-	genetic_data_out => genetic_data_out, 
-	
-	--Data memory related bus signals in 
-	data_mem_bus_in => data_mem_bus_in, 
-	
-	
-	--Data memory related bus signals out 
-	data_mem_bus_out	=> data_mem_bus_out, 
-	data_mem_addr_bus => data_mem_addr_bus
-	);
-
-
-
-
-
-
-
-write_back_stage : entity work.write_back_stage
-port map( 
-			--Control signals in
-			to_reg => to_reg_signal_wb, 
-			call => call_signal_wb, 
-			
-			--Bus signals in
-			pc_incremented_in => pc_out_signal_wb,
-			gene_in =>gene_signal_wb, 
-			res_in =>res_signal_wb, 
-			data_in => data_signal_wb, 
-			rda_in => rda_signal_wb,
-			
-			--Bus signals out
-			WBA => WBA_signal_wb, 
-			WBD => WBD_signal_wb);
-	
-
+    REG_ID_EX : entity work.ID_EX
+    port map ( 
+        -- Control signals
+        clk => clk,
+        reset => reset_id_ex,
+        disable => disable_id_ex,
+        
+        -- Ins
+        pc_in => decode_to_execute_pc,
+        rs_in => decode_to_execute_rs,
+        rt_in => decode_to_execute_rt,
+        imm_in => decode_to_execute_imm,
+        rsa_in => decode_to_execute_rsa,
+        rta_in => decode_to_execute_rta,
+        rda_in => decode_to_execute_rda,
+        
+        -- Outs
+        pc_out => execute_from_decode_pc,
+        rs_out => execute_from_decode_rs,
+        rt_out => execute_from_decode_rt,
+        imm_out => execute_from_decode_imm,
+        rsa_out => execute_from_decode_rsa,
+        rta_out => execute_from_decode_rta,
+        rda_out => execute_from_decode_rda,
+        
+        -- Execute Control Ins
+        alu_src_in => decode_alu_src,
+        alu_func_in => decode_alu_func,
+        cond_in => decode_cond,
+        
+        -- Execute Control Outs
+        alu_src_out => execute_alu_src,
+        alu_func_out => execute_alu_func,
+        cond_out => execute_cond,
+        
+        -- Mem Control Ins
+        jump_in => decode_jump,
+        gene_op_in => decode_gene_op,
+        mem_op_in => decode_mem_op,
+        
+        -- Mem Control Outs
+        jump_out => execute_jump,
+        gene_op_out => execute_gene_op,
+        mem_op_out => execute_mem_op,
+        
+        -- WB Control Ins
+        to_reg_in => decode_to_reg,
+        call_in => decode_call,
+        reg_write_in => decode_reg_write,
+        
+        -- WB Control Outs
+        to_reg_out => execute_to_reg,
+        call_out => execute_call,
+        reg_write_out => execute_reg_write
+    );
+    
+    REG_EX_MEM : entity work.EX_MEM
+    port map ( 
+        -- Control signals
+        clk => clk,
+        reset => reset_ex_mem,
+        disable => disable_ex_mem,
+        
+        -- Ins
+        pc_in => execute_to_memory_pc,
+        rs_in => execute_to_memory_rs,
+        rt_in => execute_to_memory_rt,
+        rda_in => execute_to_memory_rda,
+        res_in => execute_to_memory_res,
+        overflow_in => execute_to_memory_overflow,
+        
+        -- Outs
+        pc_out => memory_from_execute_pc,
+        rs_out => memory_from_execute_rs,
+        rt_out => memory_from_execute_rt,
+        rda_out => memory_from_execute_rda,
+        res_out => memory_from_execute_res,
+        overflow_out => memory_from_execute_overflow,
+        
+        -- Mem Control Ins
+        jump_in => execute_jump,
+        gene_op_in => execute_gene_op,
+        mem_op_in => execute_mem_op,
+        
+        -- Mem Control Outs
+        jump_out => memory_jump,
+        gene_op_out => memory_gene_op,
+        mem_op_out => memory_mem_op,
+        
+        -- WB Control Ins
+        to_reg_in => execute_to_reg,
+        call_in => execute_call,
+        reg_write_in => execute_reg_write,
+        
+        -- WB Control Outs
+        to_reg_out => memory_to_reg,
+        call_out => memory_call,
+        reg_write_out => memory_reg_write
+    );
+    
+    REG_MEM_WB : entity work.MEM_WB
+    port map ( 
+        -- Control signals
+        clk => clk,
+        reset => reset_mem_wb,
+        disable => disable_mem_wb,
+        
+        -- Ins
+        pc_in => memory_to_writeback_pc,
+        data_in => memory_to_writeback_data,
+        gene_in => memory_to_writeback_gene,
+        rda_in => memory_to_writeback_rda,
+        res_in => memory_to_writeback_res,
+        
+        -- Outs
+        pc_out => writeback_from_memory_pc,
+        data_out => writeback_from_memory_data,
+        gene_out => writeback_from_memory_gene,
+        rda_out => writeback_from_memory_rda,
+        res_out => writeback_from_memory_res,
+        
+        -- WB Control Ins
+        to_reg_in => memory_to_reg,
+        call_in => memory_call,
+        reg_write_in => memory_reg_write,
+        
+        -- WB Control Outs
+        to_reg_out => writeback_to_reg,
+        call_out => writeback_call,
+        reg_write_out => writeback_reg_write
+    );
+    
 end behavioral;
