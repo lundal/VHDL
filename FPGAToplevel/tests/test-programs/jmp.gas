@@ -1,0 +1,23 @@
+one:
+    nop
+    nop
+    nop
+    jmp two
+
+three:
+    nop
+    nop
+    nop
+    nop
+    nop
+    jmp four
+
+two:
+    nop
+    jmp three
+
+four:
+    nop
+    nop
+    nop
+    jmp one

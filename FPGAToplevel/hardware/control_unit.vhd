@@ -136,15 +136,15 @@ CONTROL_UNIT : process (OP_CODE, FUNC, reset)
 				STORE_SOURCE <= '0';
         
         elsif OP_CODE = OP_CODE_LDI then
-            ALU_FUNC <= ALU_FUNC_ADD;
+            ALU_FUNC <= ALU_FUNC_B;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
             GENE_OP <= GENE_OP_NA;
-            MEM_OP <= MEM_NOP;
+            MEM_OP <= MEM_READ;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "01";
+            TO_REG <= "11";
             REG_WRITE <= '1';
 				STORE_SOURCE <= '0';
 
