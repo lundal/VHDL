@@ -3,6 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use work.CONSTANTS.all;
 
 entity fitness_core is
+    generic (processor_id : natural := 1);
     port( 
 			-- Bit signals
 			 clk 					 		: in  STD_LOGIC;
