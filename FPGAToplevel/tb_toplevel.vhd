@@ -66,7 +66,7 @@ ARCHITECTURE behavior OF tb_toplevel IS
    -- Clock period definitions
    constant Clock_period : time := 10 ns;
    
-    type mem is array (0 to 19) 
+    type mem is array (0 to 20) of std_logic_vector(16-1 downto 0); 
     constant hi : mem := (
         0 => "0000000000000000",
         1  => "1111001000000000",
