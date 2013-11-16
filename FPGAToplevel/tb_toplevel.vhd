@@ -1,5 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.all;
 use work.test_utils.all;
 use WORK.CONSTANTS.ALL;
  
@@ -64,7 +65,41 @@ ARCHITECTURE behavior OF tb_toplevel IS
 
    -- Clock period definitions
    constant Clock_period : time := 10 ns;
- 
+   
+    
+    type mem is array (0 to 12) of std_logic_vector(16-1 downto 0);
+    
+    constant hi : mem := (
+        0  => "1111001000000000",
+        1  => "1111001000000000",
+        2  => "1111010000011000",
+        3  => "1111010000001000",
+        4  => "1111010000010000",
+        5  => "1111110000011000",
+        6  => "1111110000011000",
+        7  => "1111100000001000",
+        8  => "1111100000010000",
+        9  => "1111100000000000",
+        10  => "0010001000000000",
+        11  => "1111001000000000",
+        12  => "0000000000000000"
+    );
+    constant lo : mem := (
+        0  => "0000000000001010",
+        1  => "0000000000001001",
+        2  => "0000000000000000",
+        3  => "0000000000000000",
+        4  => "0000000000000001",
+        5  => "1100000000010000",
+        6  => "1100000000010000",
+        7  => "0100000000100000",
+        8  => "0100000000100000",
+        9  => "0000000000110001",
+        10  => "0000000000001101",
+        11  => "0000000000010100",
+        12  => "0000000000000000"
+    );
+    
 BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
@@ -92,38 +127,36 @@ BEGIN
           Clock => Clock
         );
         
-        
-        
-    inst_mem : entity work.fakeinstmem
+--    inst_mem : entity work.fakeinstmem
+--    port map(
+--		IMEM_ADDR => IMEM_ADDR,
+--		IMEM_DATA_LO => IMEM_DATA_LO,
+--		IMEM_WE_LO => IMEM_WE_LO,
+--		IMEM_CE_LO => IMEM_CE_LO,
+--		IMEM_DATA_HI => IMEM_DATA_HI,
+--		IMEM_WE_HI => IMEM_WE_HI,
+--		IMEM_CE_HI => IMEM_CE_HI,
+--        IMEM_LBUB => '1',
+--        clk => clock
+--	);
+    
+    inst_mem_hi : entity work.fakemem
     port map(
-		IMEM_ADDR => IMEM_ADDR,
-		IMEM_DATA_LO => IMEM_DATA_LO,
-		IMEM_WE_LO => IMEM_WE_LO,
-		IMEM_CE_LO => IMEM_CE_LO,
-		IMEM_DATA_HI => IMEM_DATA_HI,
-		IMEM_WE_HI => IMEM_WE_HI,
-		IMEM_CE_HI => IMEM_CE_HI,
-        IMEM_LBUB => '1',
-        clk => clock
+		ADDR => IMEM_ADDR,
+		DATA => IMEM_DATA_HI,
+		WE => IMEM_WE_HI,
+		CE => IMEM_CE_HI,
+		CLK => Clock
 	);
     
---    inst_mem_hi : entity work.fakemem
---    port map(
---		ADDR => IMEM_ADDR,
---		DATA => IMEM_DATA_HI,
---		WE => IMEM_WE_HI,
---		CE => IMEM_CE_HI,
---		CLK => Clock
---	);
---    
---    inst_mem_lo : entity work.fakemem
---    port map(
---		ADDR => IMEM_ADDR,
---		DATA => IMEM_DATA_LO,
---		WE => IMEM_WE_LO,
---		CE => IMEM_CE_LO,
---		CLK => Clock
---	);
+    inst_mem_lo : entity work.fakemem
+    port map(
+		ADDR => IMEM_ADDR,
+		DATA => IMEM_DATA_LO,
+		WE => IMEM_WE_LO,
+		CE => IMEM_CE_LO,
+		CLK => Clock
+	);
     
     data_mem : entity work.fakemem
     port map(
@@ -137,9 +170,9 @@ BEGIN
    -- Clock process definitions
    Clock_process :process
    begin
-		Clock <= '0';
-		wait for Clock_period/2;
 		Clock <= '1';
+		wait for Clock_period/2;
+		Clock <= '0';
 		wait for Clock_period/2;
    end process;
  
@@ -147,22 +180,43 @@ BEGIN
    -- Stimulus process
    stim_proc: process
    begin
-      scu_enable <= '0';
+      -- Hold some cycles
       wait for clock_period*4;
+      
+      scu_ce <= '0';
+      scu_we <= '0';
+      
+      -- Flash inst high
+      scu_state <= STATE_INST_HI;
+      
+      inst_hi :
+      for i in hi'range loop
+         scu_addr <= std_logic_vector(to_unsigned(i, 19));
+         scu_data <= hi(i);
+         wait for clock_period;
+      end loop;
+      
+      -- Flash inst low
       scu_state <= STATE_INST_LO;
-      wait for clock_period * 257;
+      
+      inst_lo :
+      for i in lo'range loop
+         scu_addr <= std_logic_vector(to_unsigned(i, 19));
+         scu_data <= lo(i);
+         wait for clock_period;
+      end loop;
+      
+      scu_ce <= '1';
+      scu_we <= '1';
+      
+      -- Hold reset more to clear caches
+      wait for clock_period*256;
+      
       scu_state <= STATE_PROC;
       
       wait for clock_period;
+      
       scu_enable <= '1';
-      scu_we <= '1';
-      scu_ce <= '1';
-      
-      wait for clock_period;
-      
-      
-      wait for clock_period*100;
-
 
       wait;
    end process;
