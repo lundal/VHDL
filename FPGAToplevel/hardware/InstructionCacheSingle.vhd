@@ -133,7 +133,7 @@ begin
             WriteA <= '1';
             WriteB <= '1';
             
-            Halt <= '1';
+            --Halt <= '1';
             MemRq <= '0';
         elsif Fault = '1' then
             Halt <= '1';
