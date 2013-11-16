@@ -51,14 +51,14 @@ constant lo : mem := (
 
 begin
 
-    --process(clk)
-    --begin
+    process(clk)
+    begin
    
 
         IMEM_DATA_HI <= X"FACE";
         IMEM_DATA_LO <= X"CAFE";
 
-    --end process;
+    end process;
 
 --    process (IMEM_ADDR)
 --    begin

@@ -64,6 +64,8 @@ ARCHITECTURE behavior OF tb_toplevel IS
 
    -- Clock period definitions
    constant Clock_period : time := 10 ns;
+   
+   signal le_data_low_dump : std_logic_vector(15 downto 0);
  
 BEGIN
  
@@ -81,7 +83,7 @@ BEGIN
           IMEM_WE_HI => IMEM_WE_HI,
           IMEM_WE_LO => IMEM_WE_LO,
           IMEM_DATA_HI => IMEM_DATA_HI,
-          IMEM_DATA_LO => IMEM_DATA_LO,
+          IMEM_DATA_LO => le_data_low_dump,
           IMEM_ADDR => IMEM_ADDR,
           IMEM_LBUB => IMEM_LBUB,
           DMEM_CE => DMEM_CE,
@@ -91,6 +93,8 @@ BEGIN
           DMEM_LBUB => DMEM_LBUB,
           Clock => Clock
         );
+        
+        
         
     inst_mem : entity work.fakeinstmem
     port map(
@@ -152,6 +156,10 @@ BEGIN
       scu_state <= STATE_PROC;
       wait for clock_period;
       scu_enable <= '1';
+      
+      wait for clock_period;
+      
+      test("", "", imem_data_lo, X"CAFE");
       
       wait for clock_period*100;
 

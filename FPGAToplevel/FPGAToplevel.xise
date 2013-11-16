@@ -209,7 +209,7 @@
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>
-    <file xil_pn:name="tests/tb_toplevel.vhd" xil_pn:type="FILE_VHDL"/>
+    <file xil_pn:name="tb_toplevel.vhd" xil_pn:type="FILE_VHDL"/>
     <file xil_pn:name="hardware/crossover_core_doublesplit.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -343,6 +343,10 @@
       <association xil_pn:name="Implementation"/>
     </file>
     <file xil_pn:name="tb_toplevel.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+    </file>
+    <file xil_pn:name="FakeInstMem.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
     </file>

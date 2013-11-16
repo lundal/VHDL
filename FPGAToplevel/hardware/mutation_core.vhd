@@ -140,6 +140,6 @@ begin
         end if;
     end process;
     
-    output <= (input and not mutation) or (not input and mutation);
+    output <= input xor mutation;
     
 end Behavioral;
