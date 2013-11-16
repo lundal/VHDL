@@ -51,57 +51,48 @@ constant lo : mem := (
 
 begin
 
-    process(clk)
+    process (IMEM_ADDR)
     begin
-   
-
-        IMEM_DATA_HI <= X"FACE";
-        IMEM_DATA_LO <= X"CAFE";
-
+        case IMEM_ADDR is
+            when "0000000000000000000" =>
+                IMEM_DATA_HI <= "1111111111111111";
+                IMEM_DATA_LO <= "0000000000001111";
+            when "0000000000000000001" =>
+                IMEM_DATA_HI <= hi(1);
+                IMEM_DATA_LO <= lo(1);
+            when "0000000000000000010" =>
+                IMEM_DATA_HI <= hi(2);
+                IMEM_DATA_LO <= lo(2);
+            when "0000000000000000011" =>
+                IMEM_DATA_HI <= hi(3);
+                IMEM_DATA_LO <= lo(3);
+            when "0000000000000000100" =>
+                IMEM_DATA_HI <= hi(4);
+                IMEM_DATA_LO <= lo(4);
+            when "0000000000000000101" =>
+                IMEM_DATA_HI <= hi(5);
+                IMEM_DATA_LO <= lo(5);
+            when "0000000000000000110" =>
+                IMEM_DATA_HI <= hi(6);
+                IMEM_DATA_LO <= lo(6);
+            when "0000000000000000111" =>
+                IMEM_DATA_HI <= hi(7);
+                IMEM_DATA_LO <= lo(7);
+            when "0000000000000001000" =>
+                IMEM_DATA_HI <= hi(8);
+                IMEM_DATA_LO <= lo(8);
+            when "0000000000000001001" =>
+                IMEM_DATA_HI <= hi(9);
+                IMEM_DATA_LO <= lo(9);
+            when "0000000000000001010" =>
+                IMEM_DATA_HI <= hi(10);
+                IMEM_DATA_LO <= lo(10);
+            when "0000000000000001011" =>
+                IMEM_DATA_HI <= hi(11);
+                IMEM_DATA_LO <= lo(11);
+            when others =>
+                IMEM_DATA_HI <= "0000000000000000";
+                IMEM_DATA_LO <= "0000000000000000";
+        end case;
     end process;
-
---    process (IMEM_ADDR)
---    begin
---        case IMEM_ADDR is
---            when "0000000000000000000" =>
---                IMEM_DATA_HI <= "1111111111111111";
---                IMEM_DATA_LO <= "0000000000001111";
---            when "0000000000000000001" =>
---                IMEM_DATA_HI <= hi(1);
---                IMEM_DATA_LO <= lo(1);
---            when "0000000000000000010" =>
---                IMEM_DATA_HI <= hi(2);
---                IMEM_DATA_LO <= lo(2);
---            when "0000000000000000011" =>
---                IMEM_DATA_HI <= hi(3);
---                IMEM_DATA_LO <= lo(3);
---            when "0000000000000000100" =>
---                IMEM_DATA_HI <= hi(4);
---                IMEM_DATA_LO <= lo(4);
---            when "0000000000000000101" =>
---                IMEM_DATA_HI <= hi(5);
---                IMEM_DATA_LO <= lo(5);
---            when "0000000000000000110" =>
---                IMEM_DATA_HI <= hi(6);
---                IMEM_DATA_LO <= lo(6);
---            when "0000000000000000111" =>
---                IMEM_DATA_HI <= hi(7);
---                IMEM_DATA_LO <= lo(7);
---            when "0000000000000001000" =>
---                IMEM_DATA_HI <= hi(8);
---                IMEM_DATA_LO <= lo(8);
---            when "0000000000000001001" =>
---                IMEM_DATA_HI <= hi(9);
---                IMEM_DATA_LO <= lo(9);
---            when "0000000000000001010" =>
---                IMEM_DATA_HI <= hi(10);
---                IMEM_DATA_LO <= lo(10);
---            when "0000000000000001011" =>
---                IMEM_DATA_HI <= hi(11);
---                IMEM_DATA_LO <= lo(11);
---            when others =>
---                IMEM_DATA_HI <= "0000000000000000";
---                IMEM_DATA_LO <= "0000000000000000";
---        end case;
---    end process;
 end architecture behavioral;

@@ -64,8 +64,6 @@ ARCHITECTURE behavior OF tb_toplevel IS
 
    -- Clock period definitions
    constant Clock_period : time := 10 ns;
-   
-   signal le_data_low_dump : std_logic_vector(15 downto 0);
  
 BEGIN
  
@@ -83,7 +81,7 @@ BEGIN
           IMEM_WE_HI => IMEM_WE_HI,
           IMEM_WE_LO => IMEM_WE_LO,
           IMEM_DATA_HI => IMEM_DATA_HI,
-          IMEM_DATA_LO => le_data_low_dump,
+          IMEM_DATA_LO => IMEM_DATA_LO,
           IMEM_ADDR => IMEM_ADDR,
           IMEM_LBUB => IMEM_LBUB,
           DMEM_CE => DMEM_CE,
@@ -152,14 +150,16 @@ BEGIN
       scu_enable <= '0';
       wait for clock_period*4;
       scu_state <= STATE_INST_LO;
-      wait for clock_period * 512;
+      wait for clock_period * 257;
       scu_state <= STATE_PROC;
+      
       wait for clock_period;
       scu_enable <= '1';
+      scu_we <= '1';
+      scu_ce <= '1';
       
       wait for clock_period;
       
-      test("", "", imem_data_lo, X"CAFE");
       
       wait for clock_period*100;
 

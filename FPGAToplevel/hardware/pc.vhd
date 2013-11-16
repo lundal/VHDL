@@ -1,8 +1,10 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all;
 
 
 entity pc is
+    generic ( default : natural := 1);
     Port ( clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
            pc_update  : in  STD_LOGIC;
@@ -18,7 +20,7 @@ PROGRAM_COUNTER : process(clk, reset)
     begin 
         addr_out <= (others => '0');
         if reset = '1' then 
-            addr_out <= "0000000000000000001";
+            addr_out <= std_logic_vector(to_unsigned(default, 19)); 
          elsif rising_edge(clk) then 
             if pc_update = '1' then 
                 addr_out <= addr;

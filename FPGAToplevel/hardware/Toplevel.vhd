@@ -418,6 +418,7 @@ begin
         );
         
         FITNESS_CORE_A : entity work.fitness_core
+        generic map(processor_id => i + 1)
         port map(
             -- Bit signals
             clk => Clock,
