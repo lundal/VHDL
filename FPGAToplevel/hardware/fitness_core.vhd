@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use work.CONSTANTS.all;
 
 entity fitness_core is
-    generic (processor_id : natural := 1    );
+    generic (processor_id : natural);
     port( 
 			-- Bit signals
 			 clk 					 		: in  STD_LOGIC;
@@ -388,6 +388,7 @@ port map (
 pc_update_signal <= processor_enable and not halt_pipeline_signal; 
 
 fetch_stage : entity work.fetch_stage
+generic map( processor_id => processor_id)
 port map ( clk => clk, 
            reset => reset,
            pc_update => pc_update_signal,

@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 
 entity pc is
-    generic ( default : natural := 1);
+    generic ( default : natural);
     Port ( clk : in  STD_LOGIC;
            reset : in  STD_LOGIC;
            pc_update  : in  STD_LOGIC;

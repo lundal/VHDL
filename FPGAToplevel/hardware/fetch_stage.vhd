@@ -3,7 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 
 entity fetch_stage is
-    generic ( processor_id : natural := 1);
+    generic ( processor_id : natural);
     Port ( clk 				: in STD_LOGIC;
            reset 				: in STD_LOGIC;
            pc_update 		: in STD_LOGIC;
