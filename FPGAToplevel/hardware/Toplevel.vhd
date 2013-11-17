@@ -50,8 +50,6 @@ architecture behavioral of toplevel is
     signal InstAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal InstData_IN : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
     signal InstData_OUT : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
-    --signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
-    --signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
     signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal InstAddrBus : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0); -- To processors
@@ -75,17 +73,6 @@ architecture behavioral of toplevel is
     signal reset : std_logic;
     
     -- instruction cache signals
---    signal instruction_cache_MemRq : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
---    signal instruction_cache_MemAck : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
---    signal instruction_cache_Halt :  STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
---    signal instruction_cache_MemAddr : std_logic_vector(ADDR_WIDTH-1 downto 0);
---    signal instruction_cache_MemData : std_logic_vector(INST_WIDTH-1 downto 0);
---    type ARRAY_PC_TYPE is array (0 to NUM_PROC_PAIRS-1) of std_logic_vector(ADDR_WIDTH-1 downto 0);
---    type ARRAY_INST_TYPE is array (0 to NUM_PROC_PAIRS-1) of std_logic_vector(INST_WIDTH-1 downto 0);
---    signal instruction_cache_PCA : ARRAY_PC_TYPE;
---    signal instruction_cache_PCB : ARRAY_PC_TYPE;
---    signal instruction_cache_InstA : ARRAY_INST_TYPE;
---    signal instruction_cache_InstB : ARRAY_INST_TYPE;
     signal instruction_cache_MemRq : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal instruction_cache_MemAck : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal instruction_cache_Halt :  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
@@ -177,8 +164,6 @@ begin
         
         DMEM_DATA_IN <= DMEM_DATA;
     end process;
-    
-    
     
     MemMux : entity work.MemMux
     generic map(
@@ -303,99 +288,6 @@ begin
         RESET     => reset,
         CLK       => Clock
     );
-    
---    --Maps instruction caches and fitness cores
---    FITNESS_CORE_PAIRS: for i in 0 to NUM_PROC_PAIRS-1 generate
---    
---        INSTRUCTION_CACHE : entity work.InstructionCache
---        port map(
---            MemRq => InstRq(i),
---            MemAck => InstAck(i),
---            
---            MemAddr	=> InstAddrBus,
---            MemData => InstDataBus,
---            
---            PCA => instruction_cache_PCA(i),
---            PCB => instruction_cache_PCB(i),
---
---            InstA => instruction_cache_InstA(i),
---            InstB => instruction_cache_InstB(i),
---            
---            Halt => instruction_cache_Halt(i),
---            
---            Reset => reset,
---            Clock => Clock
---        );
---       
---    
---        FITNESS_CORE_A : entity work.fitness_core
---        port map(
---            -- Bit signals
---            clk => Clock,
---            reset => reset,
---            processor_enable => SCU_ENABLE,
---            
---            --Control signals related to the instruction cache
---            halt_inst => instruction_cache_Halt(i),
---            
---            --Bus signals related to instruction cache
---            imem_address => instruction_cache_PCA(i),
---            imem_data_in => instruction_cache_InstA(i),
---            
---            --Control signals related to the data memory
---            data_request_0 => DataRq0(i*2),
---            data_request_1 => DataRq1(i*2),
---            ack_mem_ctrl => DataAck(i*2),
---            
---            --Bus signals related to data memory
---            data_mem_bus_in => DataDataOutBus,
---            data_mem_addr_bus => DataAddrBus,
---            data_mem_bus_out => DataDataInBus,
---            
---            --Bus signals related to genetic storage
---            genetic_data_out => genetic_rated_bus,
---            genetic_data_in => genetic_unrated_bus,
---            
---            --Control signals related to genetic storage
---            ack_genetic_ctrl => genetic_ack(i*2),
---            genetic_request_0 => genetic_request_0(i*2),
---            genetic_request_1 => genetic_request_1(i*2)
---        );
---        
---        FITNESS_CORE_B : entity work.fitness_core
---        port map(
---            -- Bit signals
---            clk => Clock,
---            reset => reset,
---            processor_enable => SCU_ENABLE,
---            
---            --Control signals related to the instruction cache
---            halt_inst => instruction_cache_Halt(i),
---            
---            --Bus signals related to instruction cache
---            imem_address => instruction_cache_PCB(i),
---            imem_data_in => instruction_cache_InstB(i),
---            
---            --Control signals related to the data memory
---            data_request_0 => DataRq0(i*2+1),
---            data_request_1 => DataRq1(i*2+1),
---            ack_mem_ctrl => DataAck(i*2+1),
---            
---            --Bus signals related to data memory
---            data_mem_bus_in => DataDataOutBus,
---            data_mem_addr_bus => DataAddrBus,
---            data_mem_bus_out => DataDataInBus,
---            
---            --Bus signals related to genetic storage
---            genetic_data_out => genetic_rated_bus,
---            genetic_data_in => genetic_unrated_bus,
---            
---            --Control signals related to genetic storage
---            ack_genetic_ctrl => genetic_ack(i*2+1),
---            genetic_request_0 => genetic_request_0(i*2+1),
---            genetic_request_1 => genetic_request_1(i*2+1)
---        );
---    end generate FITNESS_CORE_PAIRS;
 
     -- Maps instruction caches and fitness cores
     FITNESS_CORES: for i in 0 to NUM_PROC-1 generate
