@@ -371,16 +371,16 @@ begin
     fetch_pc_inc <= STD_LOGIC_VECTOR(UNSIGNED(fetch_pc) + 1);
     
     -- MUX: PC Input
-    imem_addr <= fetch_pc_prev when imem_halt = '1' else fetch_pc;
+    imem_addr <= fetch_pc_prev when halt = '1' else fetch_pc;
     
     -- MUX : Jump
     fetch_pc <=
         fetch_to_decode_pc when memory_jump = '0' else
         memory_from_execute_res(ADDR_WIDTH-1 downto 0);
     
-    FF_PC_PREV : process(clk, imem_halt, fetch_pc)
+    FF_PC_PREV : process(clk, halt, fetch_pc)
     begin
-        if (rising_edge(clk) and imem_halt = '0') then
+        if (rising_edge(clk) and halt = '0') then
             fetch_pc_prev <= fetch_pc;
         end if;
     end process;
