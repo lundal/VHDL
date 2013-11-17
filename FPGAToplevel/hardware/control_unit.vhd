@@ -125,7 +125,7 @@ begin
             REG_WRITE <= '0';
         
         elsif OP_CODE = OP_CODE_STI then
-            ALU_FUNC <= ALU_FUNC_ADD;
+            ALU_FUNC <= ALU_FUNC_B;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
@@ -162,15 +162,15 @@ begin
         
         elsif OP_CODE = OP_CODE_SETG then
             ALU_FUNC <= ALU_FUNC_NA;
-            REG_SOURCE <= '0';
+            REG_SOURCE <= '1';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
             GENE_OP <= GENE_SET; 
             MEM_OP <= MEM_NOP;
             JUMP <= '0';
             CALL <= '0';
-            TO_REG <= "01";
-            REG_WRITE <= '1';
+            TO_REG <= "00";
+            REG_WRITE <= '0';
         else  
             ALU_FUNC <= ALU_FUNC_NA;
             REG_SOURCE <= '0';
