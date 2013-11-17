@@ -78,6 +78,7 @@ transcript
 
 # linux toolchain garbage
 *.o
+*.out
 *.cf
 
 # vim swap files
