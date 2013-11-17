@@ -157,7 +157,12 @@ begin
         end case;
     end process;
     
-    DATA_OUT <= MEM_DATA_IN;
+    READ_FF : process(clk, state)
+    begin
+        if rising_edge(clk) and state = ReadWait then
+            DATA_OUT <= MEM_DATA_IN;
+        end if;
+    end process;
     
 end Behavioral;
 
