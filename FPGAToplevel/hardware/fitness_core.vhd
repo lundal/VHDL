@@ -142,6 +142,8 @@ architecture Behavioral of fitness_core is
     signal memory_condition_reset : std_logic;
     signal memory_mem_stop : std_logic;
     signal memory_mem_op_ctrl : MEM_OP_TYPE;
+    signal memory_gene_stop : std_logic;
+    signal memory_gene_op_ctrl : GENE_OP_TYPE;
     
     signal memory_to_writeback_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
     signal memory_to_writeback_res : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -570,13 +572,25 @@ begin
         DATA_OUT  => genetic_data_out,
         
         -- To/from processor
-        OP       => memory_gene_op,
+        OP       => memory_gene_op_ctrl,
         FITNESS  => memory_from_execute_rs,
         GENE_IN  => memory_from_execute_rt,
         GENE_OUT => memory_to_writeback_gene,
         HALT     => genetic_halt,
         CLK      => clk
     );
+    
+    GENETIC_STOPPER : process(clk, genetic_halt, halt)
+    begin
+        if rising_edge(clk) and genetic_halt = '0' and halt = '1' then
+            memory_gene_stop <= '1';
+        else
+            memory_gene_stop <= '0';
+        end if;
+    end process;
+    
+    -- MUX: Memory operation control
+    memory_gene_op_ctrl <= memory_gene_op when memory_gene_stop = '0' else GENE_NOP;
     
     CONDITION_CTRL : entity work.conditional_unit
     generic map (
