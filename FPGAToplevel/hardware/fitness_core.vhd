@@ -140,6 +140,8 @@ architecture Behavioral of fitness_core is
     signal memory_from_execute_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
     
     signal memory_condition_reset : std_logic;
+    signal memory_mem_stop : std_logic;
+    signal memory_mem_op_ctrl : MEM_OP_TYPE;
     
     signal memory_to_writeback_pc : std_logic_vector(ADDR_WIDTH-1 downto 0);
     signal memory_to_writeback_res : std_logic_vector(DATA_WIDTH-1 downto 0);
@@ -538,10 +540,22 @@ begin
         MEM_DATA_IN  => dmem_data_in,
         MEM_DATA_OUT => dmem_data_out,
         
-        OP   => memory_mem_op,
+        OP   => memory_mem_op_ctrl,
         HALT => dmem_halt,
         CLK  => clk
     );
+    
+    DMEM_STOPPER : process(clk, dmem_halt, halt)
+    begin
+        if rising_edge(clk) and dmem_halt = '0' and halt = '1' then
+            memory_mem_stop <= '1';
+        else
+            memory_mem_stop <= '0';
+        end if;
+    end process;
+    
+    -- MUX: Memory operation control
+    memory_mem_op_ctrl <= memory_mem_op when memory_mem_stop = '0' else MEM_NOP;
     
     GENETIC_CTRL : entity work.fitness_genetic_controller
     generic map ( 
