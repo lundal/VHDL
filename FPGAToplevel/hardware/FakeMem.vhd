@@ -49,6 +49,8 @@ architecture Behavioral of FakeMem is
 	signal INT_OUT : STD_LOGIC_VECTOR(15 downto 0);
     
     signal NCLK : STD_LOGIC;
+    signal NWE : STD_LOGIC;
+    signal NCE : STD_LOGIC;
 begin
 	BRAM : BRAM_TDP
 	generic map (
@@ -62,8 +64,8 @@ begin
 		A_ADDR => ADDR(9 downto 0),
 		A_IN   => DATA,
 		A_OUT  => INT_OUT,
-		A_WE   => not WE,
-		A_EN   => not CE,
+		A_WE   => NWE,
+		A_EN   => NCE,
 		B_ADDR => (others => '0'),
 		B_IN   => (others => '0'),
 --		B_OUT  => (others => 'Z'),
@@ -75,6 +77,8 @@ begin
 	DATA <= INT_OUT when (WE = '1' and CE = '0') else (others => 'Z');
     
     NCLK <= not CLK;
+    NWE <= not WE;
+    NCE <= not CE;
 	
 end Behavioral;
 
