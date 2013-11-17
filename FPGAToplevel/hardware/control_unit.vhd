@@ -125,7 +125,7 @@ begin
             REG_WRITE <= '0';
         
         elsif OP_CODE = OP_CODE_STI then
-            ALU_FUNC <= FUNC;
+            ALU_FUNC <= ALU_FUNC_ADD;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '1';
             ALU_SOURCE <= '1';
@@ -161,7 +161,7 @@ begin
             REG_WRITE <= '0';
         
         elsif OP_CODE = OP_CODE_SETG then
-            ALU_FUNC <= FUNC;
+            ALU_FUNC <= ALU_FUNC_NA;
             REG_SOURCE <= '0';
             IMM_SOURCE <= '0';
             ALU_SOURCE <= '0';
