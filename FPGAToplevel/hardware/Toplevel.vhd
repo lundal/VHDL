@@ -1,4 +1,4 @@
-            -- Toplevel design for the project
+-- Toplevel design for the project
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -458,4 +458,4 @@ begin
     reset <= '1' when SCU_STATE = STATE_INST_HI or SCU_STATE = STATE_INST_LO else '0';
     
 end Behavioral;
-        
+
