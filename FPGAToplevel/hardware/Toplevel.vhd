@@ -8,7 +8,7 @@ use WORK.CONSTANTS.ALL;
 
 entity Toplevel is
     generic(
-        NUM_PROC_PAIRS : natural := 2
+        NUM_PROC : natural := 1
     );
     port(
         SCU_ENABLE  : in    STD_LOGIC;
@@ -52,8 +52,8 @@ architecture behavioral of toplevel is
     signal InstData_OUT : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0);
     --signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
     --signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS-1 downto 0);
-    signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-    signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
+    signal InstRq   : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal InstAck  : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal InstAddrBus : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0); -- To processors
     signal InstDataBus : STD_LOGIC_VECTOR(INST_WIDTH-1 downto 0); -- To processors
 
@@ -64,9 +64,9 @@ architecture behavioral of toplevel is
     signal DataAddr : STD_LOGIC_VECTOR(ADDR_WIDTH-1 downto 0);
     signal DataData_IN : STD_LOGIC_VECTOR(16-1 downto 0);
     signal DataData_OUT : STD_LOGIC_VECTOR(16-1 downto 0);
-    signal DataRq0  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-    signal DataRq1  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-    signal DataAck  : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
+    signal DataRq0  : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal DataRq1  : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal DataAck  : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal DataAddrBus    : STD_LOGIC_VECTOR(17-1 downto 0); -- To processors
     signal DataDataInBus  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0); -- To processors
     signal DataDataOutBus : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0); -- To processors
@@ -86,20 +86,20 @@ architecture behavioral of toplevel is
 --    signal instruction_cache_PCB : ARRAY_PC_TYPE;
 --    signal instruction_cache_InstA : ARRAY_INST_TYPE;
 --    signal instruction_cache_InstB : ARRAY_INST_TYPE;
-    signal instruction_cache_MemRq : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-    signal instruction_cache_MemAck : STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
-    signal instruction_cache_Halt :  STD_LOGIC_VECTOR(NUM_PROC_PAIRS*2-1 downto 0);
+    signal instruction_cache_MemRq : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal instruction_cache_MemAck : STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
+    signal instruction_cache_Halt :  STD_LOGIC_VECTOR(NUM_PROC-1 downto 0);
     signal instruction_cache_MemAddr : std_logic_vector(ADDR_WIDTH-1 downto 0);
     signal instruction_cache_MemData : std_logic_vector(INST_WIDTH-1 downto 0);
-    type ARRAY_PC_TYPE is array (0 to NUM_PROC_PAIRS*2-1) of std_logic_vector(ADDR_WIDTH-1 downto 0);
-    type ARRAY_INST_TYPE is array (0 to NUM_PROC_PAIRS*2-1) of std_logic_vector(INST_WIDTH-1 downto 0);
+    type ARRAY_PC_TYPE is array (0 to NUM_PROC-1) of std_logic_vector(ADDR_WIDTH-1 downto 0);
+    type ARRAY_INST_TYPE is array (0 to NUM_PROC-1) of std_logic_vector(INST_WIDTH-1 downto 0);
     signal instruction_cache_PC : ARRAY_PC_TYPE;
     signal instruction_cache_Inst : ARRAY_INST_TYPE;
     
     -- Genetic signals
-    signal genetic_request_0 : std_logic_vector(NUM_PROC_PAIRS*2-1 downto 0);
-    signal genetic_request_1 : std_logic_vector(NUM_PROC_PAIRS*2-1 downto 0);
-    signal genetic_ack : std_logic_vector(NUM_PROC_PAIRS*2-1 downto 0);
+    signal genetic_request_0 : std_logic_vector(NUM_PROC-1 downto 0);
+    signal genetic_request_1 : std_logic_vector(NUM_PROC-1 downto 0);
+    signal genetic_ack : std_logic_vector(NUM_PROC-1 downto 0);
     signal genetic_rated_bus : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal genetic_unrated_bus : std_logic_vector(DATA_WIDTH-1 downto 0);
     
@@ -239,7 +239,7 @@ begin
     InstructionController : entity work.InstructionController
     generic map(
         --NUM_CACHES => NUM_PROC_PAIRS,
-        NUM_CACHES => NUM_PROC_PAIRS*2,
+        NUM_CACHES => NUM_PROC,
         ADDR_WIDTH => ADDR_WIDTH,
         INST_WIDTH => INST_WIDTH
     )
@@ -262,7 +262,7 @@ begin
     
     data_controller : entity work.memory_data_controller
     generic map(
-        NUM_PROC   => NUM_PROC_PAIRS*2,
+        NUM_PROC   => NUM_PROC,
         ADDR_WIDTH => ADDR_WIDTH,
         DATA_WIDTH => DATA_WIDTH
     )
@@ -291,7 +291,7 @@ begin
     
     genetic_pipeline : entity work.genetic_pipeline
     generic map (
-        NUM_PROC     => NUM_PROC_PAIRS*2,
+        NUM_PROC     => NUM_PROC,
         DATA_WIDTH   => DATA_WIDTH
     )
     port map(
@@ -398,7 +398,7 @@ begin
 --    end generate FITNESS_CORE_PAIRS;
 
     -- Maps instruction caches and fitness cores
-    FITNESS_CORE_PAIRS: for i in 0 to NUM_PROC_PAIRS*2-1 generate
+    FITNESS_CORES: for i in 0 to NUM_PROC-1 generate
     
         INSTRUCTION_CACHE : entity work.InstructionCacheSingle
         port map(
