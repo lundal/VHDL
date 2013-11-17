@@ -112,12 +112,14 @@ architecture Behavioral of fitness_core is
     signal execute_to_memory_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal execute_to_memory_res : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal execute_to_memory_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-    signal execute_to_memory_overflow : std_logic;
+    
     
     -- Execute Control
     signal execute_alu_src : STD_LOGIC;
     signal execute_alu_func : STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0);
     signal execute_cond : STD_LOGIC_VECTOR(COND_WIDTH-1 downto 0);
+    signal execute_res : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal execute_overflow : std_logic;
     
     -- Mem Control
     signal execute_jump : STD_LOGIC;
@@ -136,7 +138,6 @@ architecture Behavioral of fitness_core is
     signal memory_from_execute_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal memory_from_execute_res : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal memory_from_execute_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-    signal memory_from_execute_overflow : std_logic;
     
     signal memory_condition_reset : std_logic;
     
@@ -278,7 +279,6 @@ begin
         rt_in => execute_to_memory_rt,
         rda_in => execute_to_memory_rda,
         res_in => execute_to_memory_res,
-        overflow_in => execute_to_memory_overflow,
         
         -- Outs
         pc_out => memory_from_execute_pc,
@@ -286,7 +286,7 @@ begin
         rt_out => memory_from_execute_rt,
         rda_out => memory_from_execute_rda,
         res_out => memory_from_execute_res,
-        overflow_out => memory_from_execute_overflow,
+        
         
         -- Mem Control Ins
         jump_in => execute_jump,
@@ -502,15 +502,16 @@ begin
     port map (
         X => execute_alu_a_in,
         Y => execute_alu_b_in,
-        R => execute_to_memory_res,
+        R => execute_res,
         FUNC => execute_alu_func,
-        OVERFLOW => execute_to_memory_overflow
+        OVERFLOW => execute_overflow
     );
     
     execute_to_memory_pc <= execute_from_decode_pc;
     execute_to_memory_rs <= execute_rs_forwarded;
     execute_to_memory_rt <= execute_rt_forwarded;
     execute_to_memory_rda <= execute_from_decode_rda;
+    execute_to_memory_res <= execute_res;
     
     ------------
     -- MEMORY --
@@ -569,8 +570,8 @@ begin
     )
     port map (
         COND => execute_cond,
-        ALU_RES => memory_from_execute_res,
-        ALU_OVF => memory_from_execute_overflow,
+        ALU_RES => execute_res,
+        ALU_OVF => execute_overflow,
         SKIP => memory_condition_reset
     );
     

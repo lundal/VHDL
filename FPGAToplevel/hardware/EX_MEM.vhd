@@ -17,7 +17,6 @@ entity EX_MEM is
         rt_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
         rda_in : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
         res_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-        overflow_in : in  STD_LOGIC;
         
         -- Outs
         pc_out : out std_logic_vector(ADDR_WIDTH-1 downto 0);
@@ -25,7 +24,6 @@ entity EX_MEM is
         rt_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
         rda_out : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
         res_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
-        overflow_out : out  STD_LOGIC;
         
         -- Mem Control Ins
         jump_in : in  STD_LOGIC;
@@ -52,7 +50,7 @@ end EX_MEM;
 architecture Behavioral of EX_MEM is
 begin
 
-    process (clk, reset, disable, pc_in, rs_in, rt_in, rda_in, res_in, overflow_in, jump_in, gene_op_in, mem_op_in, to_reg_in, call_in, reg_write_in)
+    process (clk, reset, disable, pc_in, rs_in, rt_in, rda_in, res_in, jump_in, gene_op_in, mem_op_in, to_reg_in, call_in, reg_write_in)
     begin 
         if rising_edge(clk) then
             if reset = '1' then 
@@ -62,7 +60,6 @@ begin
                 rt_out <= (others => '0');
                 rda_out <= (others => '0');
                 res_out <= (others => '0');
-                overflow_out <= '0';
                 
                 -- Mem Control Outs
                 jump_out <= '0';
@@ -81,7 +78,6 @@ begin
                 rt_out <= rt_in;
                 rda_out <= rda_in;
                 res_out <= res_in;
-                overflow_out <= overflow_in;
                 
                 -- Mem Control Outs
                 jump_out <= jump_in;
