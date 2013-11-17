@@ -1,1 +1,32 @@
-stg r0, r0
+init:
+    jmp run
+    jmp end
+    jmp end
+    jmp end
+    jmp end
+    jmp end
+    jmp end
+    jmp end
+
+run:
+    /* Define settings */
+    addi r1, r0, 1
+    addi r2, r0, 0b00100
+    addi r3, r0, 0b100
+    addi r3, r0, 0b01000
+    
+    /* Load settings */
+    slli r1, r1, 13
+    slli r2, r2, 8
+    slli r3, r3, 5
+    or r4, r4, r1
+    or r4, r4, r2
+    or r4, r4, r3
+    setg r4
+
+end:
+    nop
+    nop
+    nop
+    jmp end
+
