@@ -159,7 +159,7 @@ begin
     
     READ_FF : process(clk, state)
     begin
-        if rising_edge(clk) and state = ReadWait then
+        if rising_edge(clk) and ACK = '1' then
             DATA_OUT <= MEM_DATA_IN;
         end if;
     end process;
