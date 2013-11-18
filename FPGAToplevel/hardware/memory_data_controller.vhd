@@ -256,6 +256,8 @@ begin
                 MEM_ENABLE <= '0';
                 MEM_WRITE <= '1';
                 MEM_LBUB <= '0';
+                
+                fetch <= '1';
             
             when Read =>
                 MEM_ENABLE <= '0';
