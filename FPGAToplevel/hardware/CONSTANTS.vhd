@@ -52,8 +52,8 @@ package CONSTANTS is
 	constant OP_CODE_CALL	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0011";
 	constant OP_CODE_STI	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "0101";
 	constant OP_CODE_LDG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1001";
-	constant OP_CODE_SETG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1010";
-	constant OP_CODE_STG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1011";
+	constant OP_CODE_STG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1010";
+	constant OP_CODE_SETG	:	STD_LOGIC_VECTOR(OP_CODE_WIDTH-1 downto 0) := "1011";
 	
 	-- ALU Functions
 	constant ALU_FUNC_ADD	:	STD_LOGIC_VECTOR(ALU_FUNC_WIDTH-1 downto 0)	:=	"0000";
