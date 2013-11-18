@@ -8,7 +8,7 @@ use WORK.CONSTANTS.ALL;
 
 entity Toplevel is
     generic(
-        NUM_PROC : natural := 1
+        NUM_PROC : natural := 10
     );
     port(
         SCU_ENABLE  : in    STD_LOGIC;
@@ -220,6 +220,8 @@ begin
     IMEM_WE_HI <= IMEM_WE_HI_INT;
     IMEM_WE_LO <= IMEM_WE_LO_INT;
     DMEM_WE <= DMEM_WE_INT;
+    
+    InstData_IN <= (others => '0');
 
     InstructionController : entity work.InstructionController
     generic map(
@@ -309,7 +311,7 @@ begin
             Clock => Clock
         );
         
-        FITNESS_CORE_A : entity work.fitness_core
+        FITNESS_CORE : entity work.fitness_core
         generic map(processor_id => i + 1)
         port map(
             -- Bit signals
@@ -344,7 +346,7 @@ begin
             genetic_ack => genetic_ack(i)
         );
     
-    end generate FITNESS_CORE_PAIRS;
+    end generate;
     
     -- Reset when SCU connected to imem
     reset <= '1' when SCU_STATE = STATE_INST_HI or SCU_STATE = STATE_INST_LO else '0';

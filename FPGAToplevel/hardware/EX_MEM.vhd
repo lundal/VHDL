@@ -17,6 +17,7 @@ entity EX_MEM is
         rt_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
         rda_in : in  STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
         res_in : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        overflow_in : in  STD_LOGIC;
         
         -- Outs
         pc_out : out std_logic_vector(ADDR_WIDTH-1 downto 0);
@@ -24,6 +25,7 @@ entity EX_MEM is
         rt_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
         rda_out : out STD_LOGIC_VECTOR (REG_ADDR_WIDTH-1 downto 0);
         res_out : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+        overflow_out : out STD_LOGIC;
         
         -- Mem Control Ins
         jump_in : in  STD_LOGIC;
@@ -60,6 +62,7 @@ begin
                 rt_out <= (others => '0');
                 rda_out <= (others => '0');
                 res_out <= (others => '0');
+                overflow_out <= '0';
                 
                 -- Mem Control Outs
                 jump_out <= '0';
@@ -78,6 +81,7 @@ begin
                 rt_out <= rt_in;
                 rda_out <= rda_in;
                 res_out <= res_in;
+                overflow_out <= overflow_in;
                 
                 -- Mem Control Outs
                 jump_out <= jump_in;

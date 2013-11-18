@@ -112,7 +112,7 @@ architecture Behavioral of fitness_core is
     signal execute_to_memory_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal execute_to_memory_res : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal execute_to_memory_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
-    
+    signal execute_to_memory_overflow : std_logic;
     
     -- Execute Control
     signal execute_alu_src : STD_LOGIC;
@@ -138,6 +138,7 @@ architecture Behavioral of fitness_core is
     signal memory_from_execute_rt : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal memory_from_execute_res : std_logic_vector(DATA_WIDTH-1 downto 0);
     signal memory_from_execute_rda : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+    signal memory_from_execute_overflow : std_logic;
     
     signal memory_condition_reset : std_logic;
     signal memory_mem_stop : std_logic;
@@ -283,6 +284,7 @@ begin
         rt_in => execute_to_memory_rt,
         rda_in => execute_to_memory_rda,
         res_in => execute_to_memory_res,
+        overflow_in => execute_to_memory_overflow,
         
         -- Outs
         pc_out => memory_from_execute_pc,
@@ -290,7 +292,7 @@ begin
         rt_out => memory_from_execute_rt,
         rda_out => memory_from_execute_rda,
         res_out => memory_from_execute_res,
-        
+        overflow_out => memory_from_execute_overflow,
         
         -- Mem Control Ins
         jump_in => execute_jump,
@@ -516,6 +518,7 @@ begin
     execute_to_memory_rt <= execute_rt_forwarded;
     execute_to_memory_rda <= execute_from_decode_rda;
     execute_to_memory_res <= execute_res;
+    execute_to_memory_overflow <= execute_overflow;
     
     ------------
     -- MEMORY --
@@ -549,10 +552,12 @@ begin
     
     DMEM_STOPPER : process(clk, dmem_halt, halt)
     begin
-        if rising_edge(clk) and dmem_halt = '0' and halt = '1' then
-            memory_mem_stop <= '1';
-        else
-            memory_mem_stop <= '0';
+        if rising_edge(clk) then
+            if dmem_halt = '0' and halt = '1' then
+                memory_mem_stop <= '1';
+            else
+                memory_mem_stop <= '0';
+            end if;
         end if;
     end process;
     
@@ -582,10 +587,12 @@ begin
     
     GENETIC_STOPPER : process(clk, genetic_halt, halt)
     begin
-        if rising_edge(clk) and genetic_halt = '0' and halt = '1' then
-            memory_gene_stop <= '1';
-        else
-            memory_gene_stop <= '0';
+        if rising_edge(clk) then
+            if genetic_halt = '0' and halt = '1' then
+                memory_gene_stop <= '1';
+            else
+                memory_gene_stop <= '0';
+            end if;
         end if;
     end process;
     
@@ -598,8 +605,8 @@ begin
     )
     port map (
         COND => execute_cond,
-        ALU_RES => execute_res,
-        ALU_OVF => execute_overflow,
+        ALU_RES => memory_from_execute_res,
+        ALU_OVF => memory_from_execute_overflow,
         SKIP => memory_condition_reset
     );
     

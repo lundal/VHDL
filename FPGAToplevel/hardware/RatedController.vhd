@@ -83,7 +83,7 @@ begin
                         
                         -- Choose next (or return to original if none)
                         for i in 0 to NUM_PROC-2 loop
-                            if REQUEST_SET(chosen) = '0' then
+                            if REQUEST_SET(chosen_set) = '0' then
                                 if (chosen_set = NUM_PROC-1) then
                                     chosen_set := 0;
                                 else

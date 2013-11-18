@@ -157,7 +157,7 @@ begin
         end case;
     end process;
     
-    READ_FF : process(clk, state)
+    READ_FF : process(clk, state, ACK)
     begin
         if rising_edge(clk) and ACK = '1' then
             DATA_OUT <= MEM_DATA_IN;
