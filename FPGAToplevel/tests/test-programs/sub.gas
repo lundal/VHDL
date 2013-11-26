@@ -1,0 +1,5 @@
+ldi r1, 1000
+ldi r2, 2000
+sub r1, r2, r1
+sub r1, r2, r1
+sub r1, r2, r1

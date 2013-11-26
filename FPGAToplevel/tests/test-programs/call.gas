@@ -1,0 +1,13 @@
+
+procedure:
+    nop
+    nop
+    nop
+    ret
+
+main:
+    nop
+    nop
+    call procedure
+    nop
+    nop
